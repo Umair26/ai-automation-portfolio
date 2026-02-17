@@ -1,0 +1,588 @@
+{
+  "name": "Lead qualification workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Enter your business details below to apply for your call",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "First name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email address",
+              "fieldType": "email",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "What industry are you in? ",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "What is your typical price point? ",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "What is your currently monthly revenue? ",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "5ee43067-eb39-4cdc-8597-31f7805b975b",
+      "name": "On form submission",
+      "webhookId": "9566ff4b-3f4f-49f7-8ee7-af6aae520b1b"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json['Qualified? '] }}",
+                    "rightValue": "YES",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "7079ec8e-39b5-43c5-a7c0-c393575bd81e"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Qualfied"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "5746707b-7627-4c2c-84c8-cf762603f2e4",
+                    "leftValue": "={{ $json['Qualified? '] }}",
+                    "rightValue": "NO",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Not Qualified"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        980,
+        0
+      ],
+      "id": "87b9f401-bc8a-4b7d-a619-e864f6e420c9",
+      "name": "Qualified Split"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1hjVEIkQgvdB8JdloBPweuKjAyOu37lDKF4Eo6WDwf20",
+          "mode": "list",
+          "cachedResultName": "Lead Qualification",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hjVEIkQgvdB8JdloBPweuKjAyOu37lDKF4Eo6WDwf20/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hjVEIkQgvdB8JdloBPweuKjAyOu37lDKF4Eo6WDwf20/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json['First name'] }}",
+            "Email ": "={{ $json['Email address'] }}",
+            "Industry ": "={{ $json['What industry are you in? '] }}",
+            "Price point": "={{ $json['What is your typical price point? '] }}",
+            "Revenue ": "={{ $json['What is your currently monthly revenue? '] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email ",
+              "displayName": "Email ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Industry ",
+              "displayName": "Industry ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Price point",
+              "displayName": "Price point",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Revenue ",
+              "displayName": "Revenue ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Qualified? ",
+              "displayName": "Qualified? ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        180,
+        0
+      ],
+      "id": "0c25ad1a-db72-4a75-9559-d17befe7a8bc",
+      "name": "Add to sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "s22GdabRXdjTnYNs",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1hjVEIkQgvdB8JdloBPweuKjAyOu37lDKF4Eo6WDwf20",
+          "mode": "list",
+          "cachedResultName": "Lead Qualification",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hjVEIkQgvdB8JdloBPweuKjAyOu37lDKF4Eo6WDwf20/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hjVEIkQgvdB8JdloBPweuKjAyOu37lDKF4Eo6WDwf20/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $('Add to sheet').item.json.Name }}",
+            "Qualified? ": "={{ $json.message.content }}"
+          },
+          "matchingColumns": [
+            "Name"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email ",
+              "displayName": "Email ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Industry ",
+              "displayName": "Industry ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Price point",
+              "displayName": "Price point",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Revenue ",
+              "displayName": "Revenue ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Qualified? ",
+              "displayName": "Qualified? ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        760,
+        0
+      ],
+      "id": "e0e7e34b-ddcb-4c40-b126-c6f0e6dccf05",
+      "name": "Update qualification status",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "cZ04m1r8jo5x2ch6",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "## Role\n\nYou are a Lead Qualification Specialist with expertise in B2B sales analysis and customer segmentation. You possess deep knowledge of qualifying prospects based on revenue thresholds and product pricing criteria. Your analytical skills allow you to quickly assess business viability and make decisive qualification determinations with precision and consistency.\n\n## Task\n\nAnalyze form submission data to determine if a lead meets qualification criteria and provide a definitive yes or no qualification decision. You must evaluate whether the lead generates over $25,000 per month in revenue AND has a product priced over $2,000.\n\n## Context\n\nThis lead qualification process is critical for sales team efficiency and resource allocation. By accurately identifying qualified leads, you enable the sales team to focus their efforts on prospects with the highest potential for conversion and deal value. This qualification system directly impacts revenue generation and prevents wasted time on unqualified prospects. Your assessment determines whether leads enter the sales pipeline or require nurturing until they meet qualification thresholds.\n\n## Instructions\n\n**Primary Qualification Criteria:**\n- Monthly revenue must exceed $25,000\n- Product price must exceed $2,000\n- BOTH criteria must be met for a \"YES\" qualification\n\n**Analysis Process:**\n1. Extract monthly revenue information from the form data\n2. Extract product pricing information from the form data\n3. Convert any annual revenue figures to monthly equivalents by dividing by 12\n4. Verify both numerical thresholds are exceeded\n5. Provide final qualification decision\n\n**Output Format:**\nRespond with exactly one word: \"YES\" or \"NO\"\n\n**Critical Rules:**\n- If monthly revenue is $25,000 or less: automatic \"NO\"\n- If product price is $2,000 or less: automatic \"NO\"\n- If either data point is missing or unclear: automatic \"NO\"\n- If revenue is provided annually, divide by 12 for monthly calculation\n- Round calculations to nearest dollar before comparison\n- Your life depends on you being absolutely precise with these thresholds - a single misqualification could cost significant revenue opportunity\n\n**Edge Cases to Handle:**\n- Revenue stated as annual figures (convert to monthly)\n- Multiple products listed (use highest priced product)\n- Revenue ranges provided (use lowest figure in range)\n- Currency symbols or formatting (extract numerical value)\n- Incomplete or ambiguous data (default to \"NO\")\n- Revenue stated as gross vs net (accept either as qualifying revenue)\n\n**What Could Go Wrong:**\n- Misreading decimal points or currency formatting\n- Confusing annual vs monthly revenue figures\n- Accepting leads that are exactly at threshold instead of above\n- Qualifying leads with missing critical data points\n- Misinterpreting product bundles or service packages\n\nRemember: It is vital to my career that you maintain absolute accuracy in these qualification decisions. Every \"YES\" must represent a genuinely qualified lead that meets both criteria definitively.",
+              "role": "system"
+            },
+            {
+              "content": "=Here’s the form submission:\n\nMonthly Revenue: {{ $json['Revenue '] }}\n\nPrice Point: {{ $json['Price point'] }}\n\n\nIs this lead qualified, give me a YES or NO. "
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        400,
+        0
+      ],
+      "id": "36c501a4-737e-4aff-a788-b247193f6021",
+      "name": "Is qualified?",
+      "credentials": {
+        "openAiApi": {
+          "id": "wLEE6fG6sE3GDheh",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Add to sheet').item.json['Email '] }}",
+        "subject": "={{ $json.subject }}",
+        "emailType": "text",
+        "message": "={{ $json.aiResponse.message.content.body }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1580,
+        -100
+      ],
+      "id": "33cd2835-2980-4135-80e9-9565d4f9e17e",
+      "name": "Email to qualified",
+      "webhookId": "0411fc91-fd35-446a-a277-88865d5f7685",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "aQ4XmKoW3ktJ76np",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "Test",
+        "subject": "Test",
+        "message": "Test",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1580,
+        160
+      ],
+      "id": "92c89fb1-8a5f-470d-9ce1-aeece2259a1c",
+      "name": "Email to not qualified",
+      "webhookId": "6a182daf-c5ee-49a1-9476-5303f49f780e",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "aQ4XmKoW3ktJ76np",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You are an expert email copywriter specializing in high-converting business communications. Your task is to write a personalized acceptance email for qualified leads who have applied to work with our agency.\n\nWRITING STYLE:\n- Conversational and professional\n- Direct and clear\n- Enthusiastic but not over-the-top\n- Focus on the lead's success and next steps\n\nEMAIL STRUCTURE:\n1. Personalized greeting\n2. Congratulations on acceptance\n3. Brief mention of their business potential\n4. Clear call-to-action to book call\n5. Professional closing\n\nTONE: Confident, welcoming, results-focused\nLENGTH: 80-120 words\nFORMAT: Short paragraphs, easy to scan\n\nAlways include the booking link exactly as provided. Use the industry and revenue information to show you understand their business.\n\nOUTPUT: Respond only with valid JSON containing \"subject\" and \"body\" fields.",
+              "role": "system"
+            },
+            {
+              "content": "=Write a personalized email for an ACCEPTED lead with these details:\n\nName: {{ $('Add to sheet').item.json.Name }}\nIndustry: {{ $('Add to sheet').item.json['Industry '] }}\nMonthly Revenue: {{ $('Add to sheet').item.json['Revenue '] }}\nOur Service Price: {{ $('Add to sheet').item.json['Price point'] }}\nBooking Link: {booking_link}\n\nUse this template structure:\n\nSubject: ✅ Application Approved - Let's Scale {{ $('Add to sheet').item.json['Industry '] }}\n\nHi {{ $('Add to sheet').item.json.Name }},\n\nGreat news! Your application has been approved.\n\n[Personalized line about their industry/revenue showing you understand their business]\n\n[Brief statement about the growth potential we see]\n\nReady to get started? Book your strategy call here: {booking_link}\n\n[Professional closing]\n\nSign off the email with this: \nBest, \nTom @ AI Alchemy\n\nKeep it conversational, confident, and focused on their success. Make them excited about the next step.\n\nReturn your response as JSON with this exact format:\n{\n  \"subject\": \"Your subject line here\",\n  \"body\": \"Your email body here\"\n}"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1160,
+        -100
+      ],
+      "id": "95daa6f3-a471-4d82-be94-153a6d22aaa1",
+      "name": "Write email - qualified",
+      "credentials": {
+        "openAiApi": {
+          "id": "wLEE6fG6sE3GDheh",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You are an expert email copywriter specializing in professional business communications. Your task is to write a polite rejection email for leads who don't meet our current qualification criteria.\n\nWRITING STYLE:\n- Professional and respectful\n- Empathetic but firm\n- Helpful and constructive\n- Leave door open for future\n\nEMAIL STRUCTURE:\n1. Personalized greeting\n2. Thank them for their interest\n3. Polite explanation of current focus\n4. Offer alternative value/resource\n5. Keep door open for future\n6. Professional closing\n\nTONE: Professional, respectful, helpful\nLENGTH: 60-100 words\nFORMAT: Short paragraphs, clear and direct\n\nBe honest but kind. Focus on \"fit\" rather than making them feel rejected personally.",
+              "role": "system"
+            },
+            {
+              "content": "=Write a polite rejection email for an UNQUALIFIED lead with these details:\n\nName: {name}\nIndustry: {industry}\nMonthly Revenue: {monthly_revenue}\nReason for rejection: {rejection_reason}\n\nUse this template structure:\n\nSubject: Re: Your Application - Current Focus Update\n\nHi {Name},\n\nThanks for your interest in working with us.\n\n[Acknowledge their business/industry]\n\n[Gentle explanation of current focus/criteria without being harsh]\n\n[Offer something valuable - resource, tip, or future consideration]\n\n[Keep door open for when they grow/meet criteria]\n\nBest regards,\nTom\n\nKeep it professional, respectful, and helpful. Don't make them feel bad about not qualifying."
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1160,
+        160
+      ],
+      "id": "1c492545-f9a8-4fad-9726-130ca9310518",
+      "name": "Email to unqualified",
+      "credentials": {
+        "openAiApi": {
+          "id": "wLEE6fG6sE3GDheh",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "On form submission": [
+      {
+        "json": {
+          "First name": "Tom",
+          "Email address": "tom@emailalchemy.co",
+          "What industry are you in? ": "AI",
+          "What is your typical price point? ": "5000",
+          "What is your currently monthly revenue? ": "$50K",
+          "submittedAt": "2025-06-28T09:56:12.354+01:00",
+          "formMode": "test"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Add to sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add to sheet": {
+      "main": [
+        [
+          {
+            "node": "Is qualified?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update qualification status": {
+      "main": [
+        [
+          {
+            "node": "Qualified Split",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is qualified?": {
+      "main": [
+        [
+          {
+            "node": "Update qualification status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qualified Split": {
+      "main": [
+        [
+          {
+            "node": "Write email - qualified",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Email to unqualified",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write email - qualified": {
+      "main": [
+        [
+          {
+            "node": "Email to qualified",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email to unqualified": {
+      "main": [
+        [
+          {
+            "node": "Email to not qualified",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "0be93df5-ce26-47d5-8d56-52ba8a538a64",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f728ac8b256bc0332b9cc850d0cf415bb9be6d8f439bde96f0fa8f4178c36ca3"
+  },
+  "id": "KAWWVxqX3Mvem01N",
+  "tags": []
+}
