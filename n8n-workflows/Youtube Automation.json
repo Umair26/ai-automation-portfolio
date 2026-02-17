@@ -1,0 +1,466 @@
+{
+  "name": "My workflow 3",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "ea628579-df48-4c15-9d3f-3e943d42af5d",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "filters": {
+          "channelId": "your channel id",
+          "publishedAfter": "={{ $now.minus(24,hours) }}"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        220,
+        0
+      ],
+      "id": "8449e9c3-304f-4ec3-81e7-8c7cb56c23c1",
+      "name": "YouTube",
+      "alwaysOutputData": true,
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "TQxBUqGaeblR3hvE",
+          "name": "YouTube account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "get",
+        "videoId": "={{ $json.id.videoId }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        440,
+        0
+      ],
+      "id": "0f3de3dd-c3d5-4e2f-adf3-77af64a0174b",
+      "name": "YouTube1",
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "TQxBUqGaeblR3hvE",
+          "name": "YouTube account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Embed html with the YouTube link inside: {{ $json.player.embedHtml }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "Extract from the HTML text the YouTube link, it will start in www and will end before the \"\n\nThen extract the letters and numbers after embed/ and paste them after this https://www.youtube.com/watch?v=\n\nExample: \n\n\n<iframe width=\"480\" height=\"270\" src=\"//www.youtube.com/embed/rWwYPvJj5kA\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>\n\nOutput: https://www.youtube.com/watch?v=nvF0qm36sas\n\nOutput without any \\n at the end of the output"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        660,
+        0
+      ],
+      "id": "f16bd7e6-7d42-44bf-abf6-da0d05b74de6",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-1.5-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        700,
+        220
+      ],
+      "id": "2191bb65-d0fb-4e89-ab9a-1b58d517da65",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "xequD2w4Wu9nTWC9",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.kome.ai/api/tools/youtube-transcripts",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"video_id\": \"{{ $json.output.extractUrl() }}\",\n  \"format\": true\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1020,
+        0
+      ],
+      "id": "0dd1ee80-58a6-4c96-86ce-3d7492da4b57",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-1.5-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1280,
+        40
+      ],
+      "id": "246d6aa0-2a88-43f7-8df6-7c62ba45117b",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "xequD2w4Wu9nTWC9",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Transcript of the video: {{ $json.transcript }}",
+        "options": {
+          "systemMessage": "=You are a helpful and experienced assistant on writing tweets for Diego Sainz. Your job is to write a tweet announcing to Diego's public that a new video has been uploaded inside his YouTube channel providing the link, a small description of what the video is about and inviting the people to get inside it \n\nInclude the YouTube URL inside so that people can go watch the video: {{ $('AI Agent').item.json.output }}\n\n\nExample:\nHey everyone, I just uploaded a new video about a RAG Agent I built inside n8n which will be able to store all the data you get from different sources and using Google Sheets with Open AI. Go watch it here: {{ $('AI Agent').item.json.output }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        1400,
+        -440
+      ],
+      "id": "1de2adb5-782e-4042-b817-764ef982840d",
+      "name": "Twitter message"
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.twitter",
+      "typeVersion": 2,
+      "position": [
+        1760,
+        -440
+      ],
+      "id": "6acedb5e-44f2-42e4-9ae7-454b66ed538b",
+      "name": "X",
+      "credentials": {
+        "twitterOAuth2Api": {
+          "id": "7zshPiWXHLb21nMI",
+          "name": "X account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Transcript of the video: {{ $json.transcript }}",
+        "options": {
+          "systemMessage": "=You are a helpful and experienced assistant on writing LinkedIn posts for Diego Sainz. Remember that they have to be inside the LinkedIn algorithm: No big blocks of text, just 1 or 2 phrases per paragraph and a space between each one\n\nWith the transcript given you have to create a catchy LinkedIn post that invites people to go inside the YouTube link and take a look at it\n\nRemember to include at the end of the message the YouTube video: {{ $('AI Agent').item.json.output }}\n\nExample output:\n\nn8n Cold Calling Campaigns \n\nThe new system to send +50 calls a day\n\nTo build them I created a transient assistant inside Vapi\n\nAnd then created two different scenarios for the system\n\nThe first one will check which leads hasn't called to send them one\n\nAnd the second one will send an email if the user is interested\n\nCheck out the guide in depth inside my new video: {{ $('AI Agent').item.json.output }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        1440,
+        -80
+      ],
+      "id": "72aee54e-9641-49d4-b73f-019cb1490fd2",
+      "name": "LinkedIn post"
+    },
+    {
+      "parameters": {
+        "person": "=",
+        "text": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.linkedIn",
+      "typeVersion": 1,
+      "position": [
+        1800,
+        -80
+      ],
+      "id": "1aa353d3-de60-405d-9d26-5a485b3c6425",
+      "name": "LinkedIn",
+      "credentials": {
+        "linkedInOAuth2Api": {
+          "id": "Zrw8jMaiNMENp7Fu",
+          "name": "LinkedIn account 4"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=The transcript of the video: {{ $json.transcript }}",
+        "options": {
+          "systemMessage": "=You are a helpful and experienced assistant on writing Reddit posts for Diego Sainz. Your job is to write a Reddit post announcing to Diego's public that a new video has been uploaded inside his YouTube channel providing the link, a small description of what the video is about and inviting the people to get inside it \n\nInclude the YouTube URL inside so that people can go watch the video: {{ $('AI Agent').item.json.output }}\n\n\nExample:\nHey everyone, I just uploaded a new video about a RAG Agent I built inside n8n which will be able to store all the data you get from different sources and using Google Sheets with Open AI. Go watch it here: {{ $('AI Agent').item.json.output }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        1440,
+        160
+      ],
+      "id": "f411de3f-1c67-43ea-8f09-3799fc90208c",
+      "name": "Reddit Agent"
+    },
+    {
+      "parameters": {
+        "subreddit": "Please take a look at the video",
+        "title": "New video",
+        "text": "={{ $json.output }}"
+      },
+      "type": "n8n-nodes-base.reddit",
+      "typeVersion": 1,
+      "position": [
+        1800,
+        160
+      ],
+      "id": "1257f6cc-e27c-4507-949e-9407d3aba686",
+      "name": "Reddit",
+      "credentials": {
+        "redditOAuth2Api": {
+          "id": "dTTFV7w9DxNAIQdm",
+          "name": "Reddit account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=The transcript of the video: {{ $json.transcript }}",
+        "options": {
+          "systemMessage": "=You are a helpful and experienced assistant on writing telegram messages for Diego Sainz. Your job is to write a telegram messages announcing to Diego's community that a new video has been uploaded inside his YouTube channel providing the link, a small description of what the video is about and inviting the people to get inside it, making a promise of what the video is going to offer\n\nInclude the YouTube URL inside so that people can go watch the video: {{ $('AI Agent').item.json.output }}\n\n\nExample:\nHey everyone, I just uploaded a new video about a RAG Agent I built inside n8n which will be able to store all the data you get from different sources and using Google Sheets with Open AI. Go watch it here: {{ $('AI Agent').item.json.output }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        1420,
+        380
+      ],
+      "id": "45d7bd11-9678-4946-8620-10e72988420f",
+      "name": "Telegram message"
+    },
+    {
+      "parameters": {
+        "chatId": "your chat id",
+        "text": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1780,
+        380
+      ],
+      "id": "b3c329d9-2855-4a0e-975c-7a28a6d6b3da",
+      "name": "Telegram",
+      "webhookId": "98407701-fcbe-4875-b723-a4e765728d56",
+      "credentials": {
+        "telegramApi": {
+          "id": "ahoHh5jJm3KhelL2",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "YouTube",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "YouTube": {
+      "main": [
+        [
+          {
+            "node": "YouTube1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "YouTube1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Twitter message",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "LinkedIn post",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Reddit Agent",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Telegram message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Twitter message",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "LinkedIn post",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Reddit Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Telegram message",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Twitter message": {
+      "main": [
+        [
+          {
+            "node": "X",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LinkedIn post": {
+      "main": [
+        [
+          {
+            "node": "LinkedIn",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reddit Agent": {
+      "main": [
+        [
+          {
+            "node": "Reddit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram message": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "e22de92e-42d5-4ba3-991e-2e8b746ed808",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "986c143b9d773017a748a44e58df269680fe7e7d3ea46008b4d860360511f1b5"
+  },
+  "id": "Ju0NHZqlvT9IHv4N",
+  "tags": []
+}

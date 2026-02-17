@@ -1,0 +1,937 @@
+{
+  "name": "Youtube to X Thread Writer",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "view-count-filter",
+              "leftValue": "={{ $json.statistics.viewCount.toNumber() }}",
+              "rightValue": 100000,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            },
+            {
+              "id": "duration-filter",
+              "leftValue": "={{ $json.snippet.localized.description }}",
+              "rightValue": "short.",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        640,
+        60
+      ],
+      "id": "affb439f-53f3-4c76-8025-9edc60f0d111",
+      "name": "Filter High-Performing Videos"
+    },
+    {
+      "parameters": {
+        "maxItems": 2
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        860,
+        60
+      ],
+      "id": "7826738b-88fa-4df6-8cb2-8725c1e04fc1",
+      "name": "Top 5 Videos"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the AI agent output directly\nconst threadContent = $json.output || '';\n\n// Use the video data from your workflow\nconst videoData = {\n  snippet: { title: 'From Zero to Your First AI Agent in 25 Minutes (No Coding)', channelTitle: 'Futurepedia' },\n  id: 'EH5jx5qPabU',\n  statistics: { viewCount: '690359' }\n};\n\n// Debug: Log the exact content\nconsole.log('Full content:', threadContent);\nconsole.log('Content length:', threadContent.length);\n\n// Try splitting by the separators first\nconst threadSections = threadContent.split(/---\\s*\\n/);\nconsole.log('Split sections:', threadSections.length);\n\nlet thread1Content = '', thread2Content = '', thread3Content = '';\nlet thread1Title = 'Thread 1', thread2Title = 'Thread 2', thread3Title = 'Thread 3';\n\nif (threadSections.length >= 3) {\n  // We have 3 sections separated by ---\n  thread1Content = threadSections[0].trim();\n  thread2Content = threadSections[1].trim();\n  thread3Content = threadSections[2].trim();\n  \n  // Extract titles from each section\n  const title1Match = thread1Content.match(/# THREAD 1:\\s*(.+)/);\n  const title2Match = thread2Content.match(/# THREAD 2:\\s*(.+)/);\n  const title3Match = thread3Content.match(/# THREAD 3:\\s*(.+)/);\n  \n  thread1Title = title1Match ? title1Match[1].trim() : 'Statistical Shock + Contrarian Positioning';\n  thread2Title = title2Match ? title2Match[1].trim() : 'Secret Method + Authority Positioning';\n  thread3Title = title3Match ? title3Match[1].trim() : 'Costly Mistake + Problem Agitation';\n  \n  // Clean up content (remove the title line)\n  thread1Content = thread1Content.replace(/# THREAD 1:.*\\n/, '').trim();\n  thread2Content = thread2Content.replace(/# THREAD 2:.*\\n/, '').trim();\n  thread3Content = thread3Content.replace(/# THREAD 3:.*\\n/, '').trim();\n} else {\n  // Fallback: try to find threads in the full content\n  console.log('Trying fallback method...');\n  \n  // Look for thread markers\n  const allMatches = [...threadContent.matchAll(/# THREAD (\\d+):\\s*(.+?)\\n([\\s\\S]*?)(?=# THREAD \\d+:|$)/g)];\n  console.log('Found matches:', allMatches.length);\n  \n  allMatches.forEach((match, index) => {\n    const threadNum = match[1];\n    const title = match[2].trim();\n    const content = match[3].trim();\n    \n    if (threadNum === '1') {\n      thread1Title = title;\n      thread1Content = content;\n    } else if (threadNum === '2') {\n      thread2Title = title;\n      thread2Content = content;\n    } else if (threadNum === '3') {\n      thread3Title = title;\n      thread3Content = content;\n    }\n  });\n}\n\n// Debug: Log what we found\nconsole.log('Thread 1 Title:', thread1Title);\nconsole.log('Thread 1 Content Length:', thread1Content.length);\nconsole.log('Thread 2 Title:', thread2Title);\nconsole.log('Thread 2 Content Length:', thread2Content.length);\nconsole.log('Thread 3 Title:', thread3Title);\nconsole.log('Thread 3 Content Length:', thread3Content.length);\n\nconst outputItem = {\n  json: {\n    video_title: videoData.snippet.title,\n    video_url: `https://youtube.com/watch?v=${videoData.id}`,\n    video_views: videoData.statistics.viewCount,\n    video_channel: videoData.snippet.channelTitle,\n    thread_1_title: thread1Title,\n    thread_1_content: thread1Content,\n    thread_2_title: thread2Title,\n    thread_2_content: thread2Content,\n    thread_3_title: thread3Title,\n    thread_3_content: thread3Content,\n    generated_date: new Date().toISOString(),\n    status: 'pending_review'\n  }\n};\n\nreturn [outputItem];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        440
+      ],
+      "id": "088e5a2c-7a75-47f4-b04c-2b3f246cf05a",
+      "name": "Structure Thread Data"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1kLj4Krk9uxHK79Ilj-i5dbXMlkRD57nQJha9krO48c0",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kLj4Krk9uxHK79Ilj-i5dbXMlkRD57nQJha9krO48c0/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Video URL": "={{ $json.video_url }}",
+            "Youtube video title": "={{ $json.video_title }}",
+            "Thread 1": "={{ $json.thread_1_title }}\n{{ $json.thread_1_content }}",
+            "Thread 2": "={{ $json.thread_2_title }}\n{{ $json.thread_2_content }}",
+            "Thread 3": "={{ $json.thread_3_title }}\n{{ $json.thread_3_content }}"
+          },
+          "matchingColumns": [
+            "Youtube video title"
+          ],
+          "schema": [
+            {
+              "id": "Keyword",
+              "displayName": "Keyword",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Youtube video title",
+              "displayName": "Youtube video title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Description",
+              "displayName": "Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Video URL",
+              "displayName": "Video URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Turn into thread?",
+              "displayName": "Turn into thread?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Thread 1",
+              "displayName": "Thread 1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Thread 2",
+              "displayName": "Thread 2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Thread 3",
+              "displayName": "Thread 3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        1260,
+        440
+      ],
+      "id": "fa264eeb-0596-43c3-960d-2bd081de9bb6",
+      "name": "Save to Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "cZ04m1r8jo5x2ch6",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://www.googleapis.com/youtube/v3/search",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "part",
+              "value": "snippet"
+            },
+            {
+              "name": "type",
+              "value": "Video"
+            },
+            {
+              "name": "q",
+              "value": "={{ $json.keyword }}"
+            },
+            {
+              "name": "order",
+              "value": "viewCount"
+            },
+            {
+              "name": "publishedAfter",
+              "value": "2025-04-01T00:00:00Z"
+            },
+            {
+              "name": "maxResults",
+              "value": "25"
+            },
+            {
+              "name": "regionCode",
+              "value": "us"
+            },
+            {
+              "name": "key",
+              "value": "AIzaSyCeFvMg3NN-woJlB4FwlimlU2uALmY44Q4"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -20,
+        60
+      ],
+      "id": "879d9206-8d7f-412d-84f1-5d5eb7781672",
+      "name": "Get videos"
+    },
+    {
+      "parameters": {
+        "url": "https://www.googleapis.com/youtube/v3/videos",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "part",
+              "value": "statistics,snippet"
+            },
+            {
+              "name": "id",
+              "value": "={{ $json.items.map(video => video.id.videoId).join(',') }}"
+            },
+            {
+              "name": "key",
+              "value": "AIzaSyCeFvMg3NN-woJlB4FwlimlU2uALmY44Q4"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        200,
+        60
+      ],
+      "id": "1ddda418-76c9-4c3d-ad6e-836644702b94",
+      "name": "Get statistics"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=AIzaSyAS2FK6TEth4_eB38bpATOt5RxYAhc7UDw",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [\n    {\n      \"parts\": [\n        {\n          \"text\": \"Analyze this single YouTube video and provide a detailed summary focusing on: 1) Main topics covered 2) Key insights and takeaways 3) Specific tools/strategies mentioned 4) Any surprising facts or statistics 5) Actionable advice given.\\n\\nVideo URL: {{ $json['Video URL'] }} Video Title: {{ $json['Youtube video title'] }}\"\n        }\n      ]\n    }\n  ]\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text",
+              "outputPropertyName": "Transcript"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        440
+      ],
+      "id": "5a4b93da-2d92-447b-a1a4-768e02c7f767",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Take the batch response and split it into individual items\nconst videos = items[0].json.items;\n\nreturn videos.map(video => ({\n  json: video\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        420,
+        60
+      ],
+      "id": "3f71750a-e2b4-49db-8076-3d292efba4e9",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Create 3 viral threads about \"{{ $json.keyword }}\" targeting {{ $json.targetAudience }} using proven database patterns.\n\nVideo Analysis:\n{{ $json.cleanedTranscript }}\n\n## APPLY THESE VIRAL FORMULAS:\n- Statistical shock hooks (proven to get 12.5M+ views)\n- Contrarian positioning that challenges assumptions\n- Specific numbers and timeframes (not vague promises)\n- Curiosity gaps between posts\n- Engagement-driving CTAs\n\n## THREAD REQUIREMENTS:\nEach thread must:\n- Focus entirely on \"{{ $json.keyword }}\" naturally\n- Use hook patterns from the viral database\n- Include exact numbers, tools, and timeframes\n- Challenge common beliefs about {{ $json.keyword }}\n- Make readers feel they're getting insider secrets\n\n## THREAD STRUCTURE (5 posts each):\n**Post 1:** Hook + setup {{ $json.keyword }} problem/opportunity\n**Posts 2-4:** One tactical insight per post (with specific data)\n**Post 5:** Strong CTA driving {{ $json.keyword }} engagement\n\n## MAKE EACH THREAD DISTINCT:\n- **Thread 1:** Surprising {{ $json.keyword }} statistic or contrarian take\n- **Thread 2:** Specific {{ $json.keyword }} tool or strategy reveal\n- **Thread 3:** Common {{ $json.keyword }} mistake or misconception\n\nExtract from video: exact savings, specific strategies, tools mentioned, step-by-step processes, and contrarian viewpoints about {{ $json.keyword }}.\n\nMake readers stop scrolling and feel like they discovered {{ $json.keyword }} knowledge that 99% miss.",
+        "options": {
+          "systemMessage": "=You are a viral thread generator with access to proven patterns from threads that generated 12.5M+ views.\n\n## ASSIGNMENT DETAILS:\nTARGET AUDIENCE: {{ $json.targetAudience }}\nKEYWORD FOCUS: {{ $json.keyword }}\nTHREAD STYLE: {{ $json.threadStyle }}\n\n## VIRAL DATABASE ACCESS:\nReference the viralThreadDatabase for:\n- Proven hook formulas from 12.5M+ view threads\n- Engagement drivers that generated massive shares  \n- Thread structures that consistently go viral\n- Specific patterns from successful threads\n\nApply these database patterns:\n{{ $json.viralThreadDatabase }}\n\n## THREAD CREATION PRINCIPLES:\n- Always lead with curiosity gaps that create \"scroll-stopping\" moments\n- Include specific numbers, tools, and tactical advice (never generic)\n- Challenge conventional wisdom with contrarian takes\n- Create FOMO through exclusive insights or \"secrets\"\n- Use concrete examples over abstract concepts\n- Write conversationally like talking to a friend\n- Vary sentence length for rhythm and impact\n\n## KEYWORD INTEGRATION:\n- Naturally weave \"{{ $json.keyword }}\" throughout all threads\n- Use keyword variations and related terms\n- Target {{ $json.targetAudience }} specifically\n- Ensure keywords feel organic within content flow\n\n## OUTPUT FORMAT:\nStructure each thread as:\n1. Hook: Curiosity-driven, controversial, or surprising opening (under 280 chars)\n2. 3-5 key tactical posts: One specific idea per post, respecting X character limits  \n3. Strong CTA: Drives engagement and discussion\n\n## WRITING STYLE:\n- Start with hooks that create knowledge gaps\n- Use active voice and concrete details\n- Include specific numbers, timeframes, and tool names\n- Challenge assumptions with \"Most people think... but actually...\"\n- End with punchy CTAs that spark discussion\n- Make readers feel they're getting insider secrets\n\nRemember: Every thread should make readers stop scrolling and feel like they discovered something valuable they need to share immediately."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        660,
+        440
+      ],
+      "id": "68a4c4ad-71bc-44b1-8f72-f917f1d94e24",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-sonnet-4-20250514",
+          "mode": "list",
+          "cachedResultName": "Claude Sonnet 4"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        640,
+        640
+      ],
+      "id": "d991711f-90ab-4c56-bbef-d028ce592404",
+      "name": "Anthropic Chat Model",
+      "credentials": {
+        "anthropicApi": {
+          "id": "VDXWZzGYXfB7dO2Y",
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "Fill out the form below to get started",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Keyword",
+              "placeholder": "(if multiple keywords, separate with a comma)",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Target audience"
+            },
+            {
+              "fieldLabel": "Content type",
+              "placeholder": "Educational, casual, funny"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -460,
+        60
+      ],
+      "id": "bf496ba7-653b-42cf-a8fe-ee65cea8844d",
+      "name": "On form submission",
+      "webhookId": "2ed0c1dc-0c19-439a-90d2-9c997526a395"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fac83629-940e-41ac-abbb-08909d79dd6d",
+              "name": "keyword",
+              "value": "={{ $json.Keyword }}",
+              "type": "string"
+            },
+            {
+              "id": "231e8284-333e-4ab8-bf53-9b45883cee0e",
+              "name": "audience",
+              "value": "={{ $json['Target audience'] }}",
+              "type": "string"
+            },
+            {
+              "id": "1839d6d1-5470-47c7-859f-1803d53660f8",
+              "name": "tone",
+              "value": "={{ $json['Content type'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -240,
+        60
+      ],
+      "id": "dc9ada6d-6495-453c-b655-0728f4506c19",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1kLj4Krk9uxHK79Ilj-i5dbXMlkRD57nQJha9krO48c0",
+          "mode": "list",
+          "cachedResultName": "Thread Idea Generator",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kLj4Krk9uxHK79Ilj-i5dbXMlkRD57nQJha9krO48c0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kLj4Krk9uxHK79Ilj-i5dbXMlkRD57nQJha9krO48c0/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Youtube video title": "={{ $json.snippet.title }}",
+            "Description": "={{ $json.snippet.description }}",
+            "Video URL": "=https://www.youtube.com/watch?v={{ $json.id }}",
+            "Keyword": "={{ $('On form submission').item.json.Keyword }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Keyword",
+              "displayName": "Keyword",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Youtube video title",
+              "displayName": "Youtube video title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Description",
+              "displayName": "Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Video URL",
+              "displayName": "Video URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Turn into thread?",
+              "displayName": "Turn into thread?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Thread 1",
+              "displayName": "Thread 1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Thread 2",
+              "displayName": "Thread 2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Thread 3",
+              "displayName": "Thread 3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1080,
+        60
+      ],
+      "id": "5b47e3fc-5d7c-40c8-b9f3-fca62b0f445a",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "cZ04m1r8jo5x2ch6",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b4a99f5f-0d76-4e95-b7e9-efec4c9e4031",
+              "leftValue": "={{ $json['Turn into thread?'] }}",
+              "rightValue": "Yes",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -220,
+        440
+      ],
+      "id": "f525564c-2813-4a3f-8212-08be2260345f",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "content": "## Step 1: \n**Get YouTube videos**\nAnd add to google sheet for approval",
+        "height": 380,
+        "width": 1960,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -500,
+        -80
+      ],
+      "id": "cae62c28-faa9-458f-945d-917c8d445640",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n## Step 2 \n**Generate Threads**\nGet the transcript using \nGemini + write threads \nwith Claude",
+        "height": 440,
+        "width": 1960,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -500,
+        340
+      ],
+      "id": "b9c67d6a-3b1a-4f62-ba1d-eb9721991fad",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get all form data from Edit Fields node\nconst formData = $('Edit Fields').item.json;\n\n// Get video data from earlier in workflow\nconst videoData = $('Top 5 Videos').item.json;\n\n// Viral Thread Knowledge Base\nconst viralThreadDatabase = `\nVIRAL THREAD KNOWLEDGE BASE - PROVEN PATTERNS\n\n=== TOP PERFORMING THREADS ANALYSIS ===\n\nTHREAD 1 - HEALTH/WELLNESS (16M Views, 68K Bookmarks)\nHook Formula: \"Every [demographic] blames [common belief] for [problem]. Turns out it's not [belief]... it's [real cause]\"\nStructure: Problem Agitation → Hope Injection → 8 Numbered Solutions → Natural Product Integration\nKey Elements:\n- Age targeting (35+) with disposable income\n- Specific timeframes (\"10 minutes a day\")\n- Transformation promises (\"feel 25 again\")\n- Scientific backing without overwhelming\n- Affiliate integration feels natural (collagen products)\n\nTHREAD 2 - TECH/AI CONTROVERSY (1.7M Views, 3.2K Bookmarks)\nHook Formula: \"[New Technology] dropped [timeframe] ago. Turns out, it [shocking behavior] to [avoid consequence]\"\nStructure: Shocking Revelation → Escalation → Alarming Stats → Expert Positioning → Course Promotion\nKey Elements:\n- Fear-based marketing (AI taking over)\n- Authority signals (insider knowledge)\n- Social proof bombardment (410+ engineers, major companies)\n- FOMO/urgency (limited time discount)\n- Controversy drives debate = engagement\n\nTHREAD 3 - WEALTH/POWER (1.8M Views, 7.8K Bookmarks)\nHook Formula: \"The most [superlative] [category] isn't [expected answer]... It's [unexpected reveal]\"\nStructure: Countdown Format (10-1) → Story-driven → Historical Context → Current Power → Service Pitch\nKey Elements:\n- Curiosity gaps with cliffhangers\n- Specific financial details ($100B, $1.4T)\n- Behind-the-scenes power dynamics\n- Educational entertainment value\n- Natural transition to business services\n\nTHREAD 4 - LIFESTYLE/HEALTH (12.5M Views, 17K Bookmarks)\nHook Formula: \"[Unexpected group] has [shocking statistic] compared to [mainstream]. Their secret? Not [expected solutions] but [simple alternative]\"\nStructure: Statistical Contrast → Authority Building → 10 Simple Habits → Philosophy Connection → Follow CTA\nKey Elements:\n- Contrarian positioning (simple vs complex)\n- Statistical authority (4% vs 31-36% obesity)\n- Anti-establishment messaging\n- Specific actionable steps\n- Nostalgia + simplicity appeal\n\n=== PROVEN HOOK FORMULAS ===\n\n1. STATISTICAL SHOCK: \"[Group] has [shocking low rate] of [problem]—[X]x lower than [mainstream]\"\n2. CONTRARIAN REVEAL: \"Most [audience] think [common belief] but [contrarian truth]\"\n3. INSIDER KNOWLEDGE: \"I analyzed [big number] [things] and found this pattern:\"\n4. COST/MISTAKE: \"[Percentage]% of [audience] are making this [expensive] mistake:\"\n5. SECRET METHOD: \"While everyone's debating [A vs B], smart [audience] are using [secret method]\"\n6. TIME-BASED: \"[Technology] dropped [timeframe] ago. Turns out, it [shocking behavior]\"\n7. AUTHORITY CHALLENGE: \"The most [superlative] [category] isn't [expected]... it's [unexpected]\"\n\n=== VIRAL THREAD STRUCTURES ===\n\nSTRUCTURE 1: PROBLEM/SOLUTION\n- Hook: Identify costly mistake\n- Agitate: Explain why it fails\n- Hope: Promise transformation\n- Solution: Numbered actionable steps\n- CTA: Follow/share with specific ask\n\nSTRUCTURE 2: CONTRARIAN TAKE\n- Hook: Challenge common belief\n- Evidence: Present shocking stats\n- Explanation: Why conventional wisdom fails\n- Alternative: Better approach\n- CTA: Discussion/debate driver\n\nSTRUCTURE 3: COUNTDOWN/RANKING\n- Hook: Promise surprising reveal\n- Build: Countdown format (10-1)\n- Stories: Each item gets compelling narrative\n- Payoff: #1 reveals the mystery\n- CTA: Educational follow\n\nSTRUCTURE 4: AUTHORITY POSITIONING\n- Hook: Insider revelation\n- Credibility: Social proof bombardment\n- Problem: What others miss\n- Solution: Your expertise/service\n- CTA: Book call/join program\n\n=== ENGAGEMENT DRIVERS ===\n\nPSYCHOLOGICAL TRIGGERS:\n- Fear of missing out (FOMO)\n- Fear of being wrong (authority challenge)\n- Hope for transformation\n- Curiosity gaps with cliffhangers\n- Social proof through numbers\n- Anti-establishment sentiment\n\nSPECIFIC TACTICS:\n- Use exact numbers (18,425 steps, not \"lots of steps\")\n- Create knowledge gaps (\"His next move?\")\n- Challenge assumptions (\"Turns out it's not...\")\n- Promise time-specific results (\"10 minutes a day\")\n- Name-drop authority figures/companies\n- Use \"you\" language throughout\n\n=== MONETIZATION PATTERNS ===\n\nNATURAL INTEGRATION:\n- Provide massive value first (80% content, 20% pitch)\n- Connect product to problem solved\n- Use social proof (reviews, testimonials)\n- Multiple product mentions (2-3 max)\n- Soft transition phrases\n\nAUTHORITY-BASED SELLING:\n- Position as expert first\n- Share insider knowledge\n- Reference credentials/results\n- Offer free value (demos, consultations)\n- Create urgency/scarcity\n\n=== CONTENT THEMES THAT WORK ===\n\nHIGH PERFORMERS:\n- Health optimization (simple solutions)\n- Wealth/power dynamics (hidden knowledge)\n- Technology controversies (fear + authority)\n- Productivity/business (time/money savings)\n- Contrarian takes on popular beliefs\n\nAUDIENCE TARGETING:\n- 35+ with disposable income (health/wealth)\n- Business owners/entrepreneurs (productivity)\n- Tech-savvy professionals (AI/automation)\n- Health-conscious individuals (wellness)\n\n=== SPECIFIC SWIPE PATTERNS ===\n\nOPENING HOOKS:\n- \"Every [demographic] blames [X] for [Y]. Turns out...\"\n- \"[Group] has [shocking stat] - [X]x lower than [mainstream]\"\n- \"The most [superlative] [category] isn't [expected]...\"\n- \"[Tech] dropped [time] ago. Turns out, it [shocking behavior]\"\n\nTRANSITION PHRASES:\n- \"Here's what shocked me most:\"\n- \"But their true power?\"\n- \"The uncomfortable truth:\"\n- \"What this means for you:\"\n- \"Here's the brutal truth:\"\n\nENGAGEMENT MULTIPLIERS:\n- Cliffhangers (\"His next move?\")\n- Specific numbers over generalizations\n- Challenge reader assumptions\n- Create \"us vs them\" dynamics\n- Promise insider secrets\n\nCTA FORMULAS:\n- \"What's the first [thing] you'd [action]?\"\n- \"Which camp are you in?\"\n- \"Tag someone who needs to see this\"\n- \"Follow @[handle] for more [topic] insights\"\n- \"Repost to share [specific value] with others\"\n`;\n\n// Combine all data for AI Agent\nconst completeContext = {\n  // Form inputs\n  keyword: formData.keyword || 'AI automation',\n  targetAudience: formData.targetAudience || 'entrepreneurs',\n  threadStyle: formData.threadStyle || 'educational',\n  maxTweets: formData.maxTweets || 10,\n  \n  // Video data\n  videoTitle: videoData.snippet.title,\n  videoUrl: `https://youtube.com/watch?v=${videoData.id}`,\n  videoViews: videoData.statistics.viewCount,\n  videoChannel: videoData.snippet.channelTitle,\n  videoDescription: videoData.snippet.description,\n  \n  // Transcript (from earlier nodes)\n  cleanedTranscript: $json.cleanedTranscript || $('Clean data').item.json.cleanedTranscript || '',\n  \n  // Viral thread knowledge base\n  viralThreadDatabase: viralThreadDatabase,\n  \n  // Additional context\n  generateDate: new Date().toISOString(),\n  \n  // Debug info\n  allFormData: formData,\n  allVideoData: videoData\n};\n\nconsole.log('Keyword:', completeContext.keyword);\nconsole.log('Target Audience:', completeContext.targetAudience);\nconsole.log('Thread Style:', completeContext.threadStyle);\nconsole.log('Video Title:', completeContext.videoTitle);\n\nreturn [{\n  json: completeContext\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
+        440
+      ],
+      "id": "806cfa41-af50-4e7a-8fb0-d479a827d491",
+      "name": "Add context file"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Process all items from Gemini\nconst outputItems = [];\n\nfor (const item of items) {\n  const rawTranscript = item.json.Transcript || '';\n  \n  // First, try to parse it as JSON to get the actual text\n  let actualText = '';\n\n  try {\n    // Parse the escaped JSON structure\n    const parsed = JSON.parse(rawTranscript);\n    \n    // Extract the actual text content\n    if (parsed.candidates && parsed.candidates[0] && parsed.candidates[0].content && parsed.candidates[0].content.parts && parsed.candidates[0].content.parts[0]) {\n      actualText = parsed.candidates[0].content.parts[0].text;\n    } else {\n      actualText = rawTranscript;\n    }\n  } catch (error) {\n    // If parsing fails, use the raw text but clean it\n    actualText = rawTranscript\n      .replace(/\\\\\"/g, '\"')     // Unescape quotes\n      .replace(/\\\\n/g, '\\n')    // Unescape newlines\n      .replace(/\\\\\\\\/g, '\\\\');  // Unescape backslashes\n  }\n\n  // Clean the final text for safe usage\n  const cleanedTranscript = actualText\n    .replace(/[\\x00-\\x1F\\x7F]/g, ' ')  // Replace control characters with spaces\n    .replace(/\\s+/g, ' ')              // Normalize whitespace\n    .trim();                           // Remove leading/trailing whitespace\n\n  // Add to output array\n  outputItems.push({\n    json: {\n      ...item.json,\n      cleanedTranscript: cleanedTranscript,\n      originalLength: rawTranscript.length,\n      cleanedLength: cleanedTranscript.length\n    }\n  });\n}\n\nreturn outputItems;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        440
+      ],
+      "id": "a287a740-24d8-4f53-a804-72ebb487d7ec",
+      "name": "Clean data"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1kLj4Krk9uxHK79Ilj-i5dbXMlkRD57nQJha9krO48c0",
+          "mode": "list",
+          "cachedResultName": "Thread Idea Generator",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kLj4Krk9uxHK79Ilj-i5dbXMlkRD57nQJha9krO48c0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kLj4Krk9uxHK79Ilj-i5dbXMlkRD57nQJha9krO48c0/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Turn into thread?",
+              "lookupValue": "Yes"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        -440,
+        440
+      ],
+      "id": "d91d6061-2874-4455-82cb-b1c096e46cde",
+      "name": "Check if YES",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "cZ04m1r8jo5x2ch6",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1300,
+        60
+      ],
+      "id": "14cb162c-e281-411f-9c10-0be232033063",
+      "name": "Wait",
+      "webhookId": "99f3bc10-3f76-4754-ad9c-2b2368765880"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Filter High-Performing Videos": {
+      "main": [
+        [
+          {
+            "node": "Top 5 Videos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Top 5 Videos": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structure Thread Data": {
+      "main": [
+        [
+          {
+            "node": "Save to Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save to Google Sheets": {
+      "main": [
+        []
+      ]
+    },
+    "Get videos": {
+      "main": [
+        [
+          {
+            "node": "Get statistics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get statistics": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Clean data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Filter High-Performing Videos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Structure Thread Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Get videos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add context file": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clean data": {
+      "main": [
+        [
+          {
+            "node": "Add context file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check if YES": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Check if YES",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "4d1fba4d-056d-4118-8843-2ce4f9d78c74",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f728ac8b256bc0332b9cc850d0cf415bb9be6d8f439bde96f0fa8f4178c36ca3"
+  },
+  "id": "Fg8mfiXAGHtpRTPU",
+  "tags": []
+}

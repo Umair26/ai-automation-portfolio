@@ -1,0 +1,279 @@
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "messages"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.whatsAppTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "f6732e7b-2297-4b48-8a53-d4cf7508441c",
+      "name": "WhatsApp Trigger",
+      "webhookId": "1df2accf-5783-4eaa-b6a5-d7a1b0779515",
+      "credentials": {
+        "whatsAppTriggerApi": {
+          "id": "IiBJKVslL2ukeYRA",
+          "name": "WhatsApp OAuth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Mensaje:  {{ $json.messages[0].text.body }}",
+        "options": {
+          "systemMessage": "=#Rol\nEres el perfecto y experimentado asistente de la tienda de Ecommerce The High Ground y tienes que ayudar a los usuarios respondiendo sus preguntas, informando del estado de sus pedidos y cancelando sus pedidosç\n\n#Tarea\nDebes responder las preguntas de los usuarios teniendo en cuenta la información que te paso debajo. Debes responder a los usuarios de manera simple en frases cortas.\n\n##Si el usuario te hace una pregunta normal y corriente\nUsa la información proporcionada y respóndele, acabando siempre con una pregunta de \"Hay algo más en lo que pueda ayudarte?\"\n\n##Si el usuario pide revisar el estado de su pedido\nPídele el número de pedido y cuando te lo de, usa la herramienta de AirTable de search para encontrar el pedido e informar de su estado\n\n##Si el usuario quiere cancelar su pedidoP\nídele el número de pedido y cuando te lo de, usa la herramienta de AirTable de search para encontrar el pedido y después usar la herramienta de AirTable de Delete para eliminar el row\n\n#Detalles\n-Recuerda usar frases cortas y simples para conversaciones corrientes\n-Siempre trata de parecer que la mejor opción para el usuario es The High Ground y los productos que tiene cuando respondas preguntas\n-Esta tarea es esencial para el éxito de The High Ground\n\n#Contexto\n🧭 Visión general\nThe High Ground es una tienda online especializada en productos seleccionados del universo Star Wars. Actualmente ofrece una línea exclusiva compuesta por tres artículos populares dirigidos a fans y coleccionistas.\n\n🧾 Catálogo de productos\n1. Póster Star Wars\nDescripción: Póster decorativo con ilustración oficial de Star Wars. Ideal para habitaciones, estudios y zonas de entretenimiento.\n\nDimensiones: Estándar A2 (42 x 59.4 cm)\n\nPrecio: €8,99\n\nImagen:\n(Usar imagen real del archivo si se integra en CMS)\n\n2. Peluche Grogu\nDescripción: Peluche suave de Grogu (también conocido como \"Baby Yoda\"), con acabado premium. Apto para niños y coleccionistas.\n\nTamaño: 25 cm\n\nPrecio: €14,99\n\nImagen:\n\n3. Funko Pop The Mandalorian\nDescripción: Figura coleccionable de la serie Funko Pop representando al Mandaloriano con su armadura característica. Edición especial.\n\nAltura: 9 cm (estándar Funko)\n\nPrecio: €20,00\n\nImagen:\n\n❓ Preguntas Frecuentes (FAQ)\n¿Realizan envíos internacionales?\nSí, realizamos envíos a toda Europa. Los costes de envío se calculan al finalizar la compra.\n\n¿Cuánto tardan los envíos?\nEnvíos dentro de España: 2-4 días laborables. Envíos a la UE: 5-7 días laborables.\n\n¿Puedo devolver un producto?\nSí, tienes 14 días naturales para devolver un producto siempre que esté en su embalaje original y sin usar.\n\n¿Los productos son oficiales?\nSí, todos los productos que vendemos son oficiales y licenciados.\n\n🧾 Política de compras\nMétodos de pago: Tarjeta de crédito, PayPal, Bizum\n\nSeguridad: Certificado SSL, pagos encriptados\n\nAtención al cliente: contacto@thehighground.com / WhatsApp disponible de 9:00 a 18:00\n\n\n#Ejemplos\nEjemplo 1\nUsuario: hola\nAsistente: hola buenas, soy el asistente de la tienda de ecommerce The High Ground ¿en qué te puedo ayudar?\nUsuario: Quiero saber el estado de mi pedido\nAsistente: Claro, ¿podrías decirme entonces tu número de pedido?\nUsuario: Sí, es el 1333\nAsistente: De acuerdo, acabo de comprobar el estado del pedido y ya ha sido enviado, está cerca de llegar a su destino\nUsuario: Perfecto muchas gracias\n\nEjemplo 2\nUsuario: hola\nAsistente: hola buenas, soy el asistente de la tienda de ecommerce The High Ground ¿en qué te puedo ayudar?\nUsuario: ¿Qué productos vendéis?\nAsistente: Pues vendemos tres productos distintos: un póster de Star Wars, un peluche de Grogu y un funko pop de The Mandalorian\nUsuario: ya veo, muchas gracias\n\nEjemplo 3\nUsuario: hola\nAsistente: hola buenas, soy el asistente de la tienda de ecommerce The High Ground ¿en qué te puedo ayudar?\nUsuario: Hola me gustaría cancelar mi pedido\nAsistente: Claro, ¿podrías darme por favor tu número de pedido?\nUsuario: Sí, es el 4356\nAsistente: Perfecto, tu pedido ha sido cancelado, si necesitas algo más, no dudes en hacérmelo saber\n\n\nREcuerda que la columna con el número de pedido dentro de AirTable se llama \"Número pedido\"\n\nSi el usuario quiere cancelar su pedido recuerda usar la función de delete record de AirTable"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "9cf8ab13-cb7d-49c3-910e-67f3027f8c70",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "690413874163123",
+        "recipientPhoneNumber": "={{ $('WhatsApp Trigger').item.json.contacts[0].wa_id }}",
+        "textBody": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        560,
+        0
+      ],
+      "id": "750948da-15d2-4fc0-b93e-ee906bcb0e3e",
+      "name": "Send message",
+      "webhookId": "ce353c19-b4fa-4bc6-beba-cd9834df06f7",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "iOxGiaFbAk8QCPCM",
+          "name": "WhatsApp account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        80,
+        208
+      ],
+      "id": "be317e38-a427-4bd8-b20a-602fb7cb037b",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "K79BL5wb8L0sr2TN",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "deleteRecord",
+        "base": {
+          "__rl": true,
+          "value": "apptuaaJxfs4URcnc",
+          "mode": "list",
+          "cachedResultName": "Ecommerce",
+          "cachedResultUrl": "https://airtable.com/apptuaaJxfs4URcnc"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblliVFjmuzjY5PoS",
+          "mode": "list",
+          "cachedResultName": "Table 2",
+          "cachedResultUrl": "https://airtable.com/apptuaaJxfs4URcnc/tblliVFjmuzjY5PoS"
+        },
+        "id": "={{ $fromAI('Record_ID', ``, 'string') }}"
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        464,
+        208
+      ],
+      "id": "f616d395-5904-4a4e-ad95-e1a5859c555d",
+      "name": "Delete a record in Airtable",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "JmaMC3gsSsgEI3Me",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "apptuaaJxfs4URcnc",
+          "mode": "list",
+          "cachedResultName": "Ecommerce",
+          "cachedResultUrl": "https://airtable.com/apptuaaJxfs4URcnc"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblliVFjmuzjY5PoS",
+          "mode": "list",
+          "cachedResultName": "Table 2",
+          "cachedResultUrl": "https://airtable.com/apptuaaJxfs4URcnc/tblliVFjmuzjY5PoS"
+        },
+        "filterByFormula": "={{ $fromAI('Filter_By_Formula', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        208,
+        240
+      ],
+      "id": "c767084e-c19c-4f19-aa3c-63fb9dfa2c22",
+      "name": "Search records in Airtable",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "JmaMC3gsSsgEI3Me",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        640,
+        192
+      ],
+      "id": "d9fc4725-ca00-4f6f-827f-66d9ec55cc08",
+      "name": "Think"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.messages[0].text.body }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        320,
+        304
+      ],
+      "id": "87b5fd2b-e47b-4f7e-9dbc-4ee42913e82f",
+      "name": "Simple Memory"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "WhatsApp Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete a record in Airtable": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search records in Airtable": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d3a8acca-2ffe-4fe0-a615-191313893d57",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2564dcc948226f64907817c55750c4e2bcada9860e381b3f9e93a30fe1c48f26"
+  },
+  "id": "TFw5zX1NMEikqlsf",
+  "tags": []
+}
