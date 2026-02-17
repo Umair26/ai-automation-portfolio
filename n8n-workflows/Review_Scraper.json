@@ -1,0 +1,445 @@
+{
+  "name": "Review Scraper",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apify.com/v2/acts/casper11515~trustpilot-reviews-scraper/runs?token=apify_api_brfZUpCtbV4egR8xmV2CsJIfeQISgO1C2ohR",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "companyWebsite",
+              "value": "={{ $json.URL }}"
+            },
+            {
+              "name": "filterByStarRating",
+              "value": "1,2"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "729d41a1-2f40-4370-af67-823d3daf29d1",
+      "name": "Scrape Trustpilot",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Read these customer reviews and tell me what problems the customers had. Use the customers' own words and direct quotes from their reviews. Write your response in normal sentences, not JSON format.\n\nReviews to analyze:\n{{ $json['1-2 Star Reviews'] }}\n\nExplain each customer's main complaint using their exact words and phrases. Quote directly from what they wrote. Write it like you're telling a friend what the customers actually said went wrong.\n\nIMPORTANT: Do NOT format as JSON. Use the customers' actual words and quotes in normal sentences and paragraphs only.",
+        "options": {
+          "systemMessage": "You are a customer feedback analyst. Read customer reviews and explain what went wrong using the customer's own words and quotes. Do not use JSON format. Write in natural language paragraphs using direct quotes from the reviews."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        1580,
+        0
+      ],
+      "id": "997e50b2-0947-44f6-86c4-0868069c8b3e",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1560,
+        220
+      ],
+      "id": "7996e42f-f062-4810-8d5b-48db08959a22",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "wLEE6fG6sE3GDheh",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "16UJNZ4XpDuruEZw7Py8uAMvpFm6KnQ83vhob2Yh4bsY",
+          "mode": "list",
+          "cachedResultName": "n8n Review Scraper",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/16UJNZ4XpDuruEZw7Py8uAMvpFm6KnQ83vhob2Yh4bsY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/16UJNZ4XpDuruEZw7Py8uAMvpFm6KnQ83vhob2Yh4bsY/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Business ": "=",
+            "Complaints": "={{ $json.output }}",
+            "1-2 Star Reviews": "={{ $('Google Sheets1').item.json['1-2 Star Reviews'] }}"
+          },
+          "matchingColumns": [
+            "1-2 Star Reviews"
+          ],
+          "schema": [
+            {
+              "id": "Business ",
+              "displayName": "Business ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "1-2 Star Reviews",
+              "displayName": "1-2 Star Reviews",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Complaints",
+              "displayName": "Complaints",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1960,
+        0
+      ],
+      "id": "f7b91e03-e9fe-4808-9604-04a6607d59dd",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "cZ04m1r8jo5x2ch6",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "16UJNZ4XpDuruEZw7Py8uAMvpFm6KnQ83vhob2Yh4bsY",
+          "mode": "list",
+          "cachedResultName": "n8n Review Scraper",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/16UJNZ4XpDuruEZw7Py8uAMvpFm6KnQ83vhob2Yh4bsY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/16UJNZ4XpDuruEZw7Py8uAMvpFm6KnQ83vhob2Yh4bsY/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Business ": "={{ $json.companyName }}",
+            "1-2 Star Reviews": "={{ $json.reviewDescription }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Business ",
+              "displayName": "Business ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "1-2 Star Reviews",
+              "displayName": "1-2 Star Reviews",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Complaints",
+              "displayName": "Complaints",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1320,
+        0
+      ],
+      "id": "20173a21-a798-4d4f-a547-4a469df681a1",
+      "name": "Google Sheets1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "cZ04m1r8jo5x2ch6",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "Enter trustpilot URL",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "URL",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "e273b451-1211-4190-bcca-c89fbc923cd3",
+      "name": "On form submission",
+      "webhookId": "665748cb-679a-4ade-b11f-dee6fa347dcd"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Wait for Apify actor to complete\nconst runId = items[0].json.data.id;\nconst actorId = items[0].json.data.actId;\n\n// Wait logic - you might need to add a loop here\n// For now, let's just pass the runId forward\nreturn [{\n  json: {\n    runId: runId,\n    actorId: actorId,\n    datasetId: items[0].json.data.defaultDatasetId\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        600,
+        0
+      ],
+      "id": "2bb84d64-746c-4e37-8909-f6e30dd91ba2",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "url": "https://api.apify.com/v2/acts/casper11515~trustpilot-reviews-scraper/runs/last/dataset/items?token=apify_api_brfZUpCtbV4egR8xmV2CsJIfeQISgO1C2ohR",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "af99bb99-fa87-467c-9fa1-c34513f8a13a",
+      "name": "Scrape Trustpilot - get results",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        860,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        380,
+        0
+      ],
+      "id": "5fed4dfa-6bf8-46ac-a825-c518978802aa",
+      "name": "Wait",
+      "webhookId": "6801ec76-416e-4c19-8963-5fa5f083be75"
+    }
+  ],
+  "pinData": {
+    "On form submission": [
+      {
+        "json": {
+          "URL": "https://www.trustpilot.com/review/altitude-internet.co.uk",
+          "submittedAt": "2025-07-05T04:19:59.901+01:00",
+          "formMode": "test"
+        }
+      }
+    ],
+    "Google Sheets1": [
+      {
+        "json": {
+          "Business ": "Altitude Internet Digital Marketing",
+          "1-2 Star Reviews": "I approached Altitude Internet for SEO work on a select few keywords, which are reported by AHREFS to be low in difficulty.\n\nInitial sales call very friendly, somewhat knowledgeable and understood my objectives and confirmed that they were able to achieve my goals.\n\nAfter signing up I was bombarded with requests to leave a 5-star review on here, which I refused to do as I find it disingenuous to write a positive review about a service I had not yet received. I looked through the reviews to find many of them making similar comments, such as \"friendly service, but early days yet\". Oddly, lots of those reviews now seem to have disappeared. It seems that there is a heavily managed effort to remove any negative reviews. If this one is removed, I will actively seek out as many review sites as possible to re-post my honest review.\n\n2 months on, Altitude sent me several near-identical \"reports\" with vague phrases such as \"your average google rankings have increased month on month with more terms starting to rank\". In actual fact, rankings on lots of random keywords go up and down throughout the weeks and have little to no bearing on organic traffic, and are not the keywords I had requested.\n\nFor the duration, there were meant to be three high-quality articles. Instead, two poorly written blog posts of 312 and 428 words, respectively. One of them targets a keyword targeted by another page on my site, not only causing direct inter-page competition, but risks duplicate content against Google's guidelines.\n\nAltitude claim to have \"fixed meta titles and keywords\" and other unspecified ‘errors’, which is plainly false, as the date stamps on all other posts/pages pre-dates their involvement so they could not and have not modified any other pages.\n\nAltitude agreed to acquire \"at least 80\" good quality backlinks, in accordance with Google guidelines, per month but achieved none. I asked for a list of links added and was sent a list of links that primarily consisted of my own domains pointing at the site for the Terms & Conditions page.\n\nOverall, I seriously question the integrity of this service and I am very disappointed. I am pursuing a full refund, legally, if necessary.\n\nREPLY:\n\nI do not dispute that SEO takes time. I am disputing the work you have claimed to do.\n\nYou have claimed to edit pages, titles, meta data and 'fix errors'. Date stamps prove that you have not done so.\n\nYour reply is yet more lies. By your own admission in each 'report', you did not add any links:\n\nReport received 1st August:\n\n\"In terms of links - we have not added any just yet - this is perfectly normal at this early stage. \"\n\nReport received 4th September:\n\"In terms of links - we have not added any just yet - this is perfectly normal at this early stage. \"\n\nUPDATE:\nFull refund applied promptly and dialogue remains open."
+        }
+      },
+      {
+        "json": {
+          "Business ": "Altitude Internet Digital Marketing",
+          "1-2 Star Reviews": "Nice people but a complete bodge from start to finish. They didn't start work on my project until i chased them two weeks later (when i've being paying for the service) they then worked on the wrong campaigns. What ever they did had a negative effect. Also discovered adverts created for the wrong services. I could go on. I wouldn't recommend these guys. They keep giving you the 'google partner' rubbish as a selling factor, don't be fooled, they are as disappointing as the rest. Do it yourself."
+        }
+      },
+      {
+        "json": {
+          "Business ": "Altitude Internet Digital Marketing",
+          "1-2 Star Reviews": "We decided to try altitude for advertising after having poor service from another provider.\nAfter signing up with a £300 fee we were guaranteed that we would have more calls for our business and they were sure that we would continue advertising with them.\nWe never received any calls through advertising with altitude and after 2 weeks they took another £300 from our bank account, we continued to contact our account manager advising that we had not had any calls through there advertisement and we would not be continuing our contract.\nWe spent £600 with altitude in 8 weeks and never received one telephone call through advertising.\nOur account manager never contacted us to discuss anything with us.\nVery poor service"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Scrape Trustpilot": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Scrape Trustpilot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Scrape Trustpilot - get results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scrape Trustpilot - get results": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c3ba804a-a61f-4f6e-a8a8-da263bbb2297",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f728ac8b256bc0332b9cc850d0cf415bb9be6d8f439bde96f0fa8f4178c36ca3"
+  },
+  "id": "cvScDjNnKZSPi1fv",
+  "tags": []
+}

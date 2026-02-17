@@ -1,0 +1,678 @@
+{
+  "name": "Reddit Scraper + Content Ideator",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "// Get the form submission data\nconst formData = $input.first().json;\n\n// Extract keywords and subreddits from form (handle both cases)\nconst rawKeywords = formData.keywords || formData.Keywords || formData.keyword || \"\";\nconst rawSubreddits = formData.subreddits || formData.Subreddits || formData.subreddit || \"\";\n\n// Clean and split the inputs\nconst keywords = rawKeywords\n  .split(',')\n  .map(k => k.trim())\n  .filter(k => k.length > 0);\n\nconst subreddits = rawSubreddits\n  .split(',')\n  .map(s => s.trim())\n  .filter(s => s.length > 0);\n\n// Return parsed data\nreturn [{\n  json: {\n    keywords: keywords,\n    subreddits: subreddits,\n    keywords_string: keywords.join(','),\n    subreddits_string: subreddits.join(','),\n    total_keywords: keywords.length,\n    total_subreddits: subreddits.length\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1200,
+        100
+      ],
+      "id": "77a6b764-e27f-4144-9a98-0e87f8085ed6",
+      "name": "Prepare Search URLs"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "10JK4rkTPr6JOb-xqjM57mtlEvsDPpQp4iTyz7CLDVfw",
+          "mode": "list",
+          "cachedResultName": "Reddit Scraper",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10JK4rkTPr6JOb-xqjM57mtlEvsDPpQp4iTyz7CLDVfw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10JK4rkTPr6JOb-xqjM57mtlEvsDPpQp4iTyz7CLDVfw/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "timestamp": "={{ new Date().toISOString() }}",
+            "keywords_used": "={{ $json.keywords_used }}",
+            "subreddits_used": "={{ $('Parse & Aggregate Posts (de-dup)').item.json.subreddits_used }}",
+            "post_title": "={{ $json.title }}",
+            "post_content": "={{ $json.content }}",
+            "score": "={{ $json.score }}",
+            "comments": "={{ $json.comments }}",
+            "engagement": "={{ $json.engagement }}",
+            "url": "={{ $json.url }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "keywords_used",
+              "displayName": "keywords_used",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "subreddits_used",
+              "displayName": "subreddits_used",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "post_title",
+              "displayName": "post_title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "post_content",
+              "displayName": "post_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "score",
+              "displayName": "score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "comments",
+              "displayName": "comments",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "engagement",
+              "displayName": "engagement",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.4,
+      "position": [
+        120,
+        100
+      ],
+      "id": "b0c53aa1-2596-43aa-8496-14b1883e8780",
+      "name": "Save to Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "cZ04m1r8jo5x2ch6",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "subreddit": "={{ $json.subreddit }}",
+        "keyword": "={{ $json.query }}",
+        "limit": 25,
+        "additionalFields": {
+          "sort": "top"
+        }
+      },
+      "type": "n8n-nodes-base.reddit",
+      "typeVersion": 1,
+      "position": [
+        -760,
+        100
+      ],
+      "id": "71283cf4-2f27-4e1e-98fb-b36bbb9a6326",
+      "name": "Reddit",
+      "credentials": {
+        "redditOAuth2Api": {
+          "id": "3uk86JR3lyS9jxH1",
+          "name": "Reddit account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "Reddit Seach",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Keywords",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Subreddits",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -1420,
+        100
+      ],
+      "id": "04a608b2-9c80-4469-98e8-95e894833dac",
+      "name": "On form submission",
+      "webhookId": "cdc8f52b-fb5e-4199-862b-26ae73004949"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the parsed data from previous node\nconst parsedData = $input.first().json;\n\n// Handle both string and array formats\nlet keywords = parsedData.keywords;\nlet subreddits = parsedData.subreddits;\n\n// Convert to arrays if they're strings\nif (typeof keywords === 'string') {\n  keywords = [keywords];\n}\nif (typeof subreddits === 'string') {\n  subreddits = [subreddits];\n}\n\n// Debug logging\nconsole.log('Keywords:', keywords);\nconsole.log('Subreddits:', subreddits);\nconsole.log('Keywords type:', typeof keywords);\nconsole.log('Subreddits type:', typeof subreddits);\n\n// Create search configurations for each subreddit/keyword combination\nconst searchConfigs = [];\n\nsubreddits.forEach(subreddit => {\n  keywords.forEach(keyword => {\n    searchConfigs.push({\n      subreddit: subreddit,\n      keyword: keyword,\n      query: keyword,\n      timeframe: \"week\",\n      limit: 25\n    });\n  });\n});\n\nconsole.log('Search configs created:', searchConfigs.length);\n\n// Return each search config as separate items for processing\nreturn searchConfigs.map(config => ({ json: config }));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -980,
+        100
+      ],
+      "id": "e9e40dc2-4c4c-4c3b-b7b8-18c4562beea4",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get all Reddit posts from all searches\nconst allInputs = $input.all();\nconst allPosts = [];\nconst seenIds = new Set();\n\n// Process each search result\nallInputs.forEach(item => {\n  const posts = item.json;\n  const postsArray = Array.isArray(posts) ? posts : [posts];\n  \n  postsArray.forEach(post => {\n    const fullContent = post.selftext || '';\n    \n    if (post.id && \n        !seenIds.has(post.id) &&\n        post.score >= 50 &&\n        post.title &&\n        post.title !== '[deleted]' &&\n        post.title !== '[removed]') {\n      \n      seenIds.add(post.id);\n      \n      allPosts.push({\n        id: post.id,\n        title: post.title,\n        content: fullContent,\n        score: post.score,\n        comments: post.num_comments || 0,\n        subreddit: post.subreddit,\n        url: post.url,\n        permalink: post.permalink,\n        author: post.author,\n        engagement: post.score + ((post.num_comments || 0) * 2),\n        created_utc: post.created_utc\n      });\n    }\n  });\n});\n\n// Sort by engagement and take TOP 5 only\nallPosts.sort((a, b) => b.engagement - a.engagement);\nconst top5Posts = allPosts.slice(0, 5);\n\n// Get original search data\nconst firstNode = $('Prepare Search URLs').first().json;\n\n// Return summary data for the IF check, plus individual posts\nreturn [{\n  json: {\n    // Summary data for IF node\n    total_found: allPosts.length,\n    analyzed_count: top5Posts.length,\n    keywords_used: firstNode.keywords_string,\n    subreddits_used: firstNode.subreddits_string,\n    \n    // Top 5 posts for individual processing\n    top_posts: top5Posts,\n    \n    // Flag to indicate we have good data\n    has_quality_posts: top5Posts.length >= 3\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -540,
+        100
+      ],
+      "id": "37ebc320-96d5-4b01-b4ca-78d4e33c8f3e",
+      "name": "Parse & Aggregate Posts (de-dup)"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Analyze this Reddit post for content creation opportunities:\n\n**Post Rank:** #{{ $('Split for analysis').item.json.post_rank }}\n**Title:** {{ $json.post_title }}\n**Content:** {{ $json.post_content }}\n**Subreddit:** r/{{ $json.subreddits_used }}\n**Score:** {{ $json.score }} ({{ $json.comments }}\n**Keywords:** {{ $json.keywords_used }}\n\nIdentify the specific pain point and return analysis in this JSON format:\n{\n  \"pain_point\": \"specific problem mentioned in this post\",\n  \"audience_insight\": \"what this reveals about the audience\",\n  \"content_opportunity\": \"how content could solve this specific problem - give me one very specific solution\",\n  \"urgency_level\": \"high/medium/low\",\n  \"target_demographic\": \"who specifically has this problem\"\n}"
+            },
+            {
+              "content": "=You are an expert content strategist. Analyze this single Reddit post to identify the specific pain point mentioned and return structured JSON data.",
+              "role": "system"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        340,
+        100
+      ],
+      "id": "bb056346-adb2-4515-a962-63b80d0bd624",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "wLEE6fG6sE3GDheh",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "71e62882-def0-4a02-89e6-62b40481e789",
+              "leftValue": "={{ $json.analyzed_count }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -320,
+        60
+      ],
+      "id": "327a195a-7896-49ca-9557-e9007967f608",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the top posts from the previous node\nconst inputData = $input.first().json;\nconst topPosts = inputData.top_posts || [];\n\n// Return each post as a separate item for individual processing\nreturn topPosts.map((post, index) => ({\n  json: {\n    // Individual post data\n    ...post,\n    post_rank: index + 1,\n    \n    // Keep summary data for reference\n    keywords_used: inputData.keywords_used,\n    subreddits_used: inputData.subreddits_used,\n    total_posts_found: inputData.total_found,\n    \n    // Analysis context\n    analysis_timestamp: new Date().toISOString()\n  }\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -100,
+        100
+      ],
+      "id": "9652109b-b85e-4754-80b0-4334008641c1",
+      "name": "Split for analysis"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "10JK4rkTPr6JOb-xqjM57mtlEvsDPpQp4iTyz7CLDVfw",
+          "mode": "list",
+          "cachedResultName": "Reddit Scraper",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10JK4rkTPr6JOb-xqjM57mtlEvsDPpQp4iTyz7CLDVfw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10JK4rkTPr6JOb-xqjM57mtlEvsDPpQp4iTyz7CLDVfw/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "post_title": "={{ $('Save to Google Sheets').item.json.post_title }}",
+            "Pain point": "={{ $json['Pain points'] }}",
+            "Audience insight": "={{ $json['Audience Insights'] }}",
+            "Content opportunity ": "={{ $json['Content Opportunity'] }}",
+            "Urgency": "={{ $json.Urgency }}",
+            "Target demographic": "={{ $json['Target Demographic'] }}"
+          },
+          "matchingColumns": [
+            "post_title"
+          ],
+          "schema": [
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "keywords_used",
+              "displayName": "keywords_used",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "subreddits_used",
+              "displayName": "subreddits_used",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "post_title",
+              "displayName": "post_title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "post_content",
+              "displayName": "post_content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "score",
+              "displayName": "score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "comments",
+              "displayName": "comments",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "engagement",
+              "displayName": "engagement",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Pain point",
+              "displayName": "Pain point",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Audience insight",
+              "displayName": "Audience insight",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Content opportunity ",
+              "displayName": "Content opportunity ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Urgency",
+              "displayName": "Urgency",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Target demographic",
+              "displayName": "Target demographic",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        840,
+        100
+      ],
+      "id": "db478c86-416e-4d27-b3bc-d0a3fcae7d54",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "cZ04m1r8jo5x2ch6",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a487fdff-dca6-4427-96c1-2307cd0c5b95",
+              "name": "Pain points",
+              "value": "={{ $json.message.content.pain_point }}",
+              "type": "string"
+            },
+            {
+              "id": "17b2aa2b-f7ff-493c-b054-1d844f02ef57",
+              "name": "Audience Insights",
+              "value": "={{ $json.message.content.audience_insight }}",
+              "type": "string"
+            },
+            {
+              "id": "55f01936-22ef-4f3e-84f4-2697d2926c06",
+              "name": "Content Opportunity",
+              "value": "={{ $json.message.content.content_opportunity }}",
+              "type": "string"
+            },
+            {
+              "id": "c7ef66b7-0e81-4e9b-b7d9-f812a92245db",
+              "name": "Urgency",
+              "value": "={{ $json.message.content.urgency_level }}",
+              "type": "string"
+            },
+            {
+              "id": "f4616cd6-e34a-4465-bd7d-7acab10a00f5",
+              "name": "Target Demographic",
+              "value": "={{ $json.message.content.target_demographic }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        660,
+        100
+      ],
+      "id": "66062df3-6fff-4bc4-b072-ed34ff97732d",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Prepare Search URLs": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save to Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Prepare Search URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Reddit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reddit": {
+      "main": [
+        [
+          {
+            "node": "Parse & Aggregate Posts (de-dup)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse & Aggregate Posts (de-dup)": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Split for analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split for analysis": {
+      "main": [
+        [
+          {
+            "node": "Save to Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "0c9f45eb-c727-4ac1-9fcb-3b286c2d48f8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f728ac8b256bc0332b9cc850d0cf415bb9be6d8f439bde96f0fa8f4178c36ca3"
+  },
+  "id": "3DTVwzk3LSvZeinV",
+  "tags": []
+}
