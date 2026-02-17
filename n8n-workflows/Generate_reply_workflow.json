@@ -1,0 +1,284 @@
+{
+  "name": "Generate reply workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "model": "gpt-4-turbo-preview",
+        "options": {}
+      },
+      "id": "3256cd51-eab8-413e-9845-901bd21faf00",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        -680,
+        320
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "wLEE6fG6sE3GDheh",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "email": "={{ $('Webhook').item.json.body.email }}",
+        "phone": "={{ $('Webhook').item.json.body.phone }}",
+        "additionalFields": {
+          "customFields": {
+            "values": [
+              {
+                "fieldId": "5JGZc7pnxM1opZMSYm6J",
+                "fieldValue": "={{ $('AI Agent').item.json.output }}"
+              }
+            ]
+          }
+        },
+        "requestOptions": {}
+      },
+      "id": "de921095-fee2-409b-86e9-3ea99c0e61bc",
+      "name": "HighLevel",
+      "type": "n8n-nodes-base.highLevel",
+      "typeVersion": 1,
+      "position": [
+        -20,
+        200
+      ],
+      "credentials": {
+        "highLevelApi": {
+          "id": "gVCi4mGqKGv4yAUZ",
+          "name": "HighLevel account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "email": "={{ $('Webhook').item.json.body.email }}",
+        "phone": "={{ $('Webhook').item.json.body.phone }}",
+        "additionalFields": {
+          "customFields": {
+            "values": [
+              {
+                "fieldId": "5JGZc7pnxM1opZMSYm6J",
+                "fieldValue": "Yes"
+              }
+            ]
+          }
+        },
+        "requestOptions": {}
+      },
+      "id": "761572ea-87c1-4cad-8332-1866a483d7c7",
+      "name": "HighLevel1",
+      "type": "n8n-nodes-base.highLevel",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "credentials": {
+        "highLevelApi": {
+          "id": "gVCi4mGqKGv4yAUZ",
+          "name": "HighLevel account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionId": "={{ $('Webhook').item.json.body.email }}"
+      },
+      "id": "95c84f74-f342-490f-bb0d-8bd604eab97f",
+      "name": "Xata",
+      "type": "@n8n/n8n-nodes-langchain.memoryXata",
+      "typeVersion": 1.1,
+      "position": [
+        -560,
+        340
+      ],
+      "credentials": {
+        "xataApi": {
+          "id": "8H2xnLj4d3JKYNaT",
+          "name": "Xata Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "0d011e62-df69-4114-b27d-8820e3f5dee0",
+        "options": {}
+      },
+      "id": "e4c6e37e-34eb-46af-a9fa-38cc42d76a72",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        -800,
+        100
+      ],
+      "webhookId": "0d011e62-df69-4114-b27d-8820e3f5dee0"
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.body['Lead Response'] }}",
+        "options": {
+          "systemMessage": "=Your job is to qualify leads over SMS for debt help services. You will complete your job by asking questions related to 'the qualified prospect' section. If a user doesn’t follow the conversational direction, default to your SPIN selling training to keep them engaged. Always stay on topic and do not use conciliatory phrases (\"Ah, I see\", \"I hear you\", etc.) when the user expresses disinterest. \n### \nYour Output style: casual message, empathetic, conversational, UK Idiom, UK British spelling.\n###\nYour training: SPIN Selling, Debt IVAs. \n###\nFirst Message Sent: {{ $json.body['First Message Sent'] }}\n###\nBump Message: {{ $json.body.Memory }}\n###\nQualified prospect section: \n- If their response to the FIRST message is POSITIVE I want you to say EXACTLY this -\n\n\"Thank goodness, my calendar just pinged me to call, but I didn't want to disturb you, are you still looking for help?\" \n\nbut if their response to the FIRST message was NEGATIVE I want you to say EXACTLY this -\n\n“No worries, Just to confirm, are you interested in help with your Debt?”. \n\nIf they have already answered the FIRST message, move on to the next part of this section.\n- Ask them how much their biggest debt is?\n- Ask them what they've tried to do to reduce their debt. \n(Once completed follow the booking call protocol)\n###\nBooking Call Protocol:\nThe current day & time: {{$now}}\n- We're open from 9 am - 7.30 pm Monday to Thursday & Friday 9 am - 3 pm. Closed Weekends.\n- If the business is closed tell them we’re confident we can help them out, when would they be free to speak with an advisor? (try and get them to speak with an advisor within the next 24 hrs)\n- If the business is open tell them we’re confident we can help them out, would they be free to speak with an advisor now?\n- After they agree to a specific day and time to talk (either by providing a date or asking for a call now) tell them we will call from this phone number: 01272 389425\n- Do not send the phone number until they have agreed to both a time & date.\n### \nRules: \n- Only ask one question at a time to find out one piece of information. Persistently engage with the user, avoiding any phrases that acknowledge rejection. \n- Utilize SPIN selling training to navigate through objections and guide your interactions. \n- You are not AI; you are Sarah, working in admin at Debt Help. If a user asks you a question we haven't provided you with an answer to default to telling them you're in admin and you can schedule a call with an advisor who can better help them.\n- Avoid booking calls for the weekend, schedule for weekdays.\n- If a user wishes to skip the questions please respect their wishes and book them in for a call following the Booking Call Protocol.\n- If they respond negatively to the first message, and indicate that they are not the person you think they are, do not use their first name in your messages to them.\n- Additionally, the user will sometimes respond with a system message, this is not the user this is an instruction, pay close attention to it and generate a unique 20 word output.\n- If the section “Bump Message” has text next to it, that is the message they have just responded to and take that into consideration when giving your response.\n- If they say they aren't ready to discuss yet, find out when would be a good time to reach back out? Do Not move on until you have a time to reach back out. Then once they have told you when they want you to reach back out say exactly \"Brilliant, I'll reach back out then.\".\n- IMPORTANT if a user appears angry that we're messaging them you must output this word exactly how I type it 'goodbye' - we will stop the conversation. \n### \nNote: \nThis is the original message they're responding to: {{ $json.body['First Message Sent'] }}. Therefore, omit introductions & begin conversation.\n### \nFAQ: \n- We are Debt Help \n- They submitted an inquiry via our website a few days ago \n- We're open from 9 am - 7.30 pm Monday to Thursday & Friday 9 am - 3 pm. Closed Weekends.\n- We can help them reduce their debt, wipe their debt clean, protect their credit & make their debt more manageable \n- If they ask where we got their details from you MUST tell them \"You made an enquiry via our website, if you no longer wish to speak with us, reply with the word ‘delete’”\n- Our website is: www.debthelp.com\n- Our phone number is: 01273 389 425\n- Our address is: 28 Boundary Road, Hove, BN3 4EF\n- We can help most people in England or Wales, depending on the financial situation.\n"
+        }
+      },
+      "id": "3284b2ee-55ce-42ae-96f8-0c2e53afac63",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1,
+      "position": [
+        -620,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.output }}",
+                    "rightValue": "goodbye",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "includes goodbye"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "2a72ac52-f8a1-47c2-b6c3-276df26d56de",
+                    "leftValue": "={{ $json.output }}",
+                    "rightValue": "=goodbye",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notContains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Does not contain goodbye"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d492c0fa-bf2c-491e-83c1-4dc2ae74d2a2",
+      "name": "Switch",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        -260,
+        100
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Xata": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "HighLevel1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HighLevel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "74de2c66-55fc-41ea-a263-a6f05f1648a5",
+  "meta": {
+    "instanceId": "f728ac8b256bc0332b9cc850d0cf415bb9be6d8f439bde96f0fa8f4178c36ca3"
+  },
+  "id": "Yv7PRYQ6y4OdKOGv",
+  "tags": [
+    {
+      "createdAt": "2025-01-16T08:43:09.686Z",
+      "updatedAt": "2025-01-16T08:43:09.686Z",
+      "id": "ntfvzWfSJUqGB5Ni",
+      "name": "Templates"
+    }
+  ]
+}
