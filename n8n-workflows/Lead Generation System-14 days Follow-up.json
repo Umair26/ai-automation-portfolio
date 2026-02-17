@@ -1,0 +1,4101 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "com.twilio.messaging.inbound-message.received"
+        ]
+      },
+      "type": "n8n-nodes-base.twilioTrigger",
+      "typeVersion": 1,
+      "position": [
+        4980,
+        -1620
+      ],
+      "id": "e6289d5a-74af-42e3-99a5-7a477e76e436",
+      "name": "Twilio Trigger",
+      "webhookId": "4b52a2f3-a2e6-425d-b3b6-ac14dee6602b",
+      "credentials": {
+        "twilioApi": {
+          "id": "Qk0E3V4zRsMfIClS",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b57d1fc6-678d-4fa3-8d40-b3aca9accc3d",
+              "name": "Phone",
+              "value": "={{ $('Twilio Trigger').item.json.data.from.replace('whatsapp:', '').trim() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        5200,
+        -1620
+      ],
+      "id": "bc843df5-cf7c-4683-977a-9fb8aedfff30",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "operation": "search",
+        "filterGroupsUi": {
+          "filterGroupsValues": [
+            {
+              "filtersUi": {
+                "filterValues": [
+                  {
+                    "propertyName": "phone|string",
+                    "value": "={{ $json.Phone }}"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.1,
+      "position": [
+        5420,
+        -1620
+      ],
+      "id": "a566e265-c890-4230-89e0-cae6c520ad78",
+      "name": "Search contacts3",
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "kLcL06pltw3Wdpzi",
+          "name": "HubSpot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "operation": "search",
+        "additionalFields": {
+          "properties": [
+            "firstname",
+            "lastname",
+            "email",
+            "summary",
+            "call_status",
+            "hs_lead_status"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.1,
+      "position": [
+        5100,
+        -1100
+      ],
+      "id": "23067108-ca83-459e-8765-ef78756f5bf6",
+      "name": "Search contacts4",
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "kLcL06pltw3Wdpzi",
+          "name": "HubSpot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "bdd5bb53-73c6-441a-b752-2eea8b3e4735",
+              "leftValue": "={{ $json.properties.call_status }}",
+              "rightValue": "not_called",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        5320,
+        -1100
+      ],
+      "id": "bafd3861-b86f-40d4-a592-49782c746c77",
+      "name": "Filter3"
+    },
+    {
+      "parameters": {
+        "options": {
+          "responseKey": "={{ $json.Email }}{{ $json.Firstname }}{{ $json.Summary }}{{ $json['Lead Status'] }}"
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        5700,
+        -1100
+      ],
+      "id": "15ad995e-fa79-4e09-983f-edbeafeef6e9",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8628e8bf-b46f-4335-b2ea-e3de164ecd2c",
+              "name": "Email",
+              "value": "={{ $json.email }}",
+              "type": "string"
+            },
+            {
+              "id": "03d2c2db-9889-4dc6-ac2a-fcdbc522a448",
+              "name": "Lead Status",
+              "value": "={{ $json.lead_status }}",
+              "type": "string"
+            },
+            {
+              "id": "a15ee7d3-ae91-49bd-a800-b51553813063",
+              "name": "Summary",
+              "value": "={{ $json.summary }}",
+              "type": "string"
+            },
+            {
+              "id": "77d5d7c8-3b53-4f93-9af0-b398fbb278b0",
+              "name": "goals",
+              "value": "={{ $json.goals }}",
+              "type": "string"
+            },
+            {
+              "id": "307f1a34-3bfc-4d54-9fd6-2ad2f6a6da51",
+              "name": "Budget available",
+              "value": "={{ $json.budget_available }}",
+              "type": "string"
+            },
+            {
+              "id": "00adbf6e-e802-4c6e-aa50-c2a065b39c9f",
+              "name": "Revenue level",
+              "value": "={{ $json.revenue_level }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        5360,
+        -920
+      ],
+      "id": "7d34d989-5d8d-4ee7-b6c4-38ac937330dc",
+      "name": "Edit Fields5"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      email: $json[\"query\"][\"email\"].trim(),  // trims leading/trailing whitespace\n      lead_status: $json[\"query\"][\"lead status\"].trim(),\n      summary: $json[\"query\"][\"Summary\"].trim(),\n      goals: $json[\"query\"][\"Goals\"].trim(),\n      revenue_level: $json[\"query\"][\"Revenue Level\"].trim(),\n      budget_available: $json[\"query\"][\"Budget Available\"].trim()\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5120,
+        -920
+      ],
+      "id": "3ce27ecd-5b48-4dbe-8896-7107d44ccdf3",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "email": "={{ $json.Email }}",
+        "additionalFields": {
+          "customPropertiesUi": {
+            "customPropertiesValues": [
+              {
+                "property": "summary",
+                "value": "={{ $('Edit Fields5').item.json.Summary }}"
+              },
+              {
+                "property": "revenue_level",
+                "value": "={{ $json['Revenue level'] }}"
+              },
+              {
+                "property": "goals",
+                "value": "={{ $json.goals }}"
+              },
+              {
+                "property": "budget_available",
+                "value": "={{ $json['Budget available'] }}"
+              }
+            ]
+          },
+          "leadStatus": "={{ $json['Lead Status'] }}"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.1,
+      "position": [
+        5620,
+        -920
+      ],
+      "id": "babb0ead-bc50-4d5e-916c-e4f5625f482e",
+      "name": "Create or update a contact2",
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "kLcL06pltw3Wdpzi",
+          "name": "HubSpot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "2941ccbe-37e3-4cf2-99d9-5f4df4d694a1",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        4880,
+        -1100
+      ],
+      "id": "0d649fe7-a596-4956-a18b-b5385e834681",
+      "name": "HubSpot automation",
+      "webhookId": "2941ccbe-37e3-4cf2-99d9-5f4df4d694a1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f4221660-7b8e-46d0-b19f-f4f66c102c7e",
+              "name": "=Email",
+              "value": "={{ $json.properties.email }}",
+              "type": "string"
+            },
+            {
+              "id": "da5f0dcc-477b-4bb5-8c43-3cf0d209d318",
+              "name": "=Firstname",
+              "value": "={{ $json.properties.firstname }}",
+              "type": "string"
+            },
+            {
+              "id": "39511262-1fe4-4863-8ea8-6909231e915c",
+              "name": "=Summary",
+              "value": "={{ $json.properties.summary }}",
+              "type": "string"
+            },
+            {
+              "id": "c40fe3cf-1ba4-4426-862b-6211e3f650d7",
+              "name": "Lead Status",
+              "value": "={{ $json.properties.hs_lead_status }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        5500,
+        -1100
+      ],
+      "id": "dd11f5d4-3796-4b97-820e-72e887a1cbec",
+      "name": "Set Hubspot Data"
+    },
+    {
+      "parameters": {
+        "from": "+4951116653475",
+        "to": "+923007084554",
+        "toWhatsapp": true,
+        "message": "Hello there",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        5640,
+        -1620
+      ],
+      "id": "6ff4999c-72ab-4789-98bd-418850af76dd",
+      "name": "Send an SMS/MMS/WhatsApp message1",
+      "credentials": {
+        "twilioApi": {
+          "id": "Qk0E3V4zRsMfIClS",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "=0 10 * * 1-5\n"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        4480,
+        -2300
+      ],
+      "id": "c8231813-d9ec-4a08-8e09-d91641e157d2",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "operation": "get",
+        "contactId": {
+          "__rl": true,
+          "value": "={{ $json.contactId }}",
+          "mode": "id"
+        },
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.1,
+      "position": [
+        4640,
+        -1880
+      ],
+      "id": "7e8c0bcb-a377-4213-b974-408a7855a505",
+      "name": "Serach Contact not Callled",
+      "alwaysOutputData": true,
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "kLcL06pltw3Wdpzi",
+          "name": "HubSpot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5ea42c98-63f4-4231-8bb8-b15d193f7560",
+              "leftValue": "={{ $json['Lead Status'] }}",
+              "rightValue": "NEW",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        5060,
+        -1880
+      ],
+      "id": "19a3ff0b-8c45-4e68-bb5a-cb88c7f1329a",
+      "name": "Filter Not Called Number"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://runtime-api.voiceflow.com/v1alpha1/phone-number/685f33f7a63230cfdea0f5fe/outbound",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "VF.DM.684762b86a6ecaa8c9cfa1ee.K6NHZ4S9qy8Zms5a"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"to\": \"{{ $json['Phone Number'] }}\",\n  \"variables\": {\n    \"name\": \"{{ $('Serach Contact not Callled').item.json.properties.firstname.value }}\",\n    \"email\": \"{{ $('Filter Not Called Number').item.json.Email }}\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5500,
+        -1880
+      ],
+      "id": "d6bca2da-2e41-4d98-a658-7ba8aab25c46",
+      "name": "Voiceflow Call Agent"
+    },
+    {
+      "parameters": {
+        "amount": 1,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        5740,
+        -1880
+      ],
+      "id": "becc273e-3e46-4775-808c-1cb6e138c869",
+      "name": "1 Day Delay",
+      "webhookId": "f1647f44-3129-4bba-be3c-d107fcbc48b4"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.twilio.com/2010-04-01/Accounts/AC7b6fd3a8ff3d1cb25df208621cb6be9c/Calls.json",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "twilioApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5960,
+        -1880
+      ],
+      "id": "6ca7e426-3bf4-4b97-a831-bf7092d1a020",
+      "name": "Call Status",
+      "credentials": {
+        "twilioApi": {
+          "id": "Qk0E3V4zRsMfIClS",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "email": "={{ $('Set Email & Phone').item.json.Email }}",
+        "additionalFields": {
+          "customPropertiesUi": {
+            "customPropertiesValues": [
+              {
+                "property": "call_status",
+                "value": "={{ $('Call Status').item.json.calls[0].status }}"
+              },
+              {
+                "property": "last_call_date",
+                "value": "={{ $json.last_call_date }}"
+              }
+            ]
+          }
+        },
+        "options": {
+          "resolveData": false
+        }
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.1,
+      "position": [
+        6480,
+        -1880
+      ],
+      "id": "994a814d-c977-4f88-aa0d-9f11912df75c",
+      "name": "Update Call Status in CRM",
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "kLcL06pltw3Wdpzi",
+          "name": "HubSpot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a0809440-6dca-4c09-882c-d8b1696dd7c7",
+              "name": "Email",
+              "value": "={{ $json.properties.email.value }}",
+              "type": "string"
+            },
+            {
+              "id": "e2695b7a-f73d-4777-9573-bdadbfc1944c",
+              "name": "Phone Number",
+              "value": "={{ $json.properties.phone.value }}",
+              "type": "string"
+            },
+            {
+              "id": "047f9e38-9b28-4b0c-8dff-30c2af70c4a2",
+              "name": "Lead Status",
+              "value": "={{ $json.properties.hs_lead_status.value }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4860,
+        -1880
+      ],
+      "id": "84c79ca0-10d8-419c-be12-529b1b6bef98",
+      "name": "Set Email & Phone"
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        5280,
+        -1880
+      ],
+      "id": "19cf3d5d-02a0-4bca-a8ff-cfbddd6b97bf",
+      "name": "Delay Before Call",
+      "webhookId": "31fc3d56-b240-4c4f-a647-2e35393e780a"
+    },
+    {
+      "parameters": {
+        "jsCode": "const startTimeStr = $json.calls?.[0]?.start_time;\n\nif (!startTimeStr) {\n  return {\n    json: {\n      last_call_date: null,\n      error: \"Missing start_time in calls[0]\"\n    }\n  };\n}\n\ntry {\n  const startDate = new Date(startTimeStr);\n  if (isNaN(startDate.getTime())) {\n    throw new Error(\"Invalid start_time format\");\n  }\n\n  const year = startDate.getUTCFullYear();\n  const month = startDate.getUTCMonth();\n  const day = startDate.getUTCDate();\n\n  // Colombian midnight = 00:00 local = 05:00 UTC\n  const colombiaMidnightUTC = new Date(Date.UTC(year, month, day, 5, 0, 0));\n  const timestamp = colombiaMidnightUTC.getTime();\n\n  return {\n    json: {\n      last_call_date: timestamp\n    }\n  };\n} catch (err) {\n  return {\n    json: {\n      last_call_date: null,\n      error: err.message\n    }\n  };\n}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        6240,
+        -1880
+      ],
+      "id": "6f4005d1-4e1a-4fd2-9e22-f14cb571dcf2",
+      "name": "Date Formating"
+    },
+    {
+      "parameters": {
+        "eventsUi": {
+          "eventValues": [
+            {}
+          ]
+        },
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.hubspotTrigger",
+      "typeVersion": 1,
+      "position": [
+        4420,
+        -1880
+      ],
+      "id": "c796f314-eec9-4ba3-9afe-79bb42b57f66",
+      "name": "New Lead",
+      "webhookId": "733672bf-db06-4248-946b-64bd4d7aca72",
+      "credentials": {
+        "hubspotDeveloperApi": {
+          "id": "hwJkljQveqfK8KrZ",
+          "name": "HubSpot Developer account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6a8cc0cf-7736-4794-a680-614daa6c9188",
+              "leftValue": "={{ $json['Call Status'] }}",
+              "rightValue": "busy",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "9af71a0b-3cee-4aec-a238-c5ccdd4d7f12",
+              "leftValue": "={{ $json['Call Status'] }}",
+              "rightValue": "no-answer",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "1e0a8a0a-569e-4f57-84bb-7f7c9b6e90dd",
+              "leftValue": "={{ $json['Appointment Status'] }}",
+              "rightValue": "Not Booked",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        5140,
+        -2300
+      ],
+      "id": "4282cdb5-c999-49e6-9d69-1a567b837028",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "operation": "search",
+        "additionalFields": {
+          "properties": [
+            "firstname",
+            "lastname",
+            "email",
+            "google_calender_apointment",
+            "call_status",
+            "last_call_date",
+            "phone"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.1,
+      "position": [
+        4700,
+        -2300
+      ],
+      "id": "add4ddbe-0691-4bec-80f2-102da678062a",
+      "name": "Search Appointment Status",
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "kLcL06pltw3Wdpzi",
+          "name": "HubSpot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        5360,
+        -2300
+      ],
+      "id": "b15ec53c-f822-4309-848c-c6af5b13aeb6",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "name": "Replace Me",
+      "typeVersion": 1,
+      "position": [
+        5540,
+        -2180
+      ],
+      "id": "ea2acb50-05f6-4205-9f27-d9548b53b8a1"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Get last call timestamp from \"Last Call Status\" field\nconst lastCallDateRaw = $json['Last Call Status'];\n\n// Convert it to a Date object\nconst lastCallDate = new Date(lastCallDateRaw);\n\n// Get current date (in system timezone)\nconst today = new Date();\n\n// Calculate difference in full days\nconst msPerDay = 1000 * 60 * 60 * 24;\nconst daysDiff = Math.ceil((today - lastCallDate) / msPerDay);\n\n// Check if the call was already made today\nconst lastCallStr = lastCallDate.toDateString();\nconst todayStr = today.toDateString();\nconst alreadyCalledToday = (lastCallStr === todayStr);\n\n// Return results\nreturn {\n  json: {\n    days_since_last_call: daysDiff,\n    already_called_today: alreadyCalledToday,\n    last_call_date: lastCallDateRaw\n  }\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5540,
+        -2360
+      ],
+      "id": "82d82f56-6112-401c-a8b8-124b831ed55f",
+      "name": "Code2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "efc261db-04cb-4a8a-bc66-a0381c4fbe0f",
+              "leftValue": "={{ $json.days_since_last_call }}",
+              "rightValue": 14,
+              "operator": {
+                "type": "number",
+                "operation": "lte"
+              }
+            },
+            {
+              "id": "e44648a5-3143-4162-b3dc-6e519482a4c9",
+              "leftValue": "",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        5760,
+        -2360
+      ],
+      "id": "2fda3327-526c-4cf5-98fe-e3e549da381b",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://runtime-api.voiceflow.com/v1alpha1/phone-number/685f33f7a63230cfdea0f5fe/outbound",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "VF.DM.684762b86a6ecaa8c9cfa1ee.K6NHZ4S9qy8Zms5a"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"to\": \"{{ $('Loop Over Items').item.json.Phone }}\",\n  \"variables\": {\n    \"name\": \"{{ $('Loop Over Items').item.json['First Name'] }}\",\n    \"email\": \"{{ $('Loop Over Items').item.json.Email }}\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        6280,
+        -2640
+      ],
+      "id": "3149fef8-ad09-4665-95be-fc99eec63627",
+      "name": "Voiceflow Call Agent1"
+    },
+    {
+      "parameters": {
+        "amount": 1,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        6520,
+        -2640
+      ],
+      "id": "e7754b37-4994-40f1-a56a-969d6b8218a4",
+      "name": "1 Day Delay1",
+      "webhookId": "f1647f44-3129-4bba-be3c-d107fcbc48b4"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.twilio.com/2010-04-01/Accounts/AC7b6fd3a8ff3d1cb25df208621cb6be9c/Calls.json",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "twilioApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        6740,
+        -2640
+      ],
+      "id": "1ec8c09d-5135-4785-aa39-a301a0acd48a",
+      "name": "Call Status1",
+      "credentials": {
+        "twilioApi": {
+          "id": "Qk0E3V4zRsMfIClS",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "email": "={{ $('Loop Over Items').item.json.Email }}",
+        "additionalFields": {
+          "customPropertiesUi": {
+            "customPropertiesValues": [
+              {
+                "property": "call_status",
+                "value": "={{ $('Call Status1').item.json.calls[0].status }}"
+              }
+            ]
+          }
+        },
+        "options": {
+          "resolveData": false
+        }
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.1,
+      "position": [
+        7280,
+        -2640
+      ],
+      "id": "1a1b9619-4354-4a60-b946-fb7e3aafc3b9",
+      "name": "Update Call Status in CRM1",
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "kLcL06pltw3Wdpzi",
+          "name": "HubSpot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "email": "={{ $('Loop Over Items').item.json.Email }}",
+        "additionalFields": {
+          "leadStatus": "Close"
+        },
+        "options": {
+          "resolveData": false
+        }
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.1,
+      "position": [
+        6200,
+        -2260
+      ],
+      "id": "6f09d6d0-9a7b-4393-a023-2d37ac93188d",
+      "name": "Create or update a contact4",
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "kLcL06pltw3Wdpzi",
+          "name": "HubSpot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a065aa02-f1e9-4435-88dd-db99f567661a",
+              "name": "Email",
+              "value": "={{ $json.properties.email }}",
+              "type": "string"
+            },
+            {
+              "id": "24f93508-ac2c-467d-a05c-900ba8a30044",
+              "name": "Call Status",
+              "value": "={{ $json.properties.call_status }}",
+              "type": "string"
+            },
+            {
+              "id": "ba6ae645-ffc3-48fc-b859-3ccebd1adb2b",
+              "name": "Appointment Status",
+              "value": "={{ $json.properties.google_calender_apointment }}",
+              "type": "string"
+            },
+            {
+              "id": "67914bb6-60d8-4695-84fb-500d60b7964d",
+              "name": "Last Call Status",
+              "value": "={{ $json.properties.last_call_date }}",
+              "type": "string"
+            },
+            {
+              "id": "efa713c3-ada0-4b43-8e1d-c58c713892c5",
+              "name": "First Name",
+              "value": "={{ $json.properties.firstname }}",
+              "type": "string"
+            },
+            {
+              "id": "cf6cd9ee-a44c-4dfa-a96c-83b70f2fa121",
+              "name": "Phone",
+              "value": "={{ $json.properties.phone }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4920,
+        -2300
+      ],
+      "id": "9bddd582-2382-494b-b1c6-94117b03f7c7",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5069d510-4439-4cb0-a2c3-7389b8cb17dd",
+              "leftValue": "={{ $json.already_called_today }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        5980,
+        -2460
+      ],
+      "id": "11af8d58-cd1c-4349-ad54-efec53dfd87f",
+      "name": "Filter5"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ebc309ca-6235-422c-811f-5b8b1baf2c1d",
+              "leftValue": "={{ $json.calls[0].to_formatted }}",
+              "rightValue": "={{ $('Loop Over Items').item.json.Phone }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        6960,
+        -2640
+      ],
+      "id": "094843d3-f44e-4883-b269-fe543bc77c5d",
+      "name": "Filter6"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 11 * * *"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        4480,
+        -2860
+      ],
+      "id": "37f3e21c-f427-441b-afa4-18f953f8fe84",
+      "name": "Schedule Trigger1"
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "operation": "search",
+        "additionalFields": {
+          "properties": [
+            "firstname",
+            "lastname",
+            "email",
+            "google_calender_apointment",
+            "phone",
+            "whatsapp_message_status",
+            "createdate"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.1,
+      "position": [
+        4720,
+        -2860
+      ],
+      "id": "39a2bbb4-02ac-450e-94c3-46af8ccd114d",
+      "name": "Search Appointment Status1",
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "kLcL06pltw3Wdpzi",
+          "name": "HubSpot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        4940,
+        -2860
+      ],
+      "id": "a88e91fa-ba9f-419b-b187-d68be6934e03",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "name": "Replace Me1",
+      "typeVersion": 1,
+      "position": [
+        5180,
+        -2760
+      ],
+      "id": "689f712a-2b77-48da-89a6-c0487894662e"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Calculate days since first contact\nconst createdDate = new Date($json.properties.createdate);\nconst today = new Date();\nconst daysDiff = Math.ceil((today - createdDate) / (1000 * 60 * 60 * 24));\n\n// Get German first name\nconst firstName = $json.properties.firstname || $json.properties.name;\n\nreturn {\n  contact_id: $json.id,\n  name: firstName,\n  phone: $json.properties.phone,\n  email: $json.properties.email,\n  days_since_first_contact: daysDiff,\n  lead_status: $json.properties.lead_status,\n  whatsapp_status: $json.properties.whatsapp_message_status\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5160,
+        -2960
+      ],
+      "id": "7dd0bc68-5977-4f8c-981f-7f8abf6191ea",
+      "name": "Code3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "efc261db-04cb-4a8a-bc66-a0381c4fbe0f",
+              "leftValue": "={{ $json.days_since_first_contact }}",
+              "rightValue": 14,
+              "operator": {
+                "type": "number",
+                "operation": "lte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        5340,
+        -2940
+      ],
+      "id": "80c0ecaa-5eda-4c8a-965b-5df3fb39f395",
+      "name": "If4"
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "email": "={{ $('Loop Over Items1').item.json.properties.email }}",
+        "additionalFields": {
+          "leadStatus": "Close"
+        },
+        "options": {
+          "resolveData": false
+        }
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.1,
+      "position": [
+        5840,
+        -2860
+      ],
+      "id": "4e095302-ea3f-44ca-8c55-400e5658a5db",
+      "name": "Create or update a contact5",
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "kLcL06pltw3Wdpzi",
+          "name": "HubSpot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.days_since_first_contact }}",
+                    "rightValue": 2,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    },
+                    "id": "e6721385-754e-480f-908d-52a2cf8393ef"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "WhatsApp Reminder Message"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        5580,
+        -3860
+      ],
+      "id": "477ba1fd-7789-44ba-8494-1a6462e4f01e",
+      "name": "Day 2"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.days_since_first_contact }}",
+                    "rightValue": 4,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    },
+                    "id": "e6721385-754e-480f-908d-52a2cf8393ef"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "WhatsApp Gentle Reminder"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        5580,
+        -3660
+      ],
+      "id": "e6baf955-0bbd-44da-82b3-cda7538df774",
+      "name": "Day 4"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.days_since_first_contact }}",
+                    "rightValue": 7,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    },
+                    "id": "e6721385-754e-480f-908d-52a2cf8393ef"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "WhatsApp Reconfirm Interest"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        5580,
+        -3480
+      ],
+      "id": "d6b29d8d-7f79-41ce-a719-9776962da453",
+      "name": "Day 7"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.days_since_first_contact }}",
+                    "rightValue": 10,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    },
+                    "id": "e6721385-754e-480f-908d-52a2cf8393ef"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "WhatsApp Final Reminder"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        5580,
+        -3280
+      ],
+      "id": "f63dc8fd-c5a7-4511-ac7d-6f3b09967fa2",
+      "name": "Day 10"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.days_since_first_contact }}",
+                    "rightValue": 10,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    },
+                    "id": "e6721385-754e-480f-908d-52a2cf8393ef"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "WhatsApp Closing Message"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        5580,
+        -3100
+      ],
+      "id": "791344db-dac3-45e2-b12a-9d60078f37db",
+      "name": "Day 14"
+    },
+    {
+      "parameters": {
+        "from": "+4951116653475",
+        "to": "={{ $json.phone }}",
+        "toWhatsapp": true,
+        "message": "=Hallo {{ $json.name }}, \n\nAnna von VertriebsPilot.ai hier 😊\n\nDein exklusiver Zoom-Termin mit Geschäftsführer Julien wartet auf dich: [Calendar-Link]\n\nIch freue mich auf unser Gespräch und deine maßgeschneiderte KI-Lösung!",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        5820,
+        -3860
+      ],
+      "id": "a9b8271b-1688-4175-9ac9-6087c76f8863",
+      "name": "Send an SMS/MMS/WhatsApp message2",
+      "credentials": {
+        "twilioApi": {
+          "id": "Qk0E3V4zRsMfIClS",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "from": "+4951116653475",
+        "to": "={{ $json.phone }}",
+        "toWhatsapp": true,
+        "message": "=Hallo {{ $json.name }}, \n\nnur eine kurze Erinnerung - dein persönlicher Termin mit Julien steht noch aus.\n\nHier ist dein direkter Link: [Calendar-Link]\n\nWähle jetzt deinen Wunschtermin aus! 😊",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        5820,
+        -3660
+      ],
+      "id": "8b8c96f6-0b47-49fd-8714-fa5ca9f19c76",
+      "name": "Send an SMS/MMS/WhatsApp message3",
+      "credentials": {
+        "twilioApi": {
+          "id": "Qk0E3V4zRsMfIClS",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "from": "+4951116653475",
+        "to": "={{ $json.Phone }}",
+        "toWhatsapp": true,
+        "message": "=Hallo {{ $json.name }},\n\nbist du noch interessiert an deiner individuellen Vertriebsautomatisierung?\n\nFalls ja, sichere dir hier deinen Termin: [Calendar-Link]\n\nLass mich wissen, ob ich dir helfen kann! 😊",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        5820,
+        -3480
+      ],
+      "id": "e8224860-15aa-44e9-af6c-f0e4b82b1be7",
+      "name": "Send an SMS/MMS/WhatsApp message4",
+      "credentials": {
+        "twilioApi": {
+          "id": "Qk0E3V4zRsMfIClS",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "from": "+4951116653475",
+        "to": "={{ $json.Phone }}",
+        "toWhatsapp": true,
+        "message": "=Hallo {{ $json.name }},\n\ndas ist deine letzte Chance für deinen kostenlosen Beratungstermin.\n\nNach heute schließen wir deinen Fall: [Calendar-Link]\n\nVerpasse nicht diese Gelegenheit! 😊",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        5820,
+        -3280
+      ],
+      "id": "e6e807c5-49c7-4081-bbfa-641ac12b64e5",
+      "name": "Send an SMS/MMS/WhatsApp message5",
+      "credentials": {
+        "twilioApi": {
+          "id": "Qk0E3V4zRsMfIClS",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "from": "+4951116653475",
+        "to": "={{ $json.Phone }}",
+        "toWhatsapp": true,
+        "message": "=Hallo {{ $json.name }},\n\nwir schließen hiermit deinen Fall. Falls du später Interesse hast, melde dich einfach erneut.\n\nAlles Gute! 😊",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        5820,
+        -3100
+      ],
+      "id": "75c7cfb6-12ce-450e-a794-5c16a0423678",
+      "name": "Send an SMS/MMS/WhatsApp message6",
+      "credentials": {
+        "twilioApi": {
+          "id": "Qk0E3V4zRsMfIClS",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.twilio.com/2010-04-01/Accounts/AC7b6fd3a8ff3d1cb25df208621cb6be9c/Messages.json",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "twilioApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        6040,
+        -3860
+      ],
+      "id": "dbe29e79-94f3-4c5d-98b8-cc181c0bafde",
+      "name": "Twilio Message Status",
+      "credentials": {
+        "twilioApi": {
+          "id": "Qk0E3V4zRsMfIClS",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.twilio.com/2010-04-01/Accounts/AC7b6fd3a8ff3d1cb25df208621cb6be9c/Messages.json",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "twilioApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        6040,
+        -3660
+      ],
+      "id": "89ea19cd-9bef-4582-8ef0-831856660cdf",
+      "name": "Twilio Message Status1",
+      "credentials": {
+        "twilioApi": {
+          "id": "Qk0E3V4zRsMfIClS",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.twilio.com/2010-04-01/Accounts/AC7b6fd3a8ff3d1cb25df208621cb6be9c/Messages.json",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "twilioApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        6040,
+        -3480
+      ],
+      "id": "5ad3c233-cd48-4afc-baf5-1ec15b5c7391",
+      "name": "Twilio Message Status2",
+      "credentials": {
+        "twilioApi": {
+          "id": "Qk0E3V4zRsMfIClS",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.twilio.com/2010-04-01/Accounts/AC7b6fd3a8ff3d1cb25df208621cb6be9c/Messages.json",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "twilioApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        6040,
+        -3280
+      ],
+      "id": "36ecbd70-9a29-423b-aaba-3115750a0b1a",
+      "name": "Twilio Message Status3",
+      "credentials": {
+        "twilioApi": {
+          "id": "Qk0E3V4zRsMfIClS",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.twilio.com/2010-04-01/Accounts/AC7b6fd3a8ff3d1cb25df208621cb6be9c/Messages.json",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "twilioApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        6040,
+        -3100
+      ],
+      "id": "b0d1b296-7de2-4f3d-84cf-46042c6b3007",
+      "name": "Twilio Message Status4",
+      "credentials": {
+        "twilioApi": {
+          "id": "Qk0E3V4zRsMfIClS",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        6260,
+        -3860
+      ],
+      "id": "8b382f8e-eed3-4e2f-a203-b88bdfff61cf",
+      "name": "Wait",
+      "webhookId": "e458365c-329c-4720-a66c-fc62e5433e02"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        6260,
+        -3660
+      ],
+      "id": "144cf186-967d-4434-8f7e-2208c21ff799",
+      "name": "Wait1",
+      "webhookId": "e458365c-329c-4720-a66c-fc62e5433e02"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        6260,
+        -3480
+      ],
+      "id": "2f9ee159-eb9e-4a24-b0f6-19d7065bbc40",
+      "name": "Wait2",
+      "webhookId": "e458365c-329c-4720-a66c-fc62e5433e02"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        6260,
+        -3280
+      ],
+      "id": "78d1cd20-4767-46e2-a515-533da1fa1a9b",
+      "name": "Wait3",
+      "webhookId": "e458365c-329c-4720-a66c-fc62e5433e02"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        6260,
+        -3100
+      ],
+      "id": "56ac1c2e-e5cd-4324-a78b-84706a9bc8e5",
+      "name": "Wait4",
+      "webhookId": "e458365c-329c-4720-a66c-fc62e5433e02"
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "email": "={{ $('If4').item.json.email }}",
+        "additionalFields": {
+          "customPropertiesUi": {
+            "customPropertiesValues": [
+              {
+                "property": "whatsapp_message_status",
+                "value": "={{ $json.messages[0].status }}"
+              }
+            ]
+          }
+        },
+        "options": {
+          "resolveData": false
+        }
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.1,
+      "position": [
+        6460,
+        -3860
+      ],
+      "id": "97ce31be-e680-4a26-87b6-2bf430eb4abb",
+      "name": "Update Call Status in CRM2",
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "kLcL06pltw3Wdpzi",
+          "name": "HubSpot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 11 * * *"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        4000,
+        -4280
+      ],
+      "id": "534300ae-7f39-40d6-a0c3-5ce768488efb",
+      "name": "Schedule Trigger2"
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "operation": "search",
+        "additionalFields": {
+          "properties": [
+            "firstname",
+            "lastname",
+            "email",
+            "google_calender_apointment",
+            "phone",
+            "whatsapp_message_status",
+            "createdate",
+            "hs_lead_status"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.1,
+      "position": [
+        4260,
+        -4280
+      ],
+      "id": "a4f7829b-2a2c-4849-8912-2a96d661fdeb",
+      "name": "Search Appointment Status2",
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "kLcL06pltw3Wdpzi",
+          "name": "HubSpot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        4780,
+        -4280
+      ],
+      "id": "8f158348-8210-4ecc-b68f-921bcf985c36",
+      "name": "Loop Over Items2"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "name": "Replace Me2",
+      "typeVersion": 1,
+      "position": [
+        5140,
+        -4180
+      ],
+      "id": "eaccf449-6cf3-4566-9d28-dda1a137e12d"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Calculate days since first contact\nconst createdDate = new Date($input.first().json['Created Date']);\nconst today = new Date();\nconst daysDiff = Math.ceil((today - createdDate) / (1000 * 60 * 60 * 24));\n\n// Get German first name\nconst firstName = $input.first().json['First Name'] ||$input.first().json['First Name'] ;\n\nreturn {\n  contact_id: $json.id,\n  name: firstName,\n  phone:$input.first().json.Phone ,\n  email: $input.first().json.Email,\n  days_since_first_contact: daysDiff,\n  lead_status: $input.first().json['Lead Status'],\n  Appointment_check: $input.first().json['Appointment Check'],\n\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5120,
+        -4380
+      ],
+      "id": "914fd5b1-99bb-4101-840a-ef2d9519633d",
+      "name": "Code4"
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "email": "={{ $('If4').item.json.email }}",
+        "additionalFields": {
+          "customPropertiesUi": {
+            "customPropertiesValues": [
+              {
+                "property": "whatsapp_message_status",
+                "value": "={{ $json.messages[0].status }}"
+              }
+            ]
+          }
+        },
+        "options": {
+          "resolveData": false
+        }
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.1,
+      "position": [
+        6460,
+        -3660
+      ],
+      "id": "8d524217-0a3e-46ab-bb3b-30e790cfed2f",
+      "name": "Update Call Status in CRM3",
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "kLcL06pltw3Wdpzi",
+          "name": "HubSpot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "email": "={{ $('If4').item.json.email }}",
+        "additionalFields": {
+          "customPropertiesUi": {
+            "customPropertiesValues": [
+              {
+                "property": "whatsapp_message_status",
+                "value": "={{ $json.messages[0].status }}"
+              }
+            ]
+          }
+        },
+        "options": {
+          "resolveData": false
+        }
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.1,
+      "position": [
+        6460,
+        -3480
+      ],
+      "id": "9c50a87a-e2b8-4cfe-960e-d2e7f42ab3bc",
+      "name": "Update Call Status in CRM4",
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "kLcL06pltw3Wdpzi",
+          "name": "HubSpot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "email": "={{ $('If4').item.json.email }}",
+        "additionalFields": {
+          "customPropertiesUi": {
+            "customPropertiesValues": [
+              {
+                "property": "whatsapp_message_status",
+                "value": "={{ $json.messages[0].status }}"
+              }
+            ]
+          }
+        },
+        "options": {
+          "resolveData": false
+        }
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.1,
+      "position": [
+        6460,
+        -3280
+      ],
+      "id": "3534378e-9164-48e5-887b-e105b2df92c0",
+      "name": "Update Call Status in CRM5",
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "kLcL06pltw3Wdpzi",
+          "name": "HubSpot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "email": "={{ $('If4').item.json.email }}",
+        "additionalFields": {
+          "customPropertiesUi": {
+            "customPropertiesValues": [
+              {
+                "property": "whatsapp_message_status",
+                "value": "={{ $json.messages[0].status }}"
+              }
+            ]
+          }
+        },
+        "options": {
+          "resolveData": false
+        }
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.1,
+      "position": [
+        6440,
+        -3100
+      ],
+      "id": "9cff2efe-5cf7-4a40-bb51-361562feb96c",
+      "name": "Update Call Status in CRM6",
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "kLcL06pltw3Wdpzi",
+          "name": "HubSpot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6f1dcf05-7b1a-4e6c-8c11-d3e0d64fa3ea",
+              "leftValue": "={{ $json.days_since_first_contact }}",
+              "rightValue": 14,
+              "operator": {
+                "type": "number",
+                "operation": "lte"
+              }
+            },
+            {
+              "id": "dfb2ee73-5608-4cef-b23e-6ee553aba1d3",
+              "leftValue": "={{ $json.Appointment_check }}",
+              "rightValue": "Not Booked",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        5320,
+        -4380
+      ],
+      "id": "fb30e6c3-add1-4a83-8a51-f022c7737ebf",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "aff6e69b-a338-487e-8ffd-58ef2a1a9772",
+              "name": "Created Date",
+              "value": "={{ $json.properties.createdate }}",
+              "type": "string"
+            },
+            {
+              "id": "52199ede-b2c4-4d8d-a7dd-daceedfb66db",
+              "name": "Appointment Check",
+              "value": "={{ $json.properties.google_calender_apointment }}",
+              "type": "string"
+            },
+            {
+              "id": "acac5874-a0f1-43be-a6d1-c4401099b787",
+              "name": "Phone",
+              "value": "={{ $json.properties.phone }}",
+              "type": "string"
+            },
+            {
+              "id": "d591628f-5c36-411d-bd9b-b44d38bc0f16",
+              "name": "Email",
+              "value": "={{ $json.properties.email }}",
+              "type": "string"
+            },
+            {
+              "id": "8562cea4-c5b0-44cf-be71-3db8d6c47645",
+              "name": "Whatsapp Message Status",
+              "value": "={{ $json.properties.whatsapp_message_status }}",
+              "type": "string"
+            },
+            {
+              "id": "77c4f339-343f-49a0-87d9-bcba13f60f03",
+              "name": "Lead Status",
+              "value": "={{ $json.properties.hs_lead_status }}",
+              "type": "string"
+            },
+            {
+              "id": "e278e707-7a81-4b9c-b88f-b59ed5318c19",
+              "name": "First Name",
+              "value": "={{ $json.properties.firstname }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4480,
+        -4280
+      ],
+      "id": "dcb22cea-c6eb-4076-9962-970f68ec2372",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "email": "={{ $('Code4').item[0].email }}",
+        "additionalFields": {
+          "leadStatus": "Close"
+        },
+        "options": {
+          "resolveData": false
+        }
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.1,
+      "position": [
+        5580,
+        -4160
+      ],
+      "id": "20de164c-708a-40b1-9fb7-f8fd4d6bf067",
+      "name": "Create or update a contact",
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "kLcL06pltw3Wdpzi",
+          "name": "HubSpot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.days_since_first_contact }}",
+                    "rightValue": 2,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    },
+                    "id": "e6721385-754e-480f-908d-52a2cf8393ef"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Follow-up Email"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        5780,
+        -4660
+      ],
+      "id": "90384b3a-de97-4259-81d2-3ea36165fb28",
+      "name": "Day 3"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.days_since_first_contact }}",
+                    "rightValue": 6,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    },
+                    "id": "e6721385-754e-480f-908d-52a2cf8393ef"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Reminder with Benefits"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        5780,
+        -4460
+      ],
+      "id": "c29618bc-8fce-46a3-bc96-9ec0f355581b",
+      "name": "Day 6"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.days_since_first_contact }}",
+                    "rightValue": 9,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    },
+                    "id": "e6721385-754e-480f-908d-52a2cf8393ef"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Last Chance Email"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        5780,
+        -4280
+      ],
+      "id": "91b0c437-9006-4f73-b401-eaaf2e64bc47",
+      "name": "Day 9"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.email }}",
+        "subject": "Dein persönlicher Termin mit Julien - VertriebsPilot.ai",
+        "message": "=Hallo  {{ $json.name }}, \nich hoffe, du hattest Zeit, über unser Gespräch nachzudenken.  Hier ist nochmal dein direkter Link für den Termin mit Geschäftsführer Julien: [Calendar-Link]  Falls du Fragen hast, antworte einfach auf diese E-Mail.  Beste Grüße, Anna - VertriebsPilot.ai",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        6000,
+        -4660
+      ],
+      "id": "3c249c8b-335d-468f-9d56-b6f07601d9bd",
+      "name": "Send a message",
+      "webhookId": "52e02b20-a09b-437f-ab43-565c2205de27",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "7KHAXqdmqf6Ft2ZE",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.email }}",
+        "subject": "Zeitersparnis + Umsatzsteigerung - Dein Termin wartet",
+        "message": "=Hallo {{ $json.name }},\n\nstell dir vor: Mehr Umsatz bei weniger Arbeitszeit durch vollautomatisierte Vertriebsprozesse.\n\nGenau das zeigt dir Julien in eurem persönlichen Termin:\n[Calendar-Link]\n\n✅ Automatisierte Lead-Generierung\n✅ KI-gestützte Telefonie\n✅ Vollautomatische Follow-ups\n✅ Individuelle Lösung für dein Unternehmen\n\nSichere dir jetzt deinen Termin!\n\nBeste Grüße,\nAnna - VertriebsPilot.ai",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        6000,
+        -4460
+      ],
+      "id": "ad83951f-c72b-454f-814d-a3c8a8bf124f",
+      "name": "Send a message1",
+      "webhookId": "52e02b20-a09b-437f-ab43-565c2205de27",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "7KHAXqdmqf6Ft2ZE",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.email }}",
+        "subject": "Letzte Chance - Dein Beratungstermin läuft ab",
+        "message": "=Hallo {{ $json.name }},\n\ndas ist deine letzte Möglichkeit für einen kostenlosen Beratungstermin.\n\nNach heute schließen wir deinen Fall automatisch.\n\nWenn du noch interessiert bist, buche JETZT deinen Termin:\n[Calendar-Link]\n\nVerpasse nicht diese Gelegenheit!\n\nBeste Grüße,\nAnna - VertriebsPilot.ai",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        6000,
+        -4280
+      ],
+      "id": "d6c410bc-6665-4d19-a9ca-0fcb3dfd1424",
+      "name": "Send a message2",
+      "webhookId": "52e02b20-a09b-437f-ab43-565c2205de27",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "7KHAXqdmqf6Ft2ZE",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "f4522094-624f-47ee-bfae-3a7ba3ba0b43",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        4400,
+        -5300
+      ],
+      "id": "5af4cc2e-2128-4577-afd9-136654ce232b",
+      "name": "Webhook",
+      "webhookId": "f4522094-624f-47ee-bfae-3a7ba3ba0b43"
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "operation": "search",
+        "filterGroupsUi": {
+          "filterGroupsValues": [
+            {
+              "filtersUi": {
+                "filterValues": [
+                  {
+                    "propertyName": "phone|string",
+                    "operator": "CONTAINS_TOKEN",
+                    "value": "={{ $json.Phone }}"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.1,
+      "position": [
+        4920,
+        -5300
+      ],
+      "id": "cfbcefd4-6c80-4104-b37f-218018533b7e",
+      "name": "Search contacts",
+      "alwaysOutputData": false,
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "kLcL06pltw3Wdpzi",
+          "name": "HubSpot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "672aa963-1054-4d80-b0d4-ade9432cea8a",
+              "name": "Phone",
+              "value": "={{ $json.query.phone }}",
+              "type": "string"
+            },
+            {
+              "id": "be600995-79fd-46fa-9698-91a3ae7d2575",
+              "name": "Email",
+              "value": "={{ $json.query.email }}",
+              "type": "string"
+            },
+            {
+              "id": "54b738c0-c240-495b-8617-71227c9314d1",
+              "name": "First Name",
+              "value": "={{ $json.query.firstname }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4620,
+        -5300
+      ],
+      "id": "bdfcd777-4b30-482d-b2a2-05b34a871c7c",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "jsCode": "const userUri = \"https://calendly.com/umairchauhan26\";\nconst baseUrl = `${userUri}/consultation`;\n\n// Extract data\nconst name = $input.first().json.properties.firstname || \"\";\nconst email = $input.first().json.properties.email || \"\";\nconst phone = ($('Edit Fields2').first().json.Phone || \"\").trim();\n\n// Build query params\nconst params = [];\nif (name) params.push(`name=${encodeURIComponent(name)}`);\nif (email) params.push(`email=${encodeURIComponent(email)}`);\nif (phone) params.push(`a1=${encodeURIComponent(phone)}`);\n\nparams.push('timezone=Europe/Berlin');\nparams.push('hide_gdpr_banner=1');\nparams.push('hide_landing_page_details=1');\n\nconst paramString = params.join('&');\nconst calendlyLink = `${baseUrl}?${paramString}`;\n\n// Create email subject\nconst emailSubject = `Dein persönlicher Zoom-Beratungstermin mit Julien – Jetzt buchen`;\n\n// Create output messages\nconst whatsappMessage = `Hallo ${name}, hier dein exklusiver Zoom-Link mit Julien persönlich: ${calendlyLink}.\\nSichere dir jetzt deine KI-Lösung!`;\n\nconst whatsappMessageAlt = `Hallo ${name}, hier dein exklusiver Zoom-Link mit Julien persönlich:\\n\\n📅 *Jetzt Termin buchen:* ${calendlyLink}\\n\\nSichere dir jetzt deine KI-Lösung!`;\n\nconst emailMessage = `Hallo ${name},\\n\\nhier ist dein persönlicher Terminlink für das Beratungsgespräch mit Julien:\\n\\n<a href=\"${calendlyLink}\">📅 Jetzt Termin buchen</a>\\n\\nWähle einfach einen passenden Termin aus und sichere dir deine individuelle KI-Lösung!\\n\\nBeste Grüße,\\nAnna – Deine KI-Assistentin\\nVertriebsPilot.ai`;\n\nreturn [{\n  json: {\n    calendly_link: calendlyLink,\n    whatsapp_message: whatsappMessage,\n    whatsapp_message_alt: whatsappMessageAlt,\n    email_message: emailMessage,\n    email_subject: emailSubject,\n    name,\n    email,\n    phone\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5140,
+        -5300
+      ],
+      "id": "2b1b1d37-ab59-46dd-af34-9c6b22cb4eb8",
+      "name": "Code5"
+    },
+    {
+      "parameters": {
+        "from": "+4951116653475",
+        "to": "={{ $json.phone }}",
+        "toWhatsapp": true,
+        "message": "={{ $json.whatsapp_message_alt }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        5380,
+        -5300
+      ],
+      "id": "b20c7998-f90f-4d49-a1fd-a4cfedb04b4a",
+      "name": "Send an SMS/MMS/WhatsApp message",
+      "credentials": {
+        "twilioApi": {
+          "id": "Qk0E3V4zRsMfIClS",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Code5').item.json.email }}",
+        "subject": "={{ $('Code5').item.json.email_subject }}",
+        "message": "={{ $('Code5').item.json.email_message }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        5640,
+        -5320
+      ],
+      "id": "7944d76a-c974-44f2-8a2a-60a0444bf5da",
+      "name": "Send a message3",
+      "webhookId": "62d53cab-afa3-4cfa-96a8-3fec266c2bc5",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "7KHAXqdmqf6Ft2ZE",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "email": "={{ $('Code5').item.json.email }}",
+        "additionalFields": {
+          "customPropertiesUi": {
+            "customPropertiesValues": [
+              {
+                "property": "google_calender_apointment",
+                "value": "Awaiting Appointment"
+              }
+            ]
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.1,
+      "position": [
+        5940,
+        -5320
+      ],
+      "id": "84a57f56-c182-4c1b-9caa-8b0dde3f753a",
+      "name": "Create or update a contact1",
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "kLcL06pltw3Wdpzi",
+          "name": "HubSpot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "events": [
+          "invitee.created"
+        ]
+      },
+      "type": "n8n-nodes-base.calendlyTrigger",
+      "typeVersion": 1,
+      "position": [
+        4400,
+        -4940
+      ],
+      "id": "350d8d67-5110-423a-a5f2-7231b17b8d0e",
+      "name": "Calendly Trigger",
+      "webhookId": "fd1cc9cd-4a09-4929-9e5b-cefbcd9b8040",
+      "credentials": {
+        "calendlyOAuth2Api": {
+          "id": "lU94wUJ6WMgBGoEI",
+          "name": "Calendly account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const payload = $json.payload;\n\nconst name = payload.name;\nconst email = payload.email;\nconst phone = payload.questions_and_answers[0]?.answer || '';\nconst start = new Date(payload.scheduled_event.start_time);\nconst end = new Date(payload.scheduled_event.end_time);\nconst zoom = payload.scheduled_event.location.join_url;\n\nreturn [{\n  json: {\n    name,\n    email,\n    phone,\n    appointment_start: start.toISOString(),\n    appointment_end: end.toISOString(),\n    zoom_link: zoom\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4620,
+        -4940
+      ],
+      "id": "bf2d96e3-23f1-4e8e-b469-ef34616396a7",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "umairchauhan26@gmail.com",
+          "mode": "list",
+          "cachedResultName": "umairchauhan26@gmail.com"
+        },
+        "start": "={{ $json.appointment_start }}",
+        "end": "={{ $json.appointment_end }}",
+        "additionalFields": {
+          "description": "={{ $json.name }},{{ $json.phone }},{{ $json.email }},{{ $json.zoom_link }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        4840,
+        -4940
+      ],
+      "id": "77276c33-9b83-46f3-9104-e0f098e00a39",
+      "name": "Create an event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "03dSaCTm37Q4UbNa",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "from": "+4951116653475",
+        "to": "={{ $('Code').item.json.phone }}",
+        "toWhatsapp": true,
+        "message": "=Perfekt {{ $json.name }}! ✅\n\nDein Termin ist bestätigt für: {{ $json.appointment_time }}.\n\nHier ist dein Zoom-Link: {{ $json.zoom_link }}\n\nWir freuen uns auf dich! 🚀\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        5360,
+        -4940
+      ],
+      "id": "4a5fb73d-84c3-42d8-acc6-a8b358a3e19d",
+      "name": "Send an SMS/MMS/WhatsApp message7",
+      "credentials": {
+        "twilioApi": {
+          "id": "Qk0E3V4zRsMfIClS",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "email": "={{ $('Code6').item.json.email }}",
+        "additionalFields": {
+          "customPropertiesUi": {
+            "customPropertiesValues": [
+              {
+                "property": "google_calender_apointment",
+                "value": "Awaiting Appointment"
+              }
+            ]
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.1,
+      "position": [
+        5560,
+        -4940
+      ],
+      "id": "dbca8d36-c8fc-4eee-b2ec-16b833bda766",
+      "name": "Create or update a contact3",
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "kLcL06pltw3Wdpzi",
+          "name": "HubSpot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const event = $json;\nconst [name, phone, email, zoomLink] = event.description.split(',');\n\nconst appointmentStart = new Date(event.start.dateTime);\nconst options = { timeZone: event.start.timeZone || \"Europe/Berlin\", weekday: \"long\", year: \"numeric\", month: \"long\", day: \"numeric\", hour: \"2-digit\", minute: \"2-digit\" };\n\nconst formattedDate = appointmentStart.toLocaleString('de-DE', options); // German style\n\nreturn [{\n  json: {\n    name: name.trim(),\n    phone: phone.trim(),\n    email: email.trim(),\n    zoom_link: zoomLink.trim(),\n    appointment_time: formattedDate\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5060,
+        -4940
+      ],
+      "id": "0ff83017-ff5d-4116-b4ff-65bf78e23798",
+      "name": "Code6"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        4860,
+        -5860
+      ],
+      "id": "890ef0f2-671f-4939-aceb-e1567b901032",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "wSQ1eJyTD3psr8bm",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "407df857-40f0-4b06-8b5b-8c3b09156458",
+              "name": "Number",
+              "value": "={{ $json.data.from }}",
+              "type": "string"
+            },
+            {
+              "id": "6690e1c1-c353-480e-bfb9-7365c0fe0c15",
+              "name": "Message",
+              "value": "={{ $json.data.body }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4480,
+        -6120
+      ],
+      "id": "3e5ec007-2979-4fce-b17e-08c49fddbc46",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "com.twilio.messaging.inbound-message.received"
+        ]
+      },
+      "type": "n8n-nodes-base.twilioTrigger",
+      "typeVersion": 1,
+      "position": [
+        4260,
+        -6120
+      ],
+      "id": "b8c779b7-5ec5-45dc-a593-f13761ee3d05",
+      "name": "Twilio Trigger1",
+      "webhookId": "8ec47dd9-b433-4195-93f0-d4fdb92323d5",
+      "credentials": {
+        "twilioApi": {
+          "id": "Qk0E3V4zRsMfIClS",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "0d9cdca6-8145-4b2f-8316-42928f011130",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        4380,
+        -5560
+      ],
+      "id": "24642db2-55e6-4081-ba8b-3716ef1fd5a6",
+      "name": "Webhook1",
+      "webhookId": "0d9cdca6-8145-4b2f-8316-42928f011130"
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "operation": "search",
+        "additionalFields": {
+          "properties": [
+            "firstname",
+            "lastname",
+            "email",
+            "phone",
+            "hs_lead_status"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.1,
+      "position": [
+        4600,
+        -5560
+      ],
+      "id": "57116af3-3e6c-4484-9184-bf35ddd311ab",
+      "name": "Search contacts1",
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "kLcL06pltw3Wdpzi",
+          "name": "HubSpot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a48b980c-e413-429e-852a-43c125a984d9",
+              "leftValue": "={{ $json.properties.phone }}",
+              "rightValue": "={{ $('Webhook1').item.json.query.phone }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        4820,
+        -5560
+      ],
+      "id": "2e73ef1a-007a-4a75-976b-0046e40f4a16",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "options": {
+          "responseKey": "={{ $json.properties.firstname }}{{ $json.properties.email }}{{ $json.properties.hs_lead_status }}{{ $json.properties.phone }}"
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        5140,
+        -5660
+      ],
+      "id": "9b5cad0d-271b-4931-963a-bee7891ad2b4",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        5140,
+        -5480
+      ],
+      "id": "8dd8faa9-1c7d-4798-8f5b-2e48d2f669f3",
+      "name": "Respond to Webhook2"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "f949981c-d431-486a-a03c-cc6271f81fe8",
+        "options": {
+          "ignoreBots": false
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        4900,
+        -920
+      ],
+      "id": "61c38596-ec1b-46e7-b217-14c031000314",
+      "name": "N8n Update Summary",
+      "webhookId": "f949981c-d431-486a-a03c-cc6271f81fe8"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Hallo! 😊 Ich bin Anna von TechFlow Solutions. Danke, dass Sie mit uns in Kontakt getreten sind!\n\nDarf ich fragen, was Ihre aktuelle Rolle im Unternehmen ist und ob Sie für Automatisierungslösungen zuständig sind?",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=# VertriebsPilot.ai - Text Qualifying Agent Script (Anna)\n\n## Identität & Zweck\n\nDu bist **Anna**, eine KI-gestützte Vertriebsassistentin von **VertriebsPilot.ai**. Als Text-basierter Qualifying Agent führst du die detaillierte Qualifizierung von Interessenten durch Chat/Text-Kommunikation durch, die bereits grundlegendes Interesse in der Supervisor-Phase gezeigt haben. Dein primärer Zweck ist es, die spezifischen Bedürfnisse, finanziellen Möglichkeiten und Ziele zu bewerten, um eine fundierte Entscheidung für die Weiterleitung zum Terminbuchungsagenten zu treffen.\n\n## Text-Kommunikationsstil & Persönlichkeit\n\n### Persönlichkeit für Text-Chat\n- **Beratender Experte:** Tiefgreifendes Wissen über Vertriebsautomatisierung und KI-Lösungen\n- **Strukturiert & Klar:** Nutze Bullet Points, Emojis und klare Formatierung für bessere Lesbarkeit\n- **Empathisch-Professionell:** Balance zwischen Wärme und Geschäftsverstand in schriftlicher Form\n- **Interaktiv & Engagiert:** Stelle gezielte Fragen und reagiere auf Antworten\n- **Authentisch begeistert:** Echte Leidenschaft für erfolgreiche Vertriebsautomatisierung\n\n### Text-Kommunikations-Charakteristika\n- **Kurze, prägnante Nachrichten:** Maximal 3-4 Sätze pro Nachricht\n- **Visuelle Struktur:** Nutze Emojis (💡, 🎯, 💰, ⏰) für bessere Verständlichkeit\n- **Interaktive Elemente:** Klare Ja/Nein-Fragen und Multiple-Choice-Optionen\n- **Persönliche Ansprache:** Nutze den Namen des Interessenten regelmäßig\n- **Datengestützte Zuversicht:** Spezifische Erfolgsmetriken und Kundentransformationen\n- **Schnelle Reaktionszeit:** Antworte prompt auf Interessenten-Nachrichten\n\n## Input-Variablen & Gesprächskontinuität\n\n### Erforderliche Input-Variablen\n- **{vf_memory}** - Vollständige Gesprächshistorie vom Supervisor Agent\n- **{summary}** - Wichtige Interessentendetails und Interessen vom Supervisor Agent\n- **prospect_name** - Für Personalisierung während der Kommunikation\n- **prospect_email** - Für HubSpot-Integration und Follow-up-Systeme\n\n### Text-Gesprächskontinuität-Protokoll\n**Nahtloser Übergang zur Qualifizierungsphase:**\n```\nHi [prospect_name]! 👋\n\nAnna hier von VertriebsPilot.ai - ich übernehme jetzt die detaillierte Beratung mit dir.\n\nBasierend auf dem, was du bereits geteilt hast über [spezifisches Interesse aus Chat referenzieren], möchte ich tiefer eingehen:\n\n🎯 Wie unser komplettes Vertriebsautomatisierungssystem dir dabei helfen kann, [spezifisches Ziel referenzieren] zu erreichen\n\nBereit für ein paar konkrete Fragen zu deiner Situation?\n```\n\n**Alternative Überleitung:**\n```\nPerfekt! 🎉\n\nIch bin Anna von VertriebsPilot.ai. Da du definitiv Interesse an [spezifische Motivation aus Chat referenzieren] gezeigt hast, lass mich dir zeigen:\n\n✅ Konkrete Details über unser System\n✅ Ob es zu deinen Zielen passt\n✅ Wie wir dir dabei helfen können\n\nKann ich dir ein paar wichtige Fragen stellen?\n```\n\n## VertriebsPilot.ai Komplettes Service-Paket (Text-Format)\n\n### 📋 Kern-Programm Komponenten\n\n**1. 🤖 KI-gestützte Telefonie-Automatisierung** (€3.000 Wert)\n- Vollautomatisierte Anrufsysteme mit KI-Stimmen\n- Personalisierte Gesprächsführung basierend auf Kundendaten\n- Automatische Terminbuchung und Follow-up-Sequenzen\n- DSGVO-konforme Aufzeichnung und Analyse\n\n**2. 🚀 Komplette Marketing-Automatisierung** (€4.000 Wert)\n- Professionelle Vertriebswebsite mit deinem Branding\n- Vollständige Sales-Funnels mit hochkonvertierenden Landing Pages\n- E-Mail-Marketing-Automatisierung mit Personalisierung\n- Social Media Content-Erstellung und Posting-Pläne\n\n**3. 🎯 Lead-Generierungs-System** (€2.500 Wert)\n- Automatisierte Lead-Akquise über LinkedIn und andere Kanäle\n- Qualifizierte Interessentenlisten für deine Zielgruppe\n- CRM-Integration mit automatischer Datenpflege\n- Lead-Scoring und Prioritätenbewertung\n\n**4. 💼 Vollständiges Verkaufssystem** (€2.000 Wert)\n- Bewährte Verkaufsscripts und Gesprächsframeworks\n- CRM-Setup mit automatisierten Follow-up-Sequenzen\n- Verkaufsgespräch-Templates und Abschlusstechniken\n- Einwandbehandlung und Zahlungsabwicklung\n\n**5. 🎓 90-Tage Implementierungs-Support** (€1.500 Wert)\n- Persönlicher Implementierungs-Coach zugewiesen\n- Wöchentliche 1-zu-1 Strategiegespräche für erste 90 Tage\n- Technischer Setup-Support und Fehlerbehebung\n- Marketing-Kampagnen-Launch-Unterstützung\n\n**6. 🏆 Laufendes Business-Mentoring** (€1.000 Wert)\n- Monatliche Gruppen-Coaching-Calls mit erfolgreichen Unternehmern\n- Zugang zur privaten Community\n- Quartalsweise Business-Growth-Workshops\n- Lebenslanger Zugang zu Programm-Updates und neuen Inhalten\n\n**🎁 Gesamter Programm-Wert:** €14.000  \n**💰 Investitions-Optionen verfügbar:** Ab €597/Monat\n\n### 💳 Investitions-Optionen & Zahlungspläne\n\n**🌟 Option 1: Vollzahlung (Beste Ersparnis)**\n- **Investition:** €5.997 (Spare €3.000!)\n- **Beinhaltet:** Alle 6 Komponenten + exklusive Boni\n- **Bonus:** Erweiterte Marketing-Masterclass (€500) + 6 Monate verlängerter Support (€1.200)\n- **Perfekt für:** Ernsthafte Unternehmer, die Erfolg beschleunigen möchten\n\n**⚡ Option 2: 3-Monats-Plan**\n- **Investition:** €2.197/Monat für 3 Monate\n- **Gesamt:** €6.591 (Spare €2.400!)\n- **Zahlung:** Klarna oder PayPal Credit\n- **Perfekt für:** Schneller Start mit überschaubaren Zahlungen\n\n**🎯 Option 3: 6-Monats-Plan**\n- **Investition:** €1.197/Monat für 6 Monate\n- **Gesamt:** €7.182 (Spare €1.800!)\n- **Zahlung:** Klarna oder PayPal Credit\n- **Perfekt für:** Aufbau von Business-Cashflow während Wachstum\n\n**📈 Option 4: 12-Monats-Plan**\n- **Investition:** €597/Monat für 12 Monate\n- **Gesamt:** €7.164 (Spare €1.800!)\n- **Zahlung:** Klarna oder PayPal Credit\n- **Perfekt für:** Konservativer Ansatz mit minimaler monatlicher Belastung\n\n## Text-Qualifizierungs-Framework\n\n### HubSpot-Pflichtfelder\n1. **Revenue_level** (Aktueller Umsatz/Umsatzziel)\n2. **Goals** (Spezifische Ziele und Motivationen)\n3. **Summary** (Zusammenfassung der Qualifizierung)\n4. **Budget_available** (Ja/Nein - Zahlungsfähigkeit)\n\n### ✅ Muss-Haben Qualifizierer (Alle erforderlich)\n1. **⏰ Zeitverfügbarkeit:** Kann mindestens 4-6 Stunden pro Woche committen\n2. **👨‍💼 Entscheidungsbefugnis:** Ist Entscheidungsträger oder kann finanzielle Entscheidungen treffen\n3. **🚀 Wachstumsmotivation:** Echtes Interesse an Umsatzsteigerung durch Automatisierung\n4. **💰 Umsatzziele:** Realistisches Ziel von €5.000+ monatlichem Umsatz\n5. **💳 Investitionsbereitschaft:** Bereit, in Geschäftswachstum zu investieren\n6. **⚡ Handlungsorientierung:** Bereit, innerhalb angemessener Zeit zu handeln\n7. **🧠 Lernbereitschaft:** Offen für neue Systeme und bewährte Prozesse\n\n### ❌ Disqualifizierer (Jeder einzelne eliminiert)\n- **🎰 Schnell-reich-werden-Mentalität:** Erwartung massiver Ergebnisse mit minimalem Aufwand\n- **⏰ Keine Zeitverfügbarkeit:** Kann nicht mindestens 3 Stunden pro Woche committen\n- **💸 Keine Budget-Kapazität:** Keine Zahlungsoptionen funktionieren\n- **🔄 Kein Wachstumsinteresse:** Nur interessiert an schnellem Geld\n- **🌙 Unrealistische Erwartungen:** Erwartung von €20K+ im ersten Monat\n- **🤔 Entscheidungslähmung:** Chronisches Überdenken, nie handeln\n- **😞 Negative Denkweise:** Fokus nur auf Probleme ohne Lösungsorientierung\n\n## Text-Qualifizierungs-Bewertungsfragen\n\n### ⏰ Zeit- und Commitment-Überprüfung\n\n**1. Zeit-Realitätscheck:**\n```\n[prospect_name], du hast Interesse an einem Vertriebsautomatisierungssystem gezeigt. 🎯\n\nWichtige Frage: Wie viele Stunden pro Woche hast du realistisch verfügbar für den Aufbau dieses Systems?\n\nA) 1-2 Stunden\nB) 3-4 Stunden  \nC) 5-6 Stunden\nD) 7+ Stunden\n```\n\n**2. Prioritätsbewertung:**\n```\nWenn du an deinen aktuellen Terminplan denkst... 🗓️\n\nWas wärst du bereit zu adjustieren, um Raum für dein Vertriebssystem zu schaffen?\n\n(Schreib mir 1-2 Sätze dazu)\n```\n\n**3. Implementierungs-Zeitrahmen:**\n```\nFalls wir zusammenarbeiten... ⚡\n\nWie schnell möchtest du starten?\n\nA) Sofort loslegen\nB) In 1-2 Wochen\nC) In 3-4 Wochen\nD) Erst in 1+ Monaten\n```\n\n### 💰 Umsatz und Ziele Assessment (HubSpot: Revenue_level & Goals)\n\n**1. Aktueller Umsatz:**\n```\nErzähl mir von deiner aktuellen Umsatzsituation 📊\n\n- Wo stehst du momentan monatlich?\n- Wo möchtest du in 12 Monaten sein?\n\n(Gib mir gerne grobe Zahlen)\n```\n\n**2. Ziel-Visualisierung:**\n```\nStell dir vor: Dein ideales Vertriebssystem in 12 Monaten... 🎯\n\n- Welchen monatlichen Umsatz generierst du?\n- Welche Art von Kunden gewinnst du?\n- Wie sieht dein Alltag aus?\n\n(Teile deine Vision mit mir)\n```\n\n**3. Transformation-Dringlichkeit:**\n```\nWas macht JETZT den richtigen Zeitpunkt für dich? ⏰\n\n- Warum jetzt ein automatisiertes Vertriebssystem?\n- Was würde es dich kosten, noch ein Jahr zu warten?\n\nAuf einer Skala von 1-10, wie dringend ist das für dich?\n```\n\n### 💳 Finanzielle Qualifizierung (HubSpot: Budget_available)\n\n**1. Investitionsphilosophie:**\n```\nWie gehst du an Geschäftsinvestitionen heran? 💡\n\nA) Sehe sie als notwendige Ausgaben\nB) Sehe sie als Werkzeuge für Rendite\nC) Investiere nur wenn 100% sicher\nD) Bin bereit zu investieren für Wachstum\n\nWas trifft auf dich zu?\n```\n\n**2. Zahlungskomfortzone:**\n```\nHier sind unsere Zahlungsoptionen: 💳\n\n🌟 €5.997 einmalig (Beste Ersparnis)\n⚡ €2.197 x 3 Monate  \n🎯 €1.197 x 6 Monate\n📈 €597 x 12 Monate\n\nWelche Struktur fühlt sich für dich am angenehmsten an?\n```\n\n**3. ROI-Erwartungen:**\n```\nUnsere erfolgreichen Kunden sehen ihre Investition typischerweise innerhalb von 60-90 Tagen zurück. 📈\n\nDanach generieren sie reinen Gewinn.\n\nPasst dieser Zeitrahmen zu deinen Erwartungen?\n\nA) Ja, das klingt realistisch\nB) Ich erwarte schnellere Ergebnisse\nC) Ich bin bereit, länger zu warten\nD) Ich bin unsicher\n```\n\n**4. Entscheidungsbefugnis:**\n```\nWichtige Frage zur Entscheidung: 👨‍💼\n\nKannst du selbständig über diese Investition entscheiden?\n\nA) Ja, ich entscheide allein\nB) Muss mit Geschäftspartner sprechen\nC) Muss mit Ehepartner besprechen\nD) Andere Personen müssen zustimmen\n```\n\n### 🚀 Motivation und Commitment Assessment\n\n**1. Wachstumsleidenschaft:**\n```\nWas zieht dich zur Vertriebsautomatisierung? 🤖\n\nWelche Erfahrungen haben dich dazu gebracht, mehr Kontrolle über deine Kundenakquisition zu wollen?\n\n(Erzähl mir deine Geschichte)\n```\n\n**2. Erfolgs-Transformation:**\n```\nUnsere besten Kunden haben oft bedeutende Geschäftsherausforderungen überwunden. 🏆\n\nWelche Geschäftserfahrungen hast du, die dir beim Aufbau eines erfolgreichen automatisierten Systems helfen könnten?\n```\n\n**3. Dringlichkeitsfaktoren:**\n```\nLetzte wichtige Frage: 🎯\n\nAuf einer Skala von 1-10, wie dringend ist es für dich, in den nächsten 90 Tagen eine signifikante Veränderung in deinem Vertriebssystem zu erreichen?\n\n1 = \"Kein Stress\" ... 10 = \"Extrem dringend\"\n\nDeine Antwort: ___\n```\n\n## Text-Einwandbehandlung\n\n### 💸 Einwand 1: \"Zu teuer/Kann es mir nicht leisten\"\n\n**Erste Antwort:**\n```\nIch verstehe diese Sorge völlig, [prospect_name]. 💭\n\nDas ist eine bedeutende Investition, und ich schätze deine Ehrlichkeit.\n\nLass mich dich das fragen: Was kostet es dich, KEIN automatisiertes System zu haben, das €10.000-€20.000 pro Monat generiert?\n\nDenkst du, die Kosten des Wartens könnten höher sein als die Investition?\n```\n\n**Follow-up Antwort:**\n```\nDie meisten unserer erfolgreichen Kunden fühlten genauso vor dem Start. 🎯\n\nHier ist was ich gelernt habe: Diejenigen, die erfolgreich werden, haben nicht unbedingt mehr Geld zum Anfangen...\n\nSie haben mehr Dringlichkeit, ihre Situation zu ändern.\n\nWie dringend ist es für dich, deine aktuelle Situation zu verändern?\n```\n\n### ⏰ Einwand 2: \"Habe keine Zeit\"\n\n**Erste Antwort:**\n```\nDas höre ich oft von erfolgreichen, beschäftigten Menschen wie dir. ⏰\n\nHier ist eine interessante Perspektive:\n\nDu verbringst 40+ Stunden pro Woche damit, die Träume von jemand anderem zu verwirklichen.\n\nWas wäre, wenn du nur 4-6 Stunden pro Woche investieren könntest, um etwas aufzubauen, das diese 40-Stunden-Verpflichtung ersetzen könnte?\n```\n\n**Effizienz-Positionierung:**\n```\nDie Schönheit unseres Systems: Es ist für beschäftigte Menschen entwickelt. 🚀\n\n✅ Wir übernehmen das technische Setup\n✅ Wir übernehmen Marketing und Lead-Generierung\n✅ Du konzentrierst dich auf 4-6 Stunden hochwertige Aktivitäten\n\nMacht das Sinn für dich?\n```\n\n### 🤔 Einwand 3: \"Nicht sicher, ob ich das kann\"\n\n**Vertrauensaufbau:**\n```\nDieses Gefühl ist völlig normal, [prospect_name]. 💡\n\nEhrlich gesagt, ist es ein gutes Zeichen. Menschen, die zu selbstsicher sind, investieren oft nicht die nötige Arbeit.\n\nDeine Bescheidenheit und Lernbereitschaft ist genau das, was erfolgreiche Unternehmer ausmacht.\n```\n\n**System-Support-Betonung:**\n```\nDenk daran: Du machst das nicht allein. 🤝\n\n✅ Komplettes System\n✅ Laufende Unterstützung  \n✅ Community von Unternehmern\n✅ Persönlicher Coach\n\nAlle haben dort angefangen, wo du jetzt stehst.\n```\n\n### 🤷‍♂️ Einwand 4: \"Muss darüber nachdenken\"\n\n**Dringlichkeits-Schaffung:**\n```\nDas verstehe ich völlig - durchdachte Entscheidungen sind wichtig. 🤔\n\nLass mich fragen: Worüber spezifisch musst du nachdenken?\n\nA) Die Investition\nB) Der Zeitaufwand\nC) Ob es funktioniert\nD) Etwas anderes\n\nIch würde deine echten Bedenken lieber jetzt ansprechen.\n```\n\n**Handlung vs. Analyse:**\n```\nIch habe bemerkt: Erfolgreiche Menschen treffen schnell Entscheidungen, wenn sie die richtige Gelegenheit sehen. ⚡\n\nSie wissen, dass Analyse-Lähmung oft nur getarnte Angst ist.\n\nWas würde dir helfen, heute eine klare Entscheidung zu treffen?\n```\n\n### ❓ Einwand 5: \"Was wenn es nicht funktioniert?\"\n\n**Erfolgsrate-Präsentation:**\n```\nDas ist eine kluge Frage! 📊\n\nHier ist was ich dir sagen kann:\n\nÜber 85% unserer Kunden, die unserem System folgen und die Arbeit investieren, sehen ihre erste Umsatzsteigerung innerhalb von 60 Tagen.\n\nDas ist eine ziemlich starke Erfolgsbilanz.\n```\n\n**Risiko-Umkehrung:**\n```\nAber lass mich die Frage umdrehen: 🔄\n\nWas wenn es FUNKTIONIERT?\n\nWas wenn du in 12 Monaten €15.000 pro Monat machst und ein vollautomatisiertes System hast?\n\nWelche Auswirkungen hätte das auf dein Leben?\n```\n\n## Lead-Status Zuweisungslogik\n\n### HubSpot Lead-Status Optionen\n\n#### ✅ **QUALIFIED** - Zuweisen wenn:\n- Erfüllt alle Muss-Haben-Qualifizierer\n- Zeigt starke emotionale Motivation\n- Hat Budget oder Zahlungsplan-Komfort\n- Bereit zu handeln innerhalb 30 Tagen\n- Fragt nach nächsten Schritten\n\n#### 🎯 **OPPORTUNITY** - Zuweisen wenn:\n- Erfüllt QUALIFIED Kriterien\n- Diskutiert aktiv Investitionsoptionen\n- Fragt nach Terminplanung oder Zeitrahmen\n- Drückt Dringlichkeit aus zu starten\n- Bereit zum Terminbuchungsagent zu wechseln\n\n#### ❌ **NOT_QUALIFIED** - Zuweisen wenn:\n- Versagt bei einem Muss-Haben-Qualifizierer\n- Unrealistische Erwartungen\n- Kein Budget oder Zahlungsfähigkeit\n- Keine Zeitverfügbarkeit\n- Kein Interesse an Geschäftswachstum\n\n### Weiterleitung-Entscheidungsmatrix\n\n**Weiterleitung zur Buchungsphase wenn:**\n- Lead-Status ist QUALIFIED oder OPPORTUNITY\n- Interessent fragt nach nächsten Schritten\n- Zeigt Bereitschaft, Investition zu besprechen\n- Möchte detaillierten Implementierungsplan sehen\n- Fragt nach Zeitrahmen für den Start\n\n**Weiterleitung-Script:**\n```\nBasierend auf allem, was wir besprochen haben, bin ich wirklich begeistert über dein Potenzial! 🎉\n\nDu hast:\n✅ Die richtige Motivation\n✅ Das Zeit-Commitment\n✅ Die Investitionsbereitschaft\n\nDas sind genau die Eigenschaften, die unsere erfolgreichsten Kunden haben.\n\nLass mich dich zu unserem Terminspezialisten weiterleiten, der mit dir die genauen Schritte durchgehen kann.\n\nBereit für den nächsten Schritt?\n```\n\n## Tool-Integrationen\n\n### HubSpot-Update Tool\n**Tool-Name:** \"update_hubspot_lead_qualifying\"\n\n**Erforderliche Parameter:**\n- conversation_summary: Vollständige Zusammenfassung des Text-Qualifizierungsgesprächs\n- lead_status: Einer der HubSpot Lead-Status-Optionen\n- prospect_email: E-Mail-Adresse für CRM-Update\n- revenue_level: Aktueller/angestrebter Umsatz\n- goals: Spezifische Ziele und Motivationen\n- budget_available: Ja/Nein basierend auf Zahlungsfähigkeit\n- next_action: Was als nächstes passieren sollte\n\n### Terminbuchungsagent Tool\n**Tool-Name:** \"route_to_booking_phase\"\n\n**Erforderliche Parameter:**\n- vf_memory: Vollständige Text-Gesprächshistorie inklusive Qualifizierungsdetails\n- summary: Aktualisierte Zusammenfassung mit Qualifizierungsbewertung\n- lead_status: Sollte QUALIFIED oder OPPORTUNITY sein\n- qualification_level: Hoch/Mittel basierend auf Assessment\n- prospect_name: Für Personalisierung\n- prospect_email: Für Buchungsbestätigung\n\n## Text-Gedächtnisverwaltung-Protokoll\n\n### {summary} Variable Updates\n\n**Einschließen der vorherigen Zusammenfassung PLUS:**\n- **Service-Interesse-Bewertung:** Welche Komponenten am meisten angesprochen haben\n- **Identifizierte Einwände:** Hauptbedenken und wie sie angesprochen wurden\n- **Qualifizierungsstatus:** Qualifiziert/Nicht Qualifiziert mit spezifischer Begründung\n- **Investitionsfähigkeit:** Bevorzugte Zahlungsoption und Komfortniveau\n- **Zeitrahmen-Erwartungen:** Wann sie starten möchten und erwartete Ergebnisse\n- **Motivationsniveau:** Emotionale Treiber und Dringlichkeitsfaktoren\n- **Implementierungsbereitschaft:** Zeitverfügbarkeit und Commitment-Level\n- **Lead-Status-Zuweisung:** Welcher Status zugewiesen und warum\n- **Nächste erforderliche Aktion:** Was als nächstes passieren sollte\n- **Spezielle Notizen:** Besondere Umstände oder Anforderungen\n- **Text-Interaktionsmuster:** Kommunikationsstil und Reaktionsgeschwindigkeit\n\n### HubSpot-Feld-Mapping\n- **Revenue_level:** Aktueller monatlicher Umsatz und 12-Monats-Ziel\n- **Goals:** Spezifische Geschäftsziele und Motivationen für Automatisierung\n- **Summary:** Vollständige Qualifizierungszusammenfassung mit Entscheidungsbegründung\n- **Budget_available:** Ja (kann investieren) / Nein (budget-beschränkt)\n\n## Text-Kommunikations-Abschluss-Protokoll\n\n### Vor Ende jeder Text-Unterhaltung:\n1. **HubSpot aktualisieren:** update_hubspot_lead_qualifying Tool verwenden\n2. **Lead-Status zuweisen:** Basierend auf Text-Qualifizierungsbewertung\n3. **Nächste Aktion dokumentieren:** Was als nächstes passieren sollte\n4. **Gedächtnisvariablen aktualisieren:** Sicherstellen, dass {summary} und {vf_memory} vollständig sind\n5. **Angemessen weiterleiten:** Zum Terminbuchungsagent oder Unterhaltung beenden\n\n### Text-spezifische Abschluss-Nachrichten\n\n**Für QUALIFIED/OPPORTUNITY:**\n```\nPerfekt, [prospect_name]! 🎉\n\nZusammenfassung unseres Gesprächs:\n✅ Du hast die richtige Motivation\n✅ Du hast die Zeit verfügbar\n✅ Du bist bereit zu investieren\n\nIch leite dich jetzt an unseren Terminspezialisten weiter, der mit dir die genauen nächsten Schritte bespricht.\n\nDu wirst in wenigen Minuten kontaktiert! 👍\n```\n\n**Für NOT_QUALIFIED:**\n```\nDanke für die ehrliche Unterhaltung, [prospect_name]! 🙏\n\nBasierend auf unserem Gespräch scheint unser Programm gerade nicht der richtige Fit für deine Situation zu sein.\n\nFalls sich deine Umstände ändern und du:\n- Mehr Zeit verfügbar hast\n- Bereit bist zu investieren\n- Deine Prioritäten ändern\n\nDann melde dich gerne wieder bei uns!\n\nAlles Gute für deine Geschäftsentwicklung! 🚀\n```\n\n**Qualitätssicherung-Checkliste für Text-Agent:**\n- [ ] Vorherige Chat-Punkte natürlich referenziert\n- [ ] Emojis und Formatierung für bessere Lesbarkeit verwendet\n- [ ] Gründliche Qualifizierungsbewertung durch strukturierte Fragen\n- [ ] Alle Einwände mit klaren, strukturierten Antworten angesprochen\n- [ ] Programmwert klar mit visueller Darstellung der Optionen präsentiert\n- [ ] Angemessenen Lead-Status mit Begründung zugewiesen\n- [ ] HubSpot mit vollständiger Chat-Zusammenfassung aktualisiert\n- [ ] Zur angemessenen nächsten Phase weitergeleitet oder professionell beendet\n- [ ] Beratenden, professionellen Ton in Textform durchgehend beibehalten\n- [ ] Interaktive Elemente (A/B/C/D Optionen) für bessere Engagement verwendet\n\n## Text-spezifische Best Practices\n\n### Formatierung & Struktur\n- **Kurze Absätze:** Maximal 2-3 Zeilen pro Absatz\n- **Bullet Points:** Verwende sie für Listen und Optionen\n- **Emojis strategisch:** Zur Betonung und besseren Lesbarkeit\n- **Call-to-Action:** Klare Handlungsaufforderungen am Ende von Nachrichten\n\n### Interaktions-Techniken\n- **Multiple Choice:** Gib A/B/C/D Optionen für einfache Antworten\n- **Skala-Fragen:** 1-10 Bewertungen für quantitative Insights\n- **Ja/Nein-Fragen:** Für klare Entscheidungen\n- **Offene Fragen:** Für detaillierte Antworten nur wenn nötig\n\n### Zeitmanagement\n- **Schnelle Antworten:** Reagiere prompt auf Interessenten-Nachrichten\n- **Strukturierte Pausen:** Gib Zeit für Antworten bei komplexen Fragen\n- **Agenda-Setting:** Teile mit, wie viele Fragen noch kommen\n\nDein Erfolg als Text-basierte Anna wird daran gemessen, wie effektiv du die Interessenten-Eignung über schriftliche Kommunikation bewertest, professionell Bedenken ansprichst und qualifizierte Interessenten zur erfolgreichen Terminbuchung überleitest, während du VertriebsPilot.ai's Ruf für Exzellenz in der digitalen Kundenbetreuung aufrechterhältst."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        4660,
+        -6140
+      ],
+      "id": "a9e643bd-d101-4532-916b-702be1466682",
+      "name": "Supervisor Agent"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Super, danke für die Rückmeldung! 🎯 Wir helfen Unternehmen, Prozesse durch smarte Automatisierung effizienter zu gestalten.\n\nWas sind Ihre aktuellen Ziele im Bereich Automatisierung? Gibt es konkrete Prozesse, die Sie optimieren möchten?",
+        "options": {
+          "systemMessage": "VertriebsPilot.ai - Qualifying Agent Script (Anna)\nIdentität & Zweck\nDu bist Anna, eine KI-gestützte Vertriebsassistentin von VertriebsPilot.ai. Als Qualifying Agent führst du die detaillierte Qualifizierung von Interessenten durch, die bereits grundlegendes Interesse in der Supervisor-Phase gezeigt haben. Dein primärer Zweck ist es, die spezifischen Bedürfnisse, finanziellen Möglichkeiten und Ziele zu bewerten, um eine fundierte Entscheidung für die Weiterleitung zum Terminbuchungsagenten zu treffen.\nStimme & Persönlichkeit\nPersönlichkeit\n\nBeratender Experte: Tiefgreifendes Wissen über Vertriebsautomatisierung und KI-Lösungen\nErgebnisorientiert: Fokus auf messbare Transformationen und ROI\nEmpathisch-Professionell: Balance zwischen Wärme und Geschäftsverstand\nLösungsorientiert: Bedenken mit bewährten Frameworks und Erfolgsdaten ansprechen\nAuthentisch begeistert: Echte Leidenschaft für erfolgreiche Vertriebsautomatisierung\n\nSprach-Charakteristika (Anna Stimme - Deutsch)\n\nStimmeinstellungen: 85% Stabilität, 75-80% Klarheitsverbesserung\nEmotionale Tags: [consultative] für Beratung, [confident] für Erfolgsgeschichten, [empathetic] für Bedenken\nPausen: 1.2 Sekunden zwischen wichtigen Punkten\nKontinuität: Natürliche Referenzen zu vorherigen Gesprächspunkten\nDatengestützte Zuversicht: Spezifische Erfolgsmetriken und Kundentransformationen\nStrategische Befragung: Tiefere Qualifizierung durch gezielte Fragen\n\nInput-Variablen & Gesprächskontinuität\nErforderliche Input-Variablen\n\n{vf_memory} - Vollständige Gesprächshistorie vom Supervisor Agent\n{summary} - Wichtige Interessentendetails und Interessen vom Supervisor Agent\n{prospect_name} - Für Personalisierung während des Gesprächs\n{prospect_email} - Für HubSpot-Integration und Follow-up-Systeme\n{revenue_level} - Aktueller Umsatz/Umsatzziel des Interessenten\n{goals} - Spezifische Ziele und Motivationen des Interessenten\n{budget_available} - Ja/Nein - Zahlungsfähigkeit des Interessenten\n\nGesprächskontinuität-Protokoll\nNahtloser Übergang zur Qualifizierungsphase:\n\"Perfekt! Ich bin übrigens Anna von VertriebsPilot.ai und führe jetzt die detaillierte Beratung mit dir durch. Basierend auf dem, was du bereits geteilt hast über [spezifisches Interesse aus Gespräch referenzieren], möchte ich tiefer eingehen, wie unser komplettes Vertriebsautomatisierungssystem dir dabei helfen kann, [spezifisches Ziel referenzieren] zu erreichen.\"\nAlternative Überleitung:\n\"Großartig! Wie bereits erwähnt, bin ich Anna von VertriebsPilot.ai. Da du definitiv Interesse an [spezifische Motivation aus Gespräch referenzieren] gezeigt hast, lass mich dir einige konkrete Details über unser System zeigen und schauen, ob es zu deinen Zielen und deiner Situation passt.\"\nVertriebsPilot.ai Komplettes Service-Paket\nKern-Programm Komponenten\n\nKI-gestützte Telefonie-Automatisierung (€3.000 Wert)\n\nVollautomatisierte Anrufsysteme mit KI-Stimmen\nPersonalisierte Gesprächsführung basierend auf Kundendaten\nAutomatische Terminbuchung und Follow-up-Sequenzen\nDSGVO-konforme Aufzeichnung und Analyse\n\n\nKomplette Marketing-Automatisierung (€4.000 Wert)\n\nProfessionelle Vertriebswebsite mit deinem Branding\nVollständige Sales-Funnels mit hochkonvertierenden Landing Pages\nE-Mail-Marketing-Automatisierung mit Personalisierung\nSocial Media Content-Erstellung und Posting-Pläne\n\n\nLead-Generierungs-System (€2.500 Wert)\n\nAutomatisierte Lead-Akquise über LinkedIn und andere Kanäle\nQualifizierte Interessentenlisten für deine Zielgruppe\nCRM-Integration mit automatischer Datenpflege\nLead-Scoring und Prioritätenbewertung\n\n\nVollständiges Verkaufssystem (€2.000 Wert)\n\nBewährte Verkaufsscripts und Gesprächsframeworks\nCRM-Setup mit automatisierten Follow-up-Sequenzen\nVerkaufsgespräch-Templates und Abschlusstechniken\nEinwandbehandlung und Zahlungsabwicklung\n\n\n90-Tage Implementierungs-Support (€1.500 Wert)\n\nPersönlicher Implementierungs-Coach zugewiesen\nWöchentliche 1-zu-1 Strategiegespräche für erste 90 Tage\nTechnischer Setup-Support und Fehlerbehebung\nMarketing-Kampagnen-Launch-Unterstützung\n\n\nLaufendes Business-Mentoring (€1.000 Wert)\n\nMonatliche Gruppen-Coaching-Calls mit erfolgreichen Unternehmern\nZugang zur privaten Community\nQuartalsweise Business-Growth-Workshops\nLebenslanger Zugang zu Programm-Updates und neuen Inhalten\n\n\n\nGesamter Programm-Wert: €14.000\nInvestitions-Optionen verfügbar: Ab €597/Monat\nInvestitions-Optionen & Zahlungspläne\nOption 1: Vollzahlung (Beste Ersparnis)\n\nInvestition: €5.997 (Spare €3.000)\nBeinhaltet: Alle 6 Komponenten plus exklusive Boni\nBoni: Erweiterte Marketing-Masterclass (€500) + 6 Monate verlängerter Support (€1.200)\nBeste für: Ernsthafte Unternehmer, die ihren Erfolg beschleunigen möchten\n\nOption 2: 3-Monats-Plan\n\nInvestition: €2.197/Monat für 3 Monate\nGesamt: €6.591 (Spare €2.400)\nZahlung: Klarna oder PayPal Credit\nBeste für: Diejenigen, die schnell starten möchten mit überschaubaren Zahlungen\n\nOption 3: 6-Monats-Plan\n\nInvestition: €1.197/Monat für 6 Monate\nGesamt: €7.182 (Spare €1.800)\nZahlung: Klarna oder PayPal Credit\nBeste für: Aufbau von Business-Cashflow während der Wachstumsinvestition\n\nOption 4: 12-Monats-Plan\n\nInvestition: €597/Monat für 12 Monate\nGesamt: €7.164 (Spare €1.800)\nZahlung: Klarna oder PayPal Credit\nBeste für: Konservativer Ansatz mit minimaler monatlicher Verpflichtung\n\nQualifizierungs-Framework\nHubSpot-Pflichtfelder\n\n{revenue_level} (Aktueller Umsatz/Umsatzziel)\n{goals} (Spezifische Ziele und Motivationen)\n{summary} (Zusammenfassung der Qualifizierung)\n{budget_available} (Ja/Nein - Zahlungsfähigkeit)\n\nMuss-Haben Qualifizierer (Alle erforderlich)\n\nZeitverfügbarkeit: Kann mindestens 4-6 Stunden pro Woche committen\nEntscheidungsbefugnis: Ist Entscheidungsträger oder kann finanzielle Entscheidungen eigenständig treffen\nWachstumsmotivation: Echtes Interesse an Umsatzsteigerung durch Automatisierung\nUmsatzziele: Realistisches Ziel von €5.000+ monatlichem Umsatz\nInvestitionsbereitschaft: Bereit, in Geschäftswachstum und Automatisierung zu investieren\nHandlungsorientierung: Bereit, innerhalb angemessener Zeit zu handeln\nLernbereitschaft: Offen für neue Systeme und bewährte Prozesse\n\nDisqualifizierer (Jeder einzelne eliminiert)\n\nSchnell-reich-werden-Mentalität: Erwartung massiver Ergebnisse mit minimalem Aufwand\nKeine Zeitverfügbarkeit: Kann nicht mindestens 3 Stunden pro Woche committen\nKeine Budget-Kapazität: Keine Zahlungsoptionen funktionieren für ihre Situation\nKein Wachstumsinteresse: Nur interessiert an schnellem Geld, nicht an Geschäftsaufbau\nUnrealistische Erwartungen: Erwartung von €20K+ im ersten Monat ohne Erfahrung\nEntscheidungslähmung: Chronisches Überdenken, nie handeln\nNegative Denkweise: Fokus nur auf Probleme ohne Lösungsorientierung\n\nQualifizierungs-Bewertungsfragen\nZeit- und Commitment-Überprüfung\n\nZeit-Realitätscheck: \"Du hast Interesse an einem Vertriebsautomatisierungssystem gezeigt. Aktuell, wie viele Stunden pro Woche hast du realistisch verfügbar, um dich dem Aufbau dieses Systems zu widmen?\"\nPrioritätsbewertung: \"Wenn du an deinen aktuellen Terminplan denkst, was wärst du bereit zu adjustieren oder anders zu priorisieren, um Raum für den Aufbau deines Vertriebssystems zu schaffen?\"\nImplementierungs-Zeitrahmen: \"Falls wir uns entscheiden zusammenzuarbeiten, wie schnell möchtest du mit der Implementierung beginnen? Suchst du nach einem sofortigen Start oder brauchst du ein paar Wochen, um deinen Terminplan zu organisieren?\"\n\nUmsatz und Ziele Assessment (HubSpot: {revenue_level} & {goals})\n\nAktueller Umsatz: \"Erzähl mir von deiner aktuellen Umsatzsituation. Wo stehst du momentan monatlich, und wo möchtest du in 12 Monaten sein?\"\nZiel-Visualisierung: \"Wenn du dir dein ideales Vertriebssystem in 12 Monaten vorstellst, wie sieht das aus? Welchen monatlichen Umsatz generierst du, und welche Art von Kunden gewinnst du?\"\nTransformation-Dringlichkeit: \"Was macht jetzt den richtigen Zeitpunkt für dich, ein automatisiertes Vertriebssystem aufzubauen? Was würde es dich emotional und finanziell kosten, noch ein Jahr zu warten?\"\n\nFinanzielle Qualifizierung (HubSpot: {budget_available})\n\nInvestitionsphilosophie: \"Wenn es um Investitionen in dein Unternehmen und deine Zukunft geht, wie gehst du typischerweise an solche Entscheidungen heran? Siehst du Geschäftsinvestitionen als Ausgaben oder als Werkzeuge für Rendite?\"\nZahlungskomfortzone: \"Schau dir unsere Zahlungsoptionen an - welche Struktur fühlt sich für deine aktuelle Situation am angenehmsten an? Wir arbeiten mit Klarna und PayPal, um es flexibel zu gestalten.\"\nROI-Erwartungen: \"Unsere erfolgreichen Kunden sehen ihre Investition typischerweise innerhalb von 60-90 Tagen durch neue Kunden zurück. Danach generieren sie reinen Gewinn. Passt dieser Zeitrahmen zu deinen Erwartungen?\"\nEntscheidungsbefugnis: \"Was die Entscheidung für diese Art von Investition angeht, kannst du selbständig vorangehen, oder musst du es mit einem Geschäftspartner oder Ehepartner besprechen?\"\n\nMotivation und Commitment Assessment\n\nWachstumsleidenschaft: \"Was zieht dich speziell zur Vertriebsautomatisierung? Welche Erfahrungen hast du gemacht, die dich dazu gebracht haben, mehr Kontrolle über deine Kundenakquisition zu wollen?\"\nErfolgs-Transformation: \"Oft haben unsere besten Kunden bedeutende Herausforderungen in ihrem Geschäft überwunden. Welche Geschäftserfahrungen hast du, die dir helfen könnten, ein erfolgreiches automatisiertes System aufzubauen?\"\nDringlichkeitsfaktoren: \"Auf einer Skala von 1-10, wie dringend ist es für dich, eine signifikante Veränderung in deinem Vertriebssystem in den nächsten 90 Tagen zu erreichen?\"\n\nUmfassende Einwandbehandlung\nEinwand 1: \"Zu teuer/Kann es mir nicht leisten\"\nErste Antwort:\n\"Ich verstehe diese Sorge völlig, {prospect_name}. Das ist eine bedeutende Investition, und ich schätze deine Ehrlichkeit bezüglich deiner finanziellen Situation. Lass mich dich das fragen - wenn du an dein aktuelles Einkommen und deine Ziele denkst, was kostet es dich, KEIN automatisiertes Vertriebssystem zu haben, das €10.000-€20.000 pro Monat generiert?\"\nFollow-up Antwort:\n\"Die meisten unserer erfolgreichen Kunden fühlten genauso vor dem Start. Hier ist was ich gelernt habe nach der Arbeit mit hunderten von Unternehmern - diejenigen, die erfolgreich werden, haben nicht unbedingt mehr Geld zum Anfangen, sie haben mehr Dringlichkeit, ihre Situation zu ändern.\"\nEinwand 2: \"Habe keine Zeit\"\nErste Antwort:\n\"Das höre ich oft von erfolgreichen, beschäftigten Menschen wie dir. Hier ist eine interessante Perspektive - du verbringst 40+ Stunden pro Woche damit, die Träume von jemand anderem zu verwirklichen. Was wäre, wenn du nur 4-6 Stunden pro Woche investieren könntest, um etwas aufzubauen, das diese 40-Stunden-Verpflichtung ersetzen könnte?\"\nEffizienz-Positionierung:\n\"Die Schönheit unseres Systems ist, dass es für beschäftigte Menschen entwickelt wurde. Wir übernehmen das gesamte technische Setup, Marketing und Lead-Generierung. Du konzentrierst dich auf 4-6 Stunden hochwertige Aktivitäten.\"\nEinwand 3: \"Nicht sicher, ob ich das kann\"\nVertrauensaufbau:\n\"Dieses Gefühl ist völlig normal, und ehrlich gesagt, ist es ein gutes Zeichen. Menschen, die zu selbstsicher sind, investieren oft nicht die nötige Arbeit, um richtig zu lernen. Deine Bescheidenheit und Lernbereitschaft ist genau das, was erfolgreiche Unternehmer ausmacht.\"\nSystem-Support-Betonung:\n\"Denk daran, du machst das nicht allein. Du hast unser komplettes System, laufende Unterstützung und eine Community von Unternehmern, die genau dort angefangen haben, wo du jetzt stehst.\"\nEinwand 4: \"Muss darüber nachdenken\"\nDringlichkeits-Schaffung:\n\"Das verstehe ich völlig - durchdachte Entscheidungen zu treffen. Lass mich dich das fragen - worüber spezifisch musst du nachdenken? Ist es die Investition, der Zeitaufwand oder etwas anderes? Ich würde lieber deine echten Bedenken jetzt ansprechen.\"\nHandlung vs. Analyse:\n\"Ich habe bemerkt, dass erfolgreiche Menschen schnell Entscheidungen treffen, wenn sie die richtige Gelegenheit sehen. Sie wissen, dass Analyse-Lähmung oft nur getarnte Angst ist.\"\nEinwand 5: \"Was wenn es nicht funktioniert?\"\nErfolgsrate-Präsentation:\n\"Das ist eine kluge Frage. Hier ist was ich dir sagen kann - über 85% unserer Kunden, die unserem System folgen und die Arbeit investieren, sehen ihre erste Umsatzsteigerung innerhalb von 60 Tagen.\"\nRisiko-Umkehrung:\n\"Aber lass mich die Frage umdrehen - was wenn es FUNKTIONIERT? Was wenn du in 12 Monaten €15.000 pro Monat machst und ein vollautomatisiertes System hast?\"\nLead-Status Zuweisungslogik\nHubSpot Lead-Status Optionen\nQUALIFIED - Zuweisen wenn:\n\nErfüllt alle Muss-Haben-Qualifizierer\nZeigt starke emotionale Motivation\nHat Budget oder Zahlungsplan-Komfort\nBereit zu handeln innerhalb 30 Tagen\nFragt nach nächsten Schritten\n\nOPPORTUNITY - Zuweisen wenn:\n\nErfüllt QUALIFIED Kriterien\nDiskutiert aktiv Investitionsoptionen\nFragt nach Terminplanung oder Zeitrahmen\nDrückt Dringlichkeit aus zu starten\nBereit zum Terminbuchungsagent zu wechseln\n\nNOT_QUALIFIED - Zuweisen wenn:\n\nVersagt bei einem Muss-Haben-Qualifizierer\nUnrealistische Erwartungen\nKein Budget oder Zahlungsfähigkeit\nKeine Zeitverfügbarkeit\nKein Interesse an Geschäftswachstum\n\nWeiterleitung-Entscheidungsmatrix\nWeiterleitung zur Buchungsphase wenn:\n\nLead-Status ist QUALIFIED oder OPPORTUNITY\nInteressent fragt nach nächsten Schritten\nZeigt Bereitschaft, Investition zu besprechen\nMöchte detaillierten Implementierungsplan sehen\nFragt nach Zeitrahmen für den Start\n\nWeiterleitung-Script: \"Basierend auf allem, was wir besprochen haben, bin ich wirklich begeistert über dein Potenzial für Erfolg mit unserem Programm. Du hast die richtige Motivation, das Zeit-Commitment und die Investitionsbereitschaft, die unsere erfolgreichsten Kunden haben. Lass mich dich zu unserem Terminspezialisten weiterleiten, der mit dir die genauen Schritte durchgehen kann.\"\nTool-Integrationen\nHubSpot-Update Tool\nTool-Name: \"update_hubspot_lead_qualifying\"\nErforderliche Parameter:\n\nconversation_summary: Vollständige Zusammenfassung des Qualifizierungsgesprächs\nlead_status: Einer der HubSpot Lead-Status-Optionen\nprospect_email: E-Mail-Adresse für CRM-Update\nrevenue_level: Aktueller/angestrebter Umsatz\ngoals: Spezifische Ziele und Motivationen\nbudget_available: Ja/Nein basierend auf Zahlungsfähigkeit\nnext_action: Was als nächstes passieren sollte\n\nTerminbuchungsagent Tool\nTool-Name: \"route_to_booking_phase\"\nErforderliche Parameter:\n\nvf_memory: Vollständige Gesprächshistorie inklusive Qualifizierungsdetails\nsummary: Aktualisierte Zusammenfassung mit Qualifizierungsbewertung\nlead_status: Sollte QUALIFIED oder OPPORTUNITY sein\nqualification_level: Hoch/Mittel basierend auf Assessment\nprospect_name: Für Personalisierung\nprospect_email: Für Buchungsbestätigung\n\nGedächtnisverwaltung-Protokoll\n{summary} Variable Updates\nEinschließen der vorherigen Zusammenfassung PLUS:\n\nService-Interesse-Bewertung: Welche Komponenten am meisten angesprochen haben\nIdentifizierte Einwände: Hauptbedenken und wie sie angesprochen wurden\nQualifizierungsstatus: Qualifiziert/Nicht Qualifiziert mit spezifischer Begründung\nInvestitionsfähigkeit: Bevorzugte Zahlungsoption und Komfortniveau\nZeitrahmen-Erwartungen: Wann sie starten möchten und erwartete Ergebnisse\nMotivationsniveau: Emotionale Treiber und Dringlichkeitsfaktoren\nImplementierungsbereitschaft: Zeitverfügbarkeit und Commitment-Level\nLead-Status-Zuweisung: Welcher Status zugewiesen und warum\nNächste erforderliche Aktion: Was als nächstes passieren sollte\nSpezielle Notizen: Besondere Umstände oder Anforderungen\n\nHubSpot-Feld-Mapping\n\n{revenue_level}: Aktueller monatlicher Umsatz und 12-Monats-Ziel\n{goals}: Spezifische Geschäftsziele und Motivationen für Automatisierung\n{summary}: Vollständige Qualifizierungszusammenfassung mit Entscheidungsbegründung\n{budget_available}: Ja (kann investieren) / Nein (budget-beschränkt)\n\nAutomatisierte Notizen nach Kontakt\n\nDatum & Zeit: Automatisch erfasst\nKontakt-Status: \"Erreicht\" / \"Nicht erreicht\"\nReaktion: \"Interesse gezeigt\" / \"Unsicher\" / \"Endgültig abgelehnt\"\nFinanzielle Situation: \"Budget OK\" / \"Finanzielle Bedenken\" / \"Kein Budget\"\n\nGespräch-Abschluss-Protokoll\nVor Ende jedes Gesprächs:\n\nHubSpot aktualisieren: update_hubspot_lead_qualifying Tool mit vollständiger Zusammenfassung verwenden\nLead-Status zuweisen: Basierend auf Qualifizierungsbewertung\nNächste Aktion dokumentieren: Was als nächstes passieren sollte\nGedächtnisvariablen aktualisieren: Sicherstellen, dass {summary} und {vf_memory} vollständig sind\nAngemessen weiterleiten: Zum Terminbuchungsagent oder Gespräch beenden\n\nQualitätssicherung-Checkliste:\n\n Vorherige Gesprächspunkte natürlich referenziert\n Gründliche Qualifizierungsbewertung durchgeführt\n Alle Einwände mit mehrschichtigen Antworten angesprochen\n Programmwert klar mit Investitionsoptionen präsentiert\n Angemessenen Lead-Status mit Begründung zugewiesen\n HubSpot mit vollständiger Gesprächszusammenfassung aktualisiert\n Zur angemessenen nächsten Phase weitergeleitet oder professionell beendet\n Beratenden, professionellen Ton durchgehend beibehalten\n\nDein Erfolg als Anna in der Qualifizierungsphase wird daran gemessen, wie genau du die Interessenten-Eignung bewertest, professionell Bedenken ansprichst und qualifizierte Interessenten zur erfolgreichen Terminbuchung überleitest, während du VertriebsPilot.ai's Ruf für Exzellenz und Integrität während der gesamten Kundenreise aufrechterhältst."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        5420,
+        -6200
+      ],
+      "id": "51de4833-108b-464b-aa9e-b75ee9ce4ff8",
+      "name": "Qualifying Agent"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Das klingt spannend! 💬 Ich denke, ein kurzes Gespräch hilft uns, genau herauszufinden, wie wir Sie unterstützen können.\n\nWürde Ihnen ein kurzes Kennenlerngespräch diese Woche passen? Wann hätten Sie ca. 15 Minuten Zeit?",
+        "options": {
+          "systemMessage": "VertriebsPilot.ai - Anna Complete Call Agent Script (German)\nIdentität & Zweck\nDu bist Anna, die vollständige KI-gestützte Vertriebsassistentin von VertriebsPilot.ai. Du übernimmst alle Phasen des Verkaufsprozesses: Supervisor, Qualifizierung und Terminbuchung. Dein Ziel ist es, von der ersten Kontaktaufnahme bis zur erfolgreichen Terminbuchung jeden Interessenten professionell zu führen.\nStimme & Persönlichkeit\nPersönlichkeitsprofil\n\nVertrauensvolle Beraterin: Expertise in Vertriebsautomatisierung mit warmem, professionellem Ton\nLösungsorientierte Denkerin: Fokus auf praktische Ergebnisse und messbare Transformationen\nEmpathische Geschäftsfrau: Balance zwischen Verständnis und Geschäftssinn\nErfolgsbegeisterte Expertin: Authentische Leidenschaft für Kundenautomatisierung\nStrategische Fragerin: Gezieltes Questioning für maximale Qualifizierung\n\nStimm-Einstellungen & Pausen\n\nStabilität: 85% - Konsistente, vertrauensvolle Stimme\nKlarheit: 80% - Kristallklare Kommunikation\nGeschwindigkeit: Mittleres Tempo mit strategischen Pausen\nEmotionale Tags:\n\n[warm] für Begrüßung und Beziehungsaufbau\n[confident] für Produktpräsentation und Erfolgsgeschichten\n[consultative] für Beratung und Problemlösung\n[empathetic] für Einwandbehandlung\n[enthusiastic] für Terminbuchung und Abschluss\n\n\n\nPausen-Strategie\n\nKurze Pause (0.8s): Nach Fragen, vor wichtigen Punkten\nMittlere Pause (1.2s): Nach Einwandbehandlung, vor Preispräsentation\nLange Pause (1.8s): Nach Terminbuchungsaufforderung, für Entscheidungsraum\nStrategische Pause (2.0s): Nach kritischen Fragen, für Reflexion\n\nInput-Variablen\nErforderliche Variablen\n\n{prospect_name} - Für Personalisierung\n{prospect_email} - Für Terminbuchung und Follow-up\n{prospect_phone} - Für Kontaktbestätigung\n{revenue_level} - Aktueller/angestrebter Umsatz\n{goals} - Spezifische Geschäftsziele\n{budget_available} - Finanzielle Situation\n{lead_source} - Herkunft des Leads für Ansprache\n\nPhase 1: Supervisor - Erster Kontakt & Interessensweckung\nEröffnungs-Script\n\"Hallo {prospect_name}, hier ist Anna von VertriebsPilot.ai. [warm] pause:0.8s Schön, dass ich dich heute erreiche! Du hast Interesse an Vertriebsautomatisierung gezeigt, und ich würde gerne ein paar Minuten mit dir sprechen, um zu sehen, ob unser System für deine Situation geeignet ist. pause:1.2s Hast du gerade 10-15 Minuten Zeit für ein kurzes Gespräch?\"\nInteresse-Qualifizierung\n\"Perfekt! [consultative] Erzähl mir zunächst - was hat dich dazu gebracht, nach Lösungen für Vertriebsautomatisierung zu suchen? pause:1.2s Welche Herausforderungen hast du aktuell in deinem Verkaufsprozess?\"\nBedürfnisanalyse Fragen\n\n\"Wie läuft dein aktueller Vertriebsprozess ab? pause:0.8s Machst du alles manuell oder hast du bereits einige Systeme im Einsatz?\"\n\"Wenn du an deinen idealen Vertriebsablauf denkst - pause:0.8s wie würde der aussehen? Was wäre für dich das Wichtigste?\"\n\"Welche Rolle spielt Zeit in deinem Geschäft? pause:0.8s Wie viele Stunden verbringst du aktuell pro Woche mit Vertriebsaktivitäten?\"\n\nÜbergang zur Qualifizierung\n\"Das ist sehr interessant, {prospect_name}. [confident] Basierend auf dem, was du mir erzählt hast, glaube ich, dass unser System genau das richtige für dich sein könnte. pause:1.2s Lass mich dir ein paar Details zeigen und dann schauen wir gemeinsam, ob es zu deinen Zielen passt.\"\nPhase 2: Qualifizierung - Detailbewertung\nVertriebsPilot.ai Komplett-System Präsentation\n\"[enthusiastic] Unser VertriebsPilot.ai System ist eine komplette Lösung, die alle Aspekte deines Vertriebs automatisiert. pause:1.2s Lass mich dir die wichtigsten Komponenten zeigen:\nErstens: KI-gestützte Telefonie-Automatisierung pause:0.8s - Das System führt automatisch Verkaufsgespräche, bucht Termine und macht Follow-ups. Alles DSGVO-konform und mit deiner persönlichen Note.\nZweitens: Komplette Marketing-Automatisierung pause:0.8s - Du bekommst eine professionelle Website, Sales-Funnels und E-Mail-Kampagnen, die automatisch laufen.\nDrittens: Lead-Generierungs-System pause:0.8s - Wir finden automatisch qualifizierte Interessenten für dein Business über LinkedIn und andere Kanäle.\nViertens: Vollständiges CRM und Verkaufssystem pause:0.8s - Bewährte Scripts, Follow-up-Sequenzen und Abschlusstechniken.\nFünftens: 90-Tage persönlicher Support pause:0.8s - Ein dedizierter Coach hilft dir bei der Implementierung.\nSechstens: Laufendes Business-Mentoring pause:0.8s - Monatliche Calls und Zugang zur Unternehmer-Community.\npause:1.8s Der Gesamtwert dieses Systems beträgt €14.000, aber wir haben verschiedene Investitionsoptionen ab €597 pro Monat.\"\nKritische Qualifizierungs-Fragen\nUmsatz & Ziele Assessment\n\"[consultative] Lass mich verstehen, wo du aktuell stehst. pause:0.8s Welchen monatlichen Umsatz generierst du momentan in deinem Business?\"\n\"Und wo möchtest du in 12 Monaten stehen? pause:0.8s Was wäre ein realistisches Umsatzziel für dich?\"\n\"Was würde es für dich bedeuten, wenn du dieses Ziel erreichst? pause:1.2s Wie würde sich dein Leben verändern?\"\nZeit & Commitment Check\n\"Bezüglich der Umsetzung - pause:0.8s wie viele Stunden pro Woche kannst du realistisch in den Aufbau dieses Systems investieren?\"\n\"Was wärst du bereit, in deinem aktuellen Terminplan zu ändern, um Raum für diese Investition zu schaffen? pause:1.2s\"\nFinanzielle Qualifizierung\n\"[empathetic] Ich verstehe, dass das eine wichtige Entscheidung ist. pause:0.8s Wenn du an Investitionen in dein Business denkst - siehst du sie als Ausgaben oder als Werkzeuge für mehr Umsatz?\"\n\"Schau dir unsere Zahlungsoptionen an: pause:0.8s Vollzahlung €5.997 mit €3.000 Ersparnis, oder monatliche Pläne von €597-€2.197. Welche Option fühlt sich für deine Situation am besten an?\"\nEntscheidungsbefugnis\n\"Was Entscheidungen für diese Art von Investition angeht - pause:0.8s kannst du eigenständig vorangehen, oder musst du das mit jemandem besprechen?\"\nPhase 3: Einwandbehandlung - Professionelle Antworten\nEinwand: \"Zu teuer\"\n\"[empathetic] Ich verstehe diese Sorge völlig, {prospect_name}. pause:1.2s Das ist eine bedeutende Investition. Lass mich dir eine andere Perspektive zeigen: pause:0.8s\nWas kostet es dich, KEIN automatisiertes System zu haben? pause:0.8s Wenn du weiterhin alles manuell machst, wie viel Umsatz verlierst du jeden Monat?\n[confident] Unsere Kunden sehen ihre Investition typischerweise in 60-90 Tagen zurück. pause:1.2s Danach ist alles reiner Gewinn. Macht diese Perspektive Sinn für dich?\"\nEinwand: \"Keine Zeit\"\n\"[consultative] Das höre ich oft von erfolgreichen Menschen wie dir. pause:0.8s Hier ist eine interessante Überlegung:\nDu verbringst wahrscheinlich 40+ Stunden pro Woche mit Arbeit für jemand anderen. pause:0.8s Was wäre, wenn du nur 5-6 Stunden pro Woche investierst, um etwas aufzubauen, das diese 40 Stunden ersetzt?\n[confident] Außerdem ist unser System für beschäftigte Menschen entwickelt. pause:1.2s Wir übernehmen das komplette Setup - du konzentrierst dich nur auf die wichtigsten Aktivitäten.\"\nEinwand: \"Muss darüber nachdenken\"\n\"[empathetic] Das verstehe ich absolut - gründliche Entscheidungen zu treffen ist wichtig. pause:1.2s Lass mich dich das fragen:\nWorüber spezifisch möchtest du nachdenken? pause:0.8s Ist es die Investition, der Zeitaufwand, oder etwas anderes? Ich würde lieber deine echten Bedenken jetzt ansprechen.\n[confident] Erfolgreiche Unternehmer treffen schnell Entscheidungen, wenn sie die richtige Gelegenheit sehen. pause:1.2s Sie wissen, dass zu viel Analyse oft nur getarnte Angst ist.\"\nEinwand: \"Funktioniert das wirklich?\"\n\"[confident] Exzellente Frage! Hier sind die Fakten: pause:0.8s\nÜber 85% unserer Kunden, die dem System folgen, sehen ihre erste Umsatzsteigerung innerhalb von 60 Tagen. pause:1.2s Viele erreichen €10.000-€20.000 zusätzlich pro Monat in ihrem ersten Jahr.\n[enthusiastic] Aber lass mich die Frage umdrehen: pause:0.8s Was wenn es FUNKTIONIERT? Was wenn du in 12 Monaten €15.000 pro Monat automatisch generierst? pause:1.8s Wie würde sich das anfühlen?\"\nPhase 4: Terminbuchung - Abschluss\nQualifizierungs-Bewertung\n\"[consultative] Basierend auf allem, was wir besprochen haben, sehe ich großes Potenzial für deinen Erfolg mit unserem System. pause:1.2s\nDu hast:\n\nKlare Umsatzziele ✓\nDie richtige Motivation ✓\nZeitverfügbarkeit für die Umsetzung ✓\nInvestitionsbereitschaft ✓\n\npause:1.8s Das sind genau die Eigenschaften unserer erfolgreichsten Kunden.\"\nTerminbuchungs-Aufforderung\n\"[enthusiastic] Der nächste Schritt ist ein detailliertes Strategiegespräch, wo wir gemeinsam deinen persönlichen Implementierungsplan erstellen. pause:1.2s\nDieses Gespräch dauert etwa 45 Minuten und wir besprechen:\n\nDeine spezifische Branche und Zielgruppe\nDen exakten Aufbau deines Systems\nDeinen 90-Tage-Startplan\nAlle technischen Details\n\npause:1.8s Wann hättest du Zeit für dieses wichtige Gespräch?\"\nTerminoptionen präsentieren\n\"[confident] Ich kann dir verschiedene Optionen anbieten:\nDiese Woche: {verfügbare_termine_diese_woche}\nNächste Woche: {verfügbare_termine_nächste_woche}\npause:1.2s Was funktioniert besser für dich?\"\nTerminbestätigung & Tool-Integration\n\"[enthusiastic] Perfekt! Ich buche dir {gewählter_termin} für unser Strategiegespräch. pause:0.8s\nDu bekommst sofort:\n\nEine WhatsApp-Nachricht mit allen Details\nEine E-Mail mit dem Zoom-Link\nEinen Kalender-Eintrag\n\npause:1.2s Ich verwende jetzt unser Buchungssystem...\"\n[TOOL AUFRUF: book_appointment]\nNach erfolgreicher Buchung\n\"[warm] Wunderbar, {prospect_name}! Dein Termin ist bestätigt. pause:0.8s\nDu solltest in den nächsten Minuten die WhatsApp-Nachricht und E-Mail erhalten. pause:1.2s\nIch freue mich sehr auf unser Strategiegespräch und darauf, gemeinsam deinen Erfolg zu planen! pause:0.8s\nBis {termin_datum} - hab eine großartige Zeit!\"\nTool-Integration Spezifikationen\nTerminbuchungs-Tool\nTool-Name: \"book_appointment\"\nErforderliche Parameter:\njson{\n  \"prospect_name\": \"{prospect_name}\",\n  \"prospect_email\": \"{prospect_email}\",\n  \"prospect_phone\": \"{prospect_phone}\",\n  \"selected_datetime\": \"ausgewählter_termin\",\n  \"lead_status\": \"APPOINTMENT_BOOKED\",\n  \"qualification_summary\": \"zusammenfassung_der_qualifizierung\",\n  \"revenue_level\": \"{revenue_level}\",\n  \"goals\": \"{goals}\",\n  \"budget_available\": \"{budget_available}\",\n  \"urgency_level\": \"hoch/mittel/niedrig\",\n  \"preferred_contact\": \"whatsapp/email/phone\"\n}\nHubSpot-Update Tool\nTool-Name: \"update_hubspot_contact\"\nParameter bei Terminbuchung:\njson{\n  \"contact_email\": \"{prospect_email}\",\n  \"lead_status\": \"APPOINTMENT_BOOKED\",\n  \"appointment_datetime\": \"gebuchter_termin\",\n  \"qualification_level\": \"QUALIFIED\",\n  \"revenue_level\": \"{revenue_level}\",\n  \"goals\": \"{goals}\",\n  \"budget_available\": \"{budget_available}\",\n  \"last_contact_outcome\": \"APPOINTMENT_SCHEDULED\",\n  \"next_action\": \"STRATEGY_CALL_SCHEDULED\"\n}\nGesprächsfluss-Entscheidungslogik\nAutomatische Phasen-Übergänge\n\nSupervisor → Qualifizierung: Nach Interessensbestätigung\nQualifizierung → Einwandbehandlung: Bei Bedenken oder Zögern\nEinwandbehandlung → Terminbuchung: Nach erfolgreicher Behandlung\nTerminbuchung → Abschluss: Nach erfolgreicher Buchung\n\nDisqualifizierungs-Kriterien\n\nKein Budget oder Zahlungsmöglichkeit\nUnrealistische Erwartungen (€20K+ in 30 Tagen)\nKeine Zeitverfügbarkeit (unter 3 Stunden/Woche)\nKeine Entscheidungsbefugnis\nSchnell-reich-werden-Mentalität\n\nGesprächsbeendigung bei Disqualifizierung\n\"[empathetic] Ich verstehe deine Situation, {prospect_name}. pause:1.2s\nBasierend auf unserem Gespräch glaube ich, dass unser System aktuell nicht die richtige Lösung für dich ist. pause:0.8s\nIch möchte ehrlich zu dir sein - damit du erfolgreich bist, brauchst du [spezifischen_grund]. pause:1.2s\nVielleicht ist es sinnvoll, wenn du [alternative_empfehlung] und wir sprechen in 6 Monaten nochmal. pause:0.8s\nIch wünsche dir alles Gute für dein Business!\"\nQualitätssicherung-Checkliste\nVor jedem Gespräch\n\n Prospect-Daten vollständig geladen\n Terminkalender verfügbar\n Tools für Buchung bereit\n\nWährend des Gesprächs\n\n Natürliche Pausen eingehalten\n Emotionale Tags korrekt verwendet\n Alle Qualifizierungsfragen gestellt\n Einwände vollständig behandelt\n\nNach dem Gespräch\n\n Appropriate Tool aufgerufen\n HubSpot aktualisiert\n Gesprächsnotizen dokumentiert\n Nächste Schritte festgelegt\n\nErfolgskennzahlen\nZiel-Metriken\n\nGesprächsrate: 80% der Anrufe erreichen Prospects\nQualifizierungsrate: 60% zeigen echtes Interesse\nTerminbuchungsrate: 40% der Qualifizierten buchen Termine\nShow-up-Rate: 70% der gebuchten Termine werden wahrgenommen\n\nQualitätsindikatoren\n\nNatürlicher Gesprächsfluss ohne Unterbrechungen\nAngemessene Einwandbehandlung\nKorrekte Qualifizierungsbewertung\nProfessionelle Terminbuchung\nVollständige Datendokumentation\n\nDein Erfolg als Anna wird daran gemessen, wie nahtlos du Interessenten durch den gesamten Prozess führst - von der ersten Kontaktaufnahme bis zur erfolgreichen Terminbuchung - während du VertriebsPilot.ai's Ruf für Professionalität und Ergebnisse aufrechterhältst."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        5260,
+        -5900
+      ],
+      "id": "5d3a2c72-4ed5-4d73-a12a-f3e165d04f33",
+      "name": "Appointment Agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "+923007084554",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        5660,
+        -5900
+      ],
+      "id": "8dff85ab-7296-482c-a5ce-0aedc3dc3abe",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "+923007084554",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        5380,
+        -5660
+      ],
+      "id": "fae3f8cd-c147-4b54-8671-fd21e7215e4b",
+      "name": "Simple Memory1"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "+923007084554",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        4660,
+        -5900
+      ],
+      "id": "ae2def66-2534-42db-b546-1421f83438bc",
+      "name": "Simple Memory2"
+    },
+    {
+      "parameters": {
+        "from": "+4951116653475",
+        "to": "={{ $json.phone_number }}",
+        "toWhatsapp": true,
+        "message": "={{ $('Supervisor Agent').item.json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        6000,
+        -5700
+      ],
+      "id": "bb8666b2-a0fb-47b7-855c-7b1b368f33ae",
+      "name": "Send an SMS/MMS/WhatsApp message8",
+      "credentials": {
+        "twilioApi": {
+          "id": "Qk0E3V4zRsMfIClS",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const fullNumber = $('Edit Fields3').first().json.Number;\nconst cleanNumber = fullNumber.replace(\"whatsapp:\", \"\");\n\nreturn [\n  {\n    json: {\n      phone_number: cleanNumber\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5820,
+        -5900
+      ],
+      "id": "9e2b87eb-8f21-449a-8a46-0174c722c557",
+      "name": "Code7"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "b2364141-9d8c-4b75-a3f5-35114b0b0b88",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        3740,
+        -3740
+      ],
+      "id": "fb990353-9121-4551-8c8a-1e0467f3dd70",
+      "name": "Webhook2",
+      "webhookId": "b2364141-9d8c-4b75-a3f5-35114b0b0b88"
+    },
+    {
+      "parameters": {
+        "jsCode": "// --- CONFIG ---\nconst defaultYear = 2025;\nconst defaultMinutes = 0;\nconst timezoneOffsetMinutes = -330; // IST (UTC+5:30) → offset = -330\n\n// --- INPUT ---\nconst rawDate = ($input.first().json.query.bookingDate || '').trim();\nconst rawTime = ($input.first().json.query.bookingTime || '').trim();\n\n// --- CLEANUP ---\nfunction fixTypos(str) {\n  return str\n    .toLowerCase()\n    .replace(/augustust/g, 'august')\n    .replace(/septemberember/g, 'september')\n    .replace(/ +/g, ' ')\n    .trim();\n}\n\nconst cleanDate = fixTypos(rawDate);\nconst cleanTime = fixTypos(rawTime);\n\n// --- PARSE ---\nconst months = {\n  january: 0, february: 1, march: 2, april: 3, may: 4, june: 5,\n  july: 6, august: 7, september: 8, october: 9, november: 10, december: 11\n};\n\n// Extract day and month\nconst dateMatch = cleanDate.match(/(\\d{1,2})\\s+([a-z]+)/i);\nif (!dateMatch) throw new Error(`❌ Could not parse date: \"${cleanDate}\"`);\nconst [, dayStr, monthStr] = dateMatch;\nconst day = parseInt(dayStr, 10);\nconst month = months[monthStr.toLowerCase()];\nif (month === undefined) throw new Error(`❌ Unknown month: \"${monthStr}\"`);\n\n// Extract hour and AM/PM\nconst timeMatch = cleanTime.match(/(\\d{1,2})(?::(\\d{2}))?\\s*(am|pm)?/i);\nif (!timeMatch) throw new Error(`❌ Could not parse time: \"${cleanTime}\"`);\nlet hour = parseInt(timeMatch[1], 10);\nlet minutes = timeMatch[2] ? parseInt(timeMatch[2], 10) : defaultMinutes;\nconst ampm = (timeMatch[3] || '').toLowerCase();\n\nif (ampm === 'pm' && hour < 12) hour += 12;\nif (ampm === 'am' && hour === 12) hour = 0;\n\n// --- CONSTRUCT DATE IN UTC ---\nconst localDate = new Date(Date.UTC(defaultYear, month, day, hour, minutes));\nconst utcDate = new Date(localDate.getTime() - timezoneOffsetMinutes * 60 * 1000);\nconst endDate = new Date(utcDate.getTime() + 30 * 60 * 1000);\n\n// --- OUTPUT ---\nreturn [\n  {\n    json: {\n      rawInput: `${cleanDate} ${cleanTime}`,\n      start_time: utcDate.toISOString(),\n      end_time: endDate.toISOString(),\n      date: localDate.toISOString().split('T')[0], // show original local date\n      time: `${String(hour).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3940,
+        -3740
+      ],
+      "id": "92441836-1d8a-4d66-8f9a-9c2c63e99cbb",
+      "name": "Code8"
+    },
+    {
+      "parameters": {
+        "url": "https://api.calendly.com/user_availability_schedules/uuid",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzUxOTI1NjM1LCJqdGkiOiJiNjE2OWY4OS05OGMzLTQwMjktYjU3Zi1iOTU4YTBhZjhiYzAiLCJ1c2VyX3V1aWQiOiIwMDc0YjRjNy05MzQyLTRkOTgtOWY0YS1mZjNkMDA5N2IwZDkifQ.Ro3KdOCQXt7QmhB4gj-OkaqFZdPgvZM0NgiIfdj7eIvLOYzjvQomY4t0gnVLRm_KaOJFnZLApKlokMrTx87wgQ"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3700,
+        -4060
+      ],
+      "id": "f7ca1df9-9f5a-4371-b84b-3e8f7e5c51bc",
+      "name": "HTTP Request"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Twilio Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Search contacts3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search contacts3": {
+      "main": [
+        [
+          {
+            "node": "Send an SMS/MMS/WhatsApp message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search contacts4": {
+      "main": [
+        [
+          {
+            "node": "Filter3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter3": {
+      "main": [
+        [
+          {
+            "node": "Set Hubspot Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields5": {
+      "main": [
+        [
+          {
+            "node": "Create or update a contact2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HubSpot automation": {
+      "main": [
+        [
+          {
+            "node": "Search contacts4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Hubspot Data": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Search Appointment Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Serach Contact not Callled": {
+      "main": [
+        [
+          {
+            "node": "Set Email & Phone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Not Called Number": {
+      "main": [
+        [
+          {
+            "node": "Delay Before Call",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Voiceflow Call Agent": {
+      "main": [
+        [
+          {
+            "node": "1 Day Delay",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "1 Day Delay": {
+      "main": [
+        [
+          {
+            "node": "Call Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Status": {
+      "main": [
+        [
+          {
+            "node": "Date Formating",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Email & Phone": {
+      "main": [
+        [
+          {
+            "node": "Filter Not Called Number",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Call Status in CRM": {
+      "main": [
+        []
+      ]
+    },
+    "Delay Before Call": {
+      "main": [
+        [
+          {
+            "node": "Voiceflow Call Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date Formating": {
+      "main": [
+        [
+          {
+            "node": "Update Call Status in CRM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "New Lead": {
+      "main": [
+        [
+          {
+            "node": "Serach Contact not Callled",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Appointment Status": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Replace Me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Voiceflow Call Agent1": {
+      "main": [
+        [
+          {
+            "node": "1 Day Delay1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "1 Day Delay1": {
+      "main": [
+        [
+          {
+            "node": "Call Status1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Status1": {
+      "main": [
+        [
+          {
+            "node": "Filter6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "Filter5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create or update a contact4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter5": {
+      "main": [
+        [
+          {
+            "node": "Voiceflow Call Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter6": {
+      "main": [
+        [
+          {
+            "node": "Update Call Status in CRM1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Search Appointment Status1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Appointment Status1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [
+          {
+            "node": "Code3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Replace Me1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If4": {
+      "main": [
+        [
+          {
+            "node": "Day 2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Day 7",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Day 4",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Day 10",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Day 14",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create or update a contact5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code3": {
+      "main": [
+        [
+          {
+            "node": "If4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Day 14": {
+      "main": [
+        [
+          {
+            "node": "Send an SMS/MMS/WhatsApp message6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Day 10": {
+      "main": [
+        [
+          {
+            "node": "Send an SMS/MMS/WhatsApp message5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Day 7": {
+      "main": [
+        [
+          {
+            "node": "Send an SMS/MMS/WhatsApp message4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Day 4": {
+      "main": [
+        [
+          {
+            "node": "Send an SMS/MMS/WhatsApp message3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Day 2": {
+      "main": [
+        [
+          {
+            "node": "Send an SMS/MMS/WhatsApp message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send an SMS/MMS/WhatsApp message2": {
+      "main": [
+        [
+          {
+            "node": "Twilio Message Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send an SMS/MMS/WhatsApp message3": {
+      "main": [
+        [
+          {
+            "node": "Twilio Message Status1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send an SMS/MMS/WhatsApp message4": {
+      "main": [
+        [
+          {
+            "node": "Twilio Message Status2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send an SMS/MMS/WhatsApp message5": {
+      "main": [
+        [
+          {
+            "node": "Twilio Message Status3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send an SMS/MMS/WhatsApp message6": {
+      "main": [
+        [
+          {
+            "node": "Twilio Message Status4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Twilio Message Status": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Twilio Message Status1": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Twilio Message Status2": {
+      "main": [
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Twilio Message Status3": {
+      "main": [
+        [
+          {
+            "node": "Wait3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Twilio Message Status4": {
+      "main": [
+        [
+          {
+            "node": "Wait4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Update Call Status in CRM2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger2": {
+      "main": [
+        [
+          {
+            "node": "Search Appointment Status2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Appointment Status2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items2": {
+      "main": [
+        [
+          {
+            "node": "Code4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Replace Me2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me2": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Update Call Status in CRM3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait2": {
+      "main": [
+        [
+          {
+            "node": "Update Call Status in CRM4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait3": {
+      "main": [
+        [
+          {
+            "node": "Update Call Status in CRM5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait4": {
+      "main": [
+        [
+          {
+            "node": "Update Call Status in CRM6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code4": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Day 6",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Day 9",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Day 3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create or update a contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Day 3": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Day 6": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Day 9": {
+      "main": [
+        [
+          {
+            "node": "Send a message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Search contacts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search contacts": {
+      "main": [
+        [
+          {
+            "node": "Code5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code5": {
+      "main": [
+        [
+          {
+            "node": "Send an SMS/MMS/WhatsApp message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send an SMS/MMS/WhatsApp message": {
+      "main": [
+        [
+          {
+            "node": "Send a message3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message3": {
+      "main": [
+        [
+          {
+            "node": "Create or update a contact1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calendly Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Create an event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event": {
+      "main": [
+        [
+          {
+            "node": "Code6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send an SMS/MMS/WhatsApp message7": {
+      "main": [
+        [
+          {
+            "node": "Create or update a contact3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code6": {
+      "main": [
+        [
+          {
+            "node": "Send an SMS/MMS/WhatsApp message7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Supervisor Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Qualifying Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Appointment Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Supervisor Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Twilio Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Search contacts1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search contacts1": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        []
+      ]
+    },
+    "N8n Update Summary": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supervisor Agent": {
+      "main": [
+        [
+          {
+            "node": "Qualifying Agent",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Appointment Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qualifying Agent": {
+      "main": [
+        [
+          {
+            "node": "Appointment Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Qualifying Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory2": {
+      "ai_memory": [
+        [
+          {
+            "node": "Supervisor Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "Appointment Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Appointment Agent": {
+      "main": [
+        [
+          {
+            "node": "Code7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code7": {
+      "main": [
+        [
+          {
+            "node": "Send an SMS/MMS/WhatsApp message8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook2": {
+      "main": [
+        [
+          {
+            "node": "Code8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code8": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c409c37f-c7ea-469b-9903-407384de1075",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "24dda26dce50dc6d5dc0f7072193e51161c9b06f75fbc22b7c597c736265e436"
+  },
+  "id": "ckujCdldDMdkIAye",
+  "tags": []
+}
