@@ -1,0 +1,386 @@
+{
+  "name": "Appointment Setting",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "b166f283-c7fe-45da-8786-c3e4b1346d9a",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "14b9fd61-c8ce-4e7c-ac31-7b556ef9ac3f",
+      "name": "Webhook",
+      "webhookId": "b166f283-c7fe-45da-8786-c3e4b1346d9a"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7e4b6d92-e428-4c4c-8d80-136b1332bf90",
+              "name": "fecha solicitada",
+              "value": "={{ $json.body.message.toolCallList[0].function.arguments.fecha }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "4b42d86e-0e94-4266-a1ff-638f592cb6ea",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cf9bc01b-af74-404e-940b-1d382ba5337b",
+              "name": "fecha de inicio",
+              "value": "={{ $json['fecha solicitada'].toDateTime().format('yyyy-MM-dd') + \"T\" + \"09:00:00+02:00\"}}",
+              "type": "string"
+            },
+            {
+              "id": "03f04d31-f264-47cc-acee-f7567df0d852",
+              "name": "fecha de fin",
+              "value": "={{ $json['fecha solicitada'].toDateTime().format('yyyy-MM-dd') + \"T\" + \"18:00:00+02:00\"}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        416,
+        0
+      ],
+      "id": "06f6438c-aed9-43e7-80e0-250cac82462e",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "url": "https://api.cal.com/v1/slots",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "apiKey",
+              "value": "cal_live_547b6f8ea246cfeb97ee14fcfd17f6df"
+            },
+            {
+              "name": "startTime",
+              "value": "={{ $json['fecha de inicio'] }}"
+            },
+            {
+              "name": "endTime",
+              "value": "={{ $json['fecha de fin'] }}"
+            },
+            {
+              "name": "timeZone",
+              "value": "Europe/Madrid"
+            },
+            {
+              "name": "eventTypeId",
+              "value": "524421"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        624,
+        0
+      ],
+      "id": "a7ae6af1-2e7c-4c65-b5e8-9cce5f1bd8fc",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dc1ca99c-9b04-4134-908d-28428f681898",
+              "name": "slots correctos",
+              "value": "={{ $json.slots }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        832,
+        0
+      ],
+      "id": "648fed4f-45c1-49f7-b226-0bf77065903d",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8221ca12-0a8d-483a-881c-02b54c178ce8",
+              "leftValue": "={{ $json['slots correctos'] }}",
+              "rightValue": "={{ $('Edit Fields').item.json['fecha solicitada'] }}",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1040,
+        0
+      ],
+      "id": "730f7677-cd0c-4184-94ec-9602905c4ff3",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5038c428-5839-4825-8b1b-97c69e56deee",
+              "name": "hora correcta solicitada",
+              "value": "={{ $('Edit Fields').item.json['fecha solicitada'].toDateTime().format('yyyy-MM-dd') + \"T\" + $('Edit Fields').item.json['fecha solicitada'].toDateTime().minus(2,'hours').format('HH:mm:ss')}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1248,
+        -96
+      ],
+      "id": "c86e3336-e8c8-44d1-bfb4-66cf907a09a5",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.cal.com/v2/bookings ",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "cal-api-version",
+              "value": "2024-08-13"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer cal_live_547b6f8ea246cfeb97ee14fcfd17f6df"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={\n  \"attendee\": {\n    \"language\": \"es\",\n    \"name\": \"{{ $('Webhook').item.json.body.message.toolWithToolCallList[0].toolCall.function.arguments.nombre }}\",\n    \"timeZone\": \"Europe/Madrid\",\n    \"phoneNumber\": \"+34666666666\"\n  },\n  \"eventTypeId\": 524421,\n  \"start\": \"{{ $json['hora correcta solicitada'] }}\",\n  \"location\": {\n    \"type\": \"address\"\n  },\n  \"bookingFieldsResponses\": {\n    \"description\": \"Recuerda estar 10 minutos antes de tu cita con el agente inmobiliario\",\n    \"title\": \"Cita con el agente\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1456,
+        -96
+      ],
+      "id": "b7fef76d-3fd1-424a-b37f-8049537b829f",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"results\": [\n    {\n      \"toolCallId\": \"{{ $('Webhook').item.json.body.message.toolCalls[0].id }}\",\n      \"result\": \"La cita ha sido reservada y programada para la hora solicitada, informa al usuario\"\n    }\n  ]\n}\n",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1664,
+        -96
+      ],
+      "id": "e062a967-1be5-4393-90b2-f6f1443bfc76",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"results\": [\n    {\n      \"toolCallId\": \"{{ $('Webhook').item.json.body.message.toolCalls[0].id }}\",\n      \"result\": \"No hay disponibilidad a la hora solicitada, proponle al usuario uno de estos slots: {{ $json.slots }}\"\n    }\n  ]\n}\n",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1248,
+        96
+      ],
+      "id": "18bd5737-8dd0-46f8-8b04-5b69f5aea125",
+      "name": "Respond to Webhook1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a1711bb8-1a45-4d59-9375-9eed85179e11",
+  "meta": {
+    "instanceId": "cc3d73b93b697d365502470db086898cc8a1e267b0a823f51f1bea633036d5ed"
+  },
+  "id": "U2lxWmuUGUyKJGjy",
+  "tags": []
+}
