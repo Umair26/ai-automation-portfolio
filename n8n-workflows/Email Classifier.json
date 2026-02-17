@@ -1,0 +1,427 @@
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "e2f0e1fe-5ecd-4d06-a1df-54c0af345dfa",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "cqLqwEgycoRtVnUH",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Aquí tienes la información y el contenido del email:  {{ $json.snippet }}"
+            },
+            {
+              "content": "Limpia todo el email de contenido HTML y publicidad de el que lo haya enviado. Quita también el subject o el asunto del correo. \nNo quites nada de la información ni del contenido del correo",
+              "role": "system"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        220,
+        0
+      ],
+      "id": "8eacb0df-4ac8-4c8c-9f5d-896ac181bb85",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "oeIAKevr6gs5rGzy",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputText": "={{ $json.message.content }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "Contratos o información de pago",
+              "description": "=Correos que lleven un invoice o un link a un pago de un contrato o un servicio por entregar\n\nPalabras clave como un precio, un link a PayPal o Stripe, o algo por el estilo que incluya un pago"
+            },
+            {
+              "category": "Prioridad alta",
+              "description": "=Correos que requieran una urgencia, que traten problemas dentro del negocio o aspectos a solucionar de inmediato \n\nPalabras clave como urgencia, problema, sistemas..."
+            },
+            {
+              "category": "Promociones o spam",
+              "description": "=Correos que pertenezcan a una campañana de marketing de una empresa y que busquen convencernos de que su servicio es el mejor. Estos correos se mandan en mucha cantidad de una\n\nPalabras clave como oportunidad, clientes, por ese estilo"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1,
+      "position": [
+        580,
+        0
+      ],
+      "id": "164e6a74-cc02-43c8-95ba-498a7aeae259",
+      "name": "Text Classifier"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        680,
+        220
+      ],
+      "id": "144f7b81-116d-4e55-92b6-7976dc4dfa85",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "zz7FeqlcBu9ikl0L",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Gmail Trigger').item.json.id }}",
+        "labelIds": [
+          "Label_2256460883805272377"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        960,
+        -360
+      ],
+      "id": "f1e84465-ee70-43f5-a2f6-d641db700f82",
+      "name": "Gmail",
+      "webhookId": "a8b18c2c-37d1-4c6e-9343-6add0d077f1b",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "cqLqwEgycoRtVnUH",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Aquí tienes el correo: {{ $('OpenAI').item.json.message.content }}",
+        "options": {
+          "systemMessage": "Eres un asistente especializado en responder emails de contratos de pago de manera formal y agradeciendo el envío, junto a informando que el pago se realizará próximamente\n\nHerramientas\nResponder gmail: Tienes la posibilidad de enviar una respuesta al email que nos acaba de llegar\n\nNo hagas referencia a nadie ni a ninguna empresa a no ser que sea mencionada, si no usa elipsis y no uses algo como [nombre]\n\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1180,
+        -320
+      ],
+      "id": "af112866-ad9e-413a-af0b-874a4527d0d2",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1020,
+        -100
+      ],
+      "id": "3374cff7-b09a-4a7e-8805-9346a8a30ac5",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "oeIAKevr6gs5rGzy",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{ $('Gmail Trigger').item.json.id }}",
+        "emailType": "text",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        1340,
+        -100
+      ],
+      "id": "9b85f0c9-3bf4-45ff-9aa9-05488bcaa725",
+      "name": "Gmail1",
+      "webhookId": "b7d5d696-cd8f-47e9-a945-a0784917086b",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "cqLqwEgycoRtVnUH",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Gmail Trigger').item.json.id }}",
+        "labelIds": [
+          "Label_4860434171911804765"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1560,
+        0
+      ],
+      "id": "5f11f7be-4851-4ead-b073-62816e51046b",
+      "name": "Gmail2",
+      "webhookId": "dfa83a55-4b8f-4329-ab40-24f16badecfd",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "cqLqwEgycoRtVnUH",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $('Gmail Trigger').item.json.id }}",
+        "labelIds": [
+          "Label_520464638964993201"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        940,
+        120
+      ],
+      "id": "8efa552a-e621-49b5-b484-e8e6015b1794",
+      "name": "Gmail3",
+      "webhookId": "7dec20bd-cad0-46fd-96cd-68484572a93d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "cqLqwEgycoRtVnUH",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Aquí tienes el correo: {{ $('OpenAI').item.json.message.content }}",
+        "options": {
+          "systemMessage": "Eres un asistente especializado en rechazar las ofertas de promoción o marketing que lleguen por email de manera educada informando que no estamos interesados\n\nHerramientas\nResponder al email: Usa esta herramienta para responder al email que nos acaba de llegar y rechazar la oferta"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1120,
+        140
+      ],
+      "id": "98127d34-3f1f-4e94-8d75-8051cfadde65",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{ $('Gmail Trigger').item.json.id }}",
+        "emailType": "text",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        1280,
+        360
+      ],
+      "id": "fa4688ec-813b-4e07-87ec-e30fa56ccc8a",
+      "name": "Gmail4",
+      "webhookId": "af6ba1fd-cd80-4389-81be-d71779ea3f90",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "cqLqwEgycoRtVnUH",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Classifier": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gmail2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gmail3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail3": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail4": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "50e7ffae-a07e-417a-be29-bfed05d5f4f7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a69d6549eb540438aa4b3a31fa93fc201f8b071819a20a52860bb5ec9f1d688c"
+  },
+  "id": "OSGOkAai53BJTGMc",
+  "tags": []
+}
