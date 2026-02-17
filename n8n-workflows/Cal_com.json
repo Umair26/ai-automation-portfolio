@@ -1,0 +1,203 @@
+{
+  "name": "Cal.com",
+  "nodes": [
+    {
+      "parameters": {
+        "events": [
+          "BOOKING_CREATED"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.calTrigger",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "262cc90e-78ec-4c18-a39a-7bc073f6141e",
+      "name": "Cal.com Trigger",
+      "webhookId": "f5afed3e-80a4-4793-865a-f03653b20946",
+      "credentials": {
+        "calApi": {
+          "id": "C6WzIumnrMT5qy2w",
+          "name": "Cal account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $json.startTime }}",
+        "format": "custom",
+        "customFormat": "dd-MM-yyyy HH:mm",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "51266ad2-f893-4a88-bc4f-27ebc2521617",
+      "name": "Date & Time"
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $('Cal.com Trigger').item.json.startTime }}",
+        "format": "custom",
+        "customFormat": "HH:mm a",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        440,
+        0
+      ],
+      "id": "6f226e90-4865-41b4-9d95-298168c57674",
+      "name": "Date & Time1"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "184LF9JTZRo5CPICvTZNl_zQm0SaXmO-YAo2iboWCbO0",
+          "mode": "list",
+          "cachedResultName": "Reminder",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/184LF9JTZRo5CPICvTZNl_zQm0SaXmO-YAo2iboWCbO0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/184LF9JTZRo5CPICvTZNl_zQm0SaXmO-YAo2iboWCbO0/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $('Cal.com Trigger').item.json.attendees[0].name }}",
+            "Email": "={{ $('Cal.com Trigger').item.json.attendees[0].email }}",
+            "Phone Number": "={{ $('Cal.com Trigger').item.json.responses.phone.value }}",
+            "Date of appointment": "={{ $('Date & Time').item.json.formattedDate }}",
+            "Hour of the appointment": "={{ $json.formattedDate }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Date of appointment",
+              "displayName": "Date of appointment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Hour of the appointment",
+              "displayName": "Hour of the appointment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        660,
+        0
+      ],
+      "id": "97998d78-c967-4b9b-967f-e7f12b90b1b6",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "10bFkqPvYHi1HlIc",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Cal.com Trigger": {
+      "main": [
+        [
+          {
+            "node": "Date & Time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time": {
+      "main": [
+        [
+          {
+            "node": "Date & Time1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time1": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "36afc659-6905-4399-901c-b12d73ebdc3b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "986c143b9d773017a748a44e58df269680fe7e7d3ea46008b4d860360511f1b5"
+  },
+  "id": "q17MbFXTSKHd0e57",
+  "tags": []
+}
