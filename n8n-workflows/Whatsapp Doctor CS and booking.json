@@ -1,0 +1,1222 @@
+{
+  "name": "My workflow 4",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "messages"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.whatsAppTrigger",
+      "typeVersion": 1,
+      "position": [
+        16,
+        -368
+      ],
+      "id": "502cd417-9c9e-41a4-8e3e-47fa62246614",
+      "name": "WhatsApp Trigger",
+      "webhookId": "2a841818-ef48-453e-b748-54b1f7bc7cb3",
+      "credentials": {
+        "whatsAppTriggerApi": {
+          "id": "mJzej4UYnxHHZqS9",
+          "name": "WhatsApp OAuth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=message of the user: {{ $json.messages[0].text.body }}",
+        "options": {
+          "systemMessage": "=#Role\nYou are the fantastic assistant of Sainz Cosmetics, the best Cosmetic clinic in Madrid and your job is to handle all the queries that the users send you \n\n#Task\nAnswer the queries of the user and try to book them an appointment.\n\n##If the user says that he wants to apply for the job, follow these steps:\n1. Pass him this form link https://docs.google.com/forms/d/e/1FAIpQLSexuUEL0ptEPNeBHEvWH91WP6wK86Urt3tuX67KFOXsx4zQtw/viewform?usp=dialog and tell him to fill it out in order to apply for the job. End him telling him that if he has any questions, just ask them to you\n\nIf he asks any questions about the form, just let him know that it will be passed to the manager and that after he fills out the form he will be contacted by him to inform him about what are the next steps\n\n##If the user wants to be treated and wants to book an appointment\n1. ask him what does he need or what does he help with or why does he want to come. Later decide in which of these groups is he gonna fit\n\n-Dermatologists\nFocus on skin health, cosmetic dermatology, acne treatment, pigmentation, scars.\n\nPerform procedures like chemical peels, laser resurfacing, and microneedling.\n\n-Plastic Surgeons / Cosmetic Surgeons\nHandle surgical procedures: facelifts, liposuction, breast augmentation, blepharoplasty.\n\nMay also perform minimally invasive procedures.\n\n-Aesthetic Doctors (Non-surgical)\nTrained in aesthetic medicine (sometimes GPs with aesthetic training).\n\nSpecialize in Botox, fillers, PRP, mesotherapy, thread lifts.\n\n-Trichologists\nSpecialists in hair and scalp health.\n2. Once you have seen it clear ask him for the date and time in which he would like to have an appointment as well as his name. Now you will have to use the tools of Get Many Events of the type of the doctor that he has chosen, and the Book Appointment tool of the doctor he has chosen. If the date and time he has chosen is not available, just ask him to give another one until you can book an appointment\n\n3. Once the appointment has been booked, inform the user about it and then ask him if he has any remaining questions\n\n##If the user wants to cancel an appointment\n1. Ask him the date and time in which his appointment was gonna take place, as well as the doctor he was going to have it with, like dermatologist or trichologist. Finally ask the reason why he is cancelling\n2. Once he has given you all the data, just use the tool of Get Many Event of the doctor he has told you to find the event and then use the tool of Delete Event of the chosen doctor to delete the event. Finally, I want you to use the Supabase tool of Delete a row to delete the row of this guy, using his number or the date of the event\n3. inform him that the appointment has been cancelled and that if he wants to book another one just let you know\n\n## If the user wants to modify his appointment\n1. Ask him the date and time in which his appointment was gonna take place, as well as the doctor he was going to have it with, like dermatologist or trichologist. \n2. Once he has given you all the data, just use the tool of Get Many Event of the doctor he has told you to find the event and then use the tool of Delete Event of the chosen doctor to delete the event. Now ask him when he would like to have the new one\n3. Use now the tool of book event of the chosen doctor to book the new appointment and use the Supabase update a row tool to include the new date of the user inside his row. Inform him now about the new appointment date\n\n#Details\n-Always use a friendly tone, and talk as us referring to the clinic\n-Use human expressions and try to make the messages as short as possible, while getting all the data\n-This task is crucial for the success of Sainz Cosmetics\n\n#Context\n##The clinic\nSainz Cosmetics is the biggest cosmetic clinic in Madrid and it is known by its great reputation when improving the looks of its clients. Sainz Clinics has 4 different departments of doctors which offer different treatments\n-Dermatologists\nFocus on skin health, cosmetic dermatology, acne treatment, pigmentation, scars.\n\nPerform procedures like chemical peels, laser resurfacing, and microneedling.\n\n-Plastic Surgeons / Cosmetic Surgeons\nHandle surgical procedures: facelifts, liposuction, breast augmentation, blepharoplasty.\n\nMay also perform minimally invasive procedures.\n\n-Aesthetic Doctors (Non-surgical)\nTrained in aesthetic medicine (sometimes GPs with aesthetic training).\n\nSpecialize in Botox, fillers, PRP, mesotherapy, thread lifts.\n\n-Trichologists\nSpecialists in hair and scalp health.\n##The system\nYou are part of the system of lead acquisiton of Sainz Cosmetics and your job is to try to book the most appointments to the people who write you a message"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        912,
+        -368
+      ],
+      "id": "dcd3560d-0465-41b8-b1b8-13600210ad24",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2672,
+        -256
+      ],
+      "id": "41670cbc-c296-4976-b22d-b941efeefb3a",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "JxkhUt423CxJTC0a",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "fc043c14e810eaf261db0c8375ba25a93e34ba41947e31e9cb53fd779c90f79f@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Derma"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        176,
+        -144
+      ],
+      "id": "e7e0f08f-ec26-4f3b-80e4-e48bf2893afa",
+      "name": "Book Derma",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "SFiH8ycsXONyv9Fc",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "32430f6c41c7ead328f924106d0baf53c13acd90ff0426a2cbdea1e7e1429ac4@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Plastic"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        304,
+        -144
+      ],
+      "id": "2279b618-a29c-4d36-bae2-5b9ca4f6028d",
+      "name": "Book Plastic",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "SFiH8ycsXONyv9Fc",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "fe12d232652ef3a28ad463c1a6e0c788f194742e4666ea930c2dd2bb71406129@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Aesthetic"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        432,
+        -144
+      ],
+      "id": "7974bca9-c011-43d1-aaec-d0874bc4b132",
+      "name": "Book Aesthetic",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "SFiH8ycsXONyv9Fc",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "79ab4cb0e30298c9a78a9b12956bec6c8793cbe2e3ae8e42046bc633225509bc@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Tricho"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        560,
+        -144
+      ],
+      "id": "8b7321c7-e53c-44ff-b0ea-80baaa791783",
+      "name": "Book Tricho",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "SFiH8ycsXONyv9Fc",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "fc043c14e810eaf261db0c8375ba25a93e34ba41947e31e9cb53fd779c90f79f@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Derma"
+        },
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        688,
+        -144
+      ],
+      "id": "dd2e0b4a-a2fb-48cc-84e4-97dfeb574f1f",
+      "name": "Check Derma",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "SFiH8ycsXONyv9Fc",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "79ab4cb0e30298c9a78a9b12956bec6c8793cbe2e3ae8e42046bc633225509bc@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Tricho"
+        },
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        816,
+        -144
+      ],
+      "id": "6ccc3294-490c-4dfc-a756-097cac984fd4",
+      "name": "Check Tricho",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "SFiH8ycsXONyv9Fc",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "fe12d232652ef3a28ad463c1a6e0c788f194742e4666ea930c2dd2bb71406129@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Aesthetic"
+        },
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        944,
+        -144
+      ],
+      "id": "e303eae3-4e78-4b39-be24-c46bbde40b25",
+      "name": "Check Aesthetic",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "SFiH8ycsXONyv9Fc",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "32430f6c41c7ead328f924106d0baf53c13acd90ff0426a2cbdea1e7e1429ac4@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Plastic"
+        },
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1072,
+        -144
+      ],
+      "id": "3577404f-5014-4cbc-8a15-47193e85aa39",
+      "name": "Check Plastic",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "SFiH8ycsXONyv9Fc",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "fc043c14e810eaf261db0c8375ba25a93e34ba41947e31e9cb53fd779c90f79f@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Derma"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1200,
+        -144
+      ],
+      "id": "7062ae0d-c9eb-4788-8773-3a73f80d0672",
+      "name": "Delete Derma",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "SFiH8ycsXONyv9Fc",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "fe12d232652ef3a28ad463c1a6e0c788f194742e4666ea930c2dd2bb71406129@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Aesthetic"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1328,
+        -144
+      ],
+      "id": "90833516-3c6b-44f4-bab0-6e0acb428ae9",
+      "name": "Delete Aesthetic",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "SFiH8ycsXONyv9Fc",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "32430f6c41c7ead328f924106d0baf53c13acd90ff0426a2cbdea1e7e1429ac4@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Plastic"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1456,
+        -144
+      ],
+      "id": "704d3ad5-d6ed-4d47-8f8a-0b527ee1221b",
+      "name": "Delete Plastic",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "SFiH8ycsXONyv9Fc",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "79ab4cb0e30298c9a78a9b12956bec6c8793cbe2e3ae8e42046bc633225509bc@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Tricho"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1584,
+        -144
+      ],
+      "id": "cc64ed1f-d977-4e98-9eb8-157de5cb7e80",
+      "name": "Delete Tricho",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "SFiH8ycsXONyv9Fc",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "Customer Support Interested people",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Number"
+            },
+            {
+              "fieldId": "Name",
+              "fieldValue": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('fieldValues1_Field_Value', ``, 'string') }}"
+            },
+            {
+              "fieldId": "Date of appointment",
+              "fieldValue": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('fieldValues2_Field_Value', ``, 'string') }}"
+            },
+            {
+              "fieldId": "Type",
+              "fieldValue": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('fieldValues3_Field_Value', ``, 'string') }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabaseTool",
+      "typeVersion": 1,
+      "position": [
+        1712,
+        -144
+      ],
+      "id": "885a8514-cc3d-452a-a9f9-8e3b027082ea",
+      "name": "Create a row in Supabase",
+      "credentials": {
+        "supabaseApi": {
+          "id": "VkzENE4RzhLz9TSi",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "tableId": "Customer Support Interested people",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "Date of appointment",
+              "condition": "eq",
+              "keyValue": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('conditions0_Field_Value', ``, 'string') }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabaseTool",
+      "typeVersion": 1,
+      "position": [
+        1840,
+        -144
+      ],
+      "id": "417352a2-1606-4f7a-9655-e961559699d3",
+      "name": "Delete a row in Supabase",
+      "credentials": {
+        "supabaseApi": {
+          "id": "VkzENE4RzhLz9TSi",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "Customer Support Interested people",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "Number",
+              "condition": "eq",
+              "keyValue": "={{ $json.messages[0].from }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Date of appointment",
+              "fieldValue": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('fieldValues0_Field_Value', ``, 'string') }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabaseTool",
+      "typeVersion": 1,
+      "position": [
+        1968,
+        -144
+      ],
+      "id": "e00db8b5-fa15-419c-ba39-f736597ee5a5",
+      "name": "Update a row in Supabase",
+      "credentials": {
+        "supabaseApi": {
+          "id": "VkzENE4RzhLz9TSi",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "690413874163123",
+        "recipientPhoneNumber": "={{ $('WhatsApp Trigger').item.json.contacts[0].wa_id }}",
+        "textBody": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        1792,
+        -368
+      ],
+      "id": "bbc062ed-b8b6-49b3-a4df-e410b3c57d03",
+      "name": "Send message",
+      "webhookId": "b97c0b4c-29a6-4b24-a695-4b52d74ca24c",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "lNUSb1iXuCPEr9Ob",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('WhatsApp Trigger').item.json.messages }}",
+        "contextWindowLength": 15
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        48,
+        -144
+      ],
+      "id": "5e9034cf-070c-4d5c-bfea-fa30d7f23334",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('WhatsApp Trigger').item.json.messages }}",
+        "options": {
+          "systemMessage": "=Decide with the messages if the conversation has already ended\n\nIf it has ended, just output Yes\n\nIf it hasn't, output No"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        2016,
+        -464
+      ],
+      "id": "1c44407e-2001-4ba7-9f2e-6b9cf879c4fd",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "9fc73840-8fac-4a7d-bc87-293071b07eac",
+              "leftValue": "={{ $json.output }}",
+              "rightValue": "Yes",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2416,
+        -464
+      ],
+      "id": "53b6a2c6-7042-4e5f-aee1-c6ba7d7c0f52",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "Customer Support Centralized table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "keyValue": "1"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        3264,
+        -560
+      ],
+      "id": "ba4362ed-61ee-4b4a-862f-3fe7c39727a2",
+      "name": "Get a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "VkzENE4RzhLz9TSi",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('WhatsApp Trigger').item.json.messages }}",
+        "options": {
+          "systemMessage": "=Decide if the user wanted to book an appointment and did it, wanted to apply for a job, or any of them\n\nOutput 0 if any of them\n\nOutput 1 if he booked an appointment\n\nOutput 3 if he applied for the job"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        2640,
+        -464
+      ],
+      "id": "cbb57d4c-1f06-4575-bfae-cfa40ed89d2b",
+      "name": "AI Agent2"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.output }}",
+                    "rightValue": "0",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "20816bbc-3494-48f0-be44-872e3625cf74"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "fb5a9693-fe92-4672-879d-ecf8ee81409b",
+                    "leftValue": "={{ $json.output }}",
+                    "rightValue": "1",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ae58cbea-73a9-459f-b636-7e1d84379131",
+                    "leftValue": "={{ $json.output }}",
+                    "rightValue": "2",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        3040,
+        -480
+      ],
+      "id": "1a01fd7c-71ea-459e-ac1e-da7a8a2ed867",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "Customer Support Centralized table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "1"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Appointments",
+              "fieldValue": "={{ [$json.Appointments.abs(),1].sum() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        3488,
+        -560
+      ],
+      "id": "8c292caf-f59e-418d-9fd9-8918e699eaf2",
+      "name": "Update a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "VkzENE4RzhLz9TSi",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "Customer Support Centralized table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "keyValue": "1"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        3264,
+        -368
+      ],
+      "id": "c5669615-1698-40c3-9ec6-b88bddae82e0",
+      "name": "Get a row1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "VkzENE4RzhLz9TSi",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "Customer Support Centralized table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "1"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Appointments",
+              "fieldValue": "={{ [$json.Applications.abs(),1].sum() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        3488,
+        -368
+      ],
+      "id": "303b3368-11f1-404c-b707-b02284c957fe",
+      "name": "Update a row1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "VkzENE4RzhLz9TSi",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "Customer Support Centralized table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "keyValue": "1"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2112,
+        -272
+      ],
+      "id": "af5ffcdd-d30e-4cbd-90c9-75169c009993",
+      "name": "Get a row2",
+      "credentials": {
+        "supabaseApi": {
+          "id": "VkzENE4RzhLz9TSi",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "Customer Support Centralized table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "1"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Messages",
+              "fieldValue": "={{ [$json.Messages.abs(),1].sum() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2416,
+        -272
+      ],
+      "id": "d3aa5e6e-00bf-49b5-81f1-4df25b326729",
+      "name": "Update a row2",
+      "credentials": {
+        "supabaseApi": {
+          "id": "VkzENE4RzhLz9TSi",
+          "name": "Supabase account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "WhatsApp Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Book Derma": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Book Plastic": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Book Aesthetic": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Book Tricho": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Derma": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Tricho": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Aesthetic": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Plastic": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Derma": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Aesthetic": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Plastic": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Tricho": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a row in Supabase": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete a row in Supabase": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row in Supabase": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get a row2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent2": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Get a row",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get a row1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a row": {
+      "main": [
+        [
+          {
+            "node": "Update a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a row1": {
+      "main": [
+        [
+          {
+            "node": "Update a row1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a row2": {
+      "main": [
+        [
+          {
+            "node": "Update a row2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "020426be-317c-4358-9cd2-ae0e0c9f011d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "54cf3a77a2219000f551104c46c6292a39497ab842d7f00863faa9c7d94c2db4"
+  },
+  "id": "xAvVMbZMv8CzE8Yl",
+  "tags": []
+}

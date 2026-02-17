@@ -1,0 +1,199 @@
+{
+  "name": "Shopify VIP Customers",
+  "nodes": [
+    {
+      "parameters": {
+        "authentication": "trigger",
+        "topic": "orders/create"
+      },
+      "id": "6a31342d-3dc4-45bf-bf43-c766124e3f99",
+      "name": "Shopify Order Trigger",
+      "type": "n8n-nodes-base.shopifyTrigger",
+      "typeVersion": 1,
+      "position": [
+        -600,
+        100
+      ],
+      "webhookId": "55bab15e-11a2-4a51-b7c8-5aa15a14612f"
+    },
+    {
+      "parameters": {
+        "resource": "customer"
+      },
+      "id": "80b414d0-f4b2-426d-bcf9-ba0a2060c0d9",
+      "name": "Get Customer Details",
+      "type": "n8n-nodes-base.shopify",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        100
+      ],
+      "credentials": {
+        "shopifyApi": {
+          "id": null,
+          "name": "your-shopify-credentials"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [],
+          "number": [
+            {
+              "value1": "={{$json.total_spent}}",
+              "operation": "larger",
+              "value2": 500
+            },
+            {
+              "value1": "={{$json.orders_count}}",
+              "operation": "largerEqual",
+              "value2": 3
+            },
+            {
+              "value1": "={{$('Shopify Order Trigger').item.json.total_price}}",
+              "operation": "larger",
+              "value2": 300
+            }
+          ],
+          "string": []
+        }
+      },
+      "id": "ede0a91e-a319-4aea-9d1d-32cdd1f522ef",
+      "name": "Is VIP?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -200,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "customer"
+      },
+      "id": "e41e03ad-48ee-4a1d-ab77-bdf4d577ac75",
+      "name": "Tag as VIP",
+      "type": "n8n-nodes-base.shopify",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "credentials": {
+        "shopifyApi": {
+          "id": null,
+          "name": "your-shopify-credentials"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "headerAuth",
+        "url": "https://a.klaviyo.com/api/profile-subscription-bulk-create",
+        "jsonParameters": true,
+        "options": {}
+      },
+      "id": "388fddcc-0bcb-4057-b41c-849c41273c5b",
+      "name": "Klaviyo Add VIP",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        200,
+        0
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": null,
+          "name": "your-klaviyo-credentials"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "channel": "#orders",
+        "text": "VIP Customer 🚀\nName: {{$json.first_name}} {{$json.last_name}}\nOrder Value: ${{$json.total_price}}\nTotal Spent: ${{$json.total_spent}}\n👉 Suggest: Handwritten thank you or bonus item",
+        "otherOptions": {},
+        "attachments": []
+      },
+      "id": "9344f5d7-4247-4966-9569-0a2e3e7e8288",
+      "name": "Notify Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 1,
+      "position": [
+        400,
+        0
+      ],
+      "credentials": {
+        "slackApi": {
+          "id": null,
+          "name": "your-slack-credentials"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Shopify Order Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get Customer Details",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Customer Details": {
+      "main": [
+        [
+          {
+            "node": "Is VIP?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is VIP?": {
+      "main": [
+        [
+          {
+            "node": "Tag as VIP",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notify Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tag as VIP": {
+      "main": [
+        [
+          {
+            "node": "Klaviyo Add VIP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "7caadeb0-7898-415b-a7e3-40901a96162c",
+  "meta": {
+    "instanceId": "f728ac8b256bc0332b9cc850d0cf415bb9be6d8f439bde96f0fa8f4178c36ca3"
+  },
+  "id": "Zzl32JSx9PCZgfTu",
+  "tags": []
+}

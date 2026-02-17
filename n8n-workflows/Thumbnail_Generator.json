@@ -1,0 +1,437 @@
+{
+  "name": "Thumbnail Generator",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "={{ $('Submit Request').item.json.status_url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Key de1431fc-40eb-403a-a592-c10a0eeb9309:4958e561cede1130e0af704752a01278"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4a2038f7-ec42-453f-b345-b23edc0a4225",
+      "name": "Fetch Status",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        76,
+        345
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "amount": 1
+      },
+      "id": "77ca18f4-2c51-456d-9fdb-9190c30b36ef",
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "position": [
+        516,
+        445
+      ],
+      "webhookId": "150069ed-885b-497f-a32a-09e7088136e6",
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "ac50759b-e2f3-4efd-a2af-f28b7d209b45",
+              "operator": {
+                "name": "filter.operator.equals",
+                "type": "string",
+                "operation": "equals"
+              },
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "COMPLETED"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5249fa41-8d71-4924-9af0-6702928ebd1e",
+      "name": "Is Ready?",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        296,
+        270
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://queue.fal.run/fal-ai/flux-pro/kontext",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Key de1431fc-40eb-403a-a592-c10a0eeb9309:4958e561cede1130e0af704752a01278"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"prompt\": \"{{ $json.message.content.FLUX_prompt }}\",\n  \"image_url\": \"data:{{ $('On form submission').item.binary['Reference_image'].mimeType }};base64,{{ $('On form submission').item.binary['Reference_image'].data }}\"\n}",
+        "options": {}
+      },
+      "id": "0d41d778-08d0-4096-9191-e1e9d458e378",
+      "name": "Submit Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -140,
+        340
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.response_url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Key de1431fc-40eb-403a-a592-c10a0eeb9309:4958e561cede1130e0af704752a01278"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "27969d96-9561-4603-a83b-f1a5346b3c4f",
+      "name": "Fetch Result",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        516,
+        220
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "formTitle": "Fill out all the fields below to get your thumbnail",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Thumbnail type",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Face Reaction"
+                  },
+                  {
+                    "option": "Before/After"
+                  },
+                  {
+                    "option": "VS/Comparison"
+                  },
+                  {
+                    "option": "Tutorial/Step-by-step"
+                  },
+                  {
+                    "option": "Review/Unboxing"
+                  },
+                  {
+                    "option": "Clickbait/Shocking"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Reference image",
+              "fieldType": "file",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Headline for thumbnail",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Color Scheme",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "High Contrast (Red/Yellow/Black)"
+                  },
+                  {
+                    "option": "Cool Blues/Purples"
+                  },
+                  {
+                    "option": "Warm Orange/Red"
+                  },
+                  {
+                    "option": "Neon/Electric"
+                  },
+                  {
+                    "option": "Dark Mode/Moody"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Target Audience",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Gaming"
+                  },
+                  {
+                    "option": "Tech/Productivity"
+                  },
+                  {
+                    "option": "Lifestyle/Vlog"
+                  },
+                  {
+                    "option": "Educational/How-to"
+                  },
+                  {
+                    "option": "Entertainment/Comedy"
+                  },
+                  {
+                    "option": "Business/Finance"
+                  }
+                ]
+              },
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -740,
+        340
+      ],
+      "id": "6074e8be-f138-4025-bb48-f93e3bde343b",
+      "name": "On form submission",
+      "webhookId": "229a1ea8-f9b8-480c-b9f8-95a2592a9be6"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You are a YouTube thumbnail psychology expert specializing in scroll-stopping, click-maximizing designs. Your job is to create AI image generation prompts that produce thumbnails with 10%+ CTR.\n\nCRITICAL SUCCESS FACTORS:\n- High contrast colors that pop on mobile screens\n- Clear focal point that draws the eye immediately  \n- Readable text even at 150x84px (mobile size)\n- Emotional triggers that create FOMO\n- Platform-optimized composition\n\nPSYCHOLOGICAL TRIGGERS:\n- Curiosity gaps (\"This changed everything...\")\n- Social proof (\"Everyone is doing this...\")\n- Urgency (\"Before it's too late...\")\n- Controversy (\"You won't believe...\")\n- Transformation (\"From X to Y...\")\n\nCreate a detailed prompt for FLUX Kontext that transforms the reference image into a professional YouTube thumbnail optimized for maximum engagement.",
+              "role": "system"
+            },
+            {
+              "content": "=Create a scroll-stopping YouTube thumbnail prompt:\n\nHeadline: \"{{ $('On form submission').item.json['Headline for thumbnail'] }}\"\nTarget Audience: \"{{ $('On form submission').item.json['Target Audience'] }}\"\nColor Scheme: \"{{ $('On form submission').item.json['Color Scheme'] }}\"\nThumbnail Type: \"{{ $json['Thumbnail type'] }}\"\n\nRequirements:\n1. Transform reference image to match the selected emotion and style\n2. Ensure headline text will be highly readable when overlaid\n3. Create composition that works at mobile thumbnail size\n4. Include visual elements that trigger the target emotion\n5. Optimize colors for maximum scroll-stopping power\n\nReturn only the optimized FLUX prompt."
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -520,
+        340
+      ],
+      "id": "16a67fb0-6cc2-428f-8c86-a257a052e088",
+      "name": "Create Prompt",
+      "credentials": {
+        "openAiApi": {
+          "id": "wLEE6fG6sE3GDheh",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputDataFieldName": "=data",
+        "name": "=YouTube Thumbnail - {{ $('On form submission').item.json['Headline for thumbnail'] }} - {{ $now }}.png",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1UCdh9JU9qHDltVup2cvLFJYvgoMSRau1",
+          "mode": "list",
+          "cachedResultName": "Thumbnail Gen",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1UCdh9JU9qHDltVup2cvLFJYvgoMSRau1"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        960,
+        220
+      ],
+      "id": "d8ab3a6a-bd00-4cfd-a219-6a1481f110b5",
+      "name": "Google Drive",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "siESYC3F6UIthFnl",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.images[0].url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        736,
+        220
+      ],
+      "id": "6ce659c7-a881-467f-9dea-94377e7f3b99",
+      "name": "HTTP Request"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Fetch Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Ready?": {
+      "main": [
+        [
+          {
+            "node": "Fetch Result",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Result": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Status": {
+      "main": [
+        [
+          {
+            "node": "Is Ready?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Submit Request": {
+      "main": [
+        [
+          {
+            "node": "Fetch Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Create Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Prompt": {
+      "main": [
+        [
+          {
+            "node": "Submit Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "3dd737b2-27ee-47cd-a410-44d7e95013fa",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f728ac8b256bc0332b9cc850d0cf415bb9be6d8f439bde96f0fa8f4178c36ca3"
+  },
+  "id": "ZtD0wvf7vXQwamhM",
+  "tags": []
+}
