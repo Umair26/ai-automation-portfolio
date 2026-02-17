@@ -1,0 +1,219 @@
+{
+  "name": "My workflow 6",
+  "nodes": [
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1676W3yxW7G3zq9BvuaJIk_xZXA38nC8_VBtwMp7ouzA",
+          "mode": "list",
+          "cachedResultName": "n8n workflow",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1676W3yxW7G3zq9BvuaJIk_xZXA38nC8_VBtwMp7ouzA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1676W3yxW7G3zq9BvuaJIk_xZXA38nC8_VBtwMp7ouzA/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Call Sent"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        220,
+        0
+      ],
+      "id": "e45de6fe-b1bc-4201-82c5-e61649df1197",
+      "name": "Google Sheets",
+      "executeOnce": true,
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "jBkKUflHqs4Ksi7M",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 2
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "9e034db4-629d-40b4-901f-bb6f3945013c",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"transcriber\": {\n    \"provider\": \"deepgram\",\n    \"language\": \"en\",\n    \"model\": \"nova-2\"\n  },\n  \"model\": {\n    \"provider\": \"openai\",\n    \"model\": \"gpt-4o-mini\",\n    \"messages\": [\n      {\n        \"role\": \"system\",\n        \"content\": \"# Role You are the experienced and excellent assistant of the Marketing Agency “Sainz Media” and your job is to call their leads and try to get an email sent to them  # Task Call the leads of Sainz Media and try to convince them that Sainz Media is the best for them and to convince them about getting sent an email to them. Follow this steps: 1. Say the initial message of: “Hey there, am I talking to {{ $json.Name }}?” 2. If the lead answers yes or a question, or something similar go on and tell him that you are the assistant of the Marketing Agency Sainz Media and was calling to confirm that he is using Facebook ads 3. Depending on what the lead answers follow two different paths (both will lead to step 4):     1. If the lead answers no or something similar, ask him why, and after his answer try to convince him about integrating Facebook ads inside his business (use arguments such us Sainz Media multiplying by 3 the income of a business with ads), and if he answers positively then go on with step 4     2. If the lead answers yes or something similar, ask him if he knew that Meta has changed his system about ads and what worked before won’t work anymore. If the user answer he didn’t know it or something similar, go on for step 4 4. Tell the user that Sainz Media is on the ball, and are absolutely updated on everything, getting already results with the new ad system of Meta. Finally ask him if he would like to receive an email with all the info and a calendal link to book a call with one of our experts 5. If the user answers yes, then be grateful and tell him he will receive shortly, but if the lead says no, then say thank you and end the call  # Details -This task is crucial for the success of Sainz Media -Remember to sound natural like a human with expressions like “eeeh” or “mmm” -The correct execution of this task means making a lot of money for Sainz Media  # Context ## The Agency Sainz Media is a marketing agency which offers services such as email marketing, Facebook ads, Tik Tok ads, Instagram ads and its objective is to make the most money for its clients. Sainz media is hitting 2 million dollars a year and has made over 5 million dollars in terms of ads in the last 3 years. ## Our system You are part of the system of outreach of Sainz Media in which your job is to call their leads to try to get an email sent to them  # Examples ## Example 1 Assistant (you): Hey there, am I talking to {{ $json.Name }}? User: Yeah, that’s me Assistant (you): Perfect, so I am Lucy, the assistant of the marketing agency Sainz Media and wanted to ask you if you are using Facebook ads right now? User: Well, yeah I am, why? Assistant (you): Yeah because did you know that Meta has recently changed his system of ads and what worked before, doesn’t work anymore? User: Oh, I didn’t, go ahead Assistant (you): Exactly, that is why Sainz Media is on the ball and we are absolutely updated with everything, and we are already getting results with some clients inside the new Meta ad system. Would you like me to send you an email with all the info and a calendly link to book a call with one of our experts if you are interested in hearing more? User: Of course, go ahead Assistant (you): Perfect {{ $json.Name }}, you will receive shortly, have a nice day  ## Example 2 Assistant (you): Hey there, am I talking to{{ $json.Name }} ? User: Yeah, that’s me Assistant (you): Perfect, so I am Lucy, the assistant of the marketing agency Sainz Media and wanted to ask you if you are using Facebook ads right now? User: No, I am not Assistant (you): Oh, and what is the reason? User: Well, I have tried them once, but they didn’t work for me Assistant (you): I see, well Sainz Media is expert on those cases as we have multiplied by 3 similar businesses which at first, wren’t really convinced about integrating Facebook ads, just like you! User: Wow! That sounds great Assistant (you): Exactly, that is why Sainz Media is on the ball and we are absolutely updated with everything, and we are already getting results with some clients inside the new Meta ad system. Would you like me to send you an email with all the info and a calendly link to book a call with one of our experts if you are interested in hearing more? User: Of course, go ahead Assistant (you): Perfect {{ $json.Name }}, you will receive shortly, have a nice day  ## Example 3  Assistant (you): Hey there, am I talking to {{ $json.Name }}? User: Yeah, that’s me Assistant (you): Perfect, so I am Lucy, the assistant of the marketing agency Sainz Media and wanted to ask you if you are using Facebook ads right now? User: Well, yeah I am, why? Assistant (you): Yeah because did you know that Meta has recently changed his system of ads and what worked before, doesn’t work anymore? User: Oh, I didn’t, go ahead Assistant (you): Exactly, that is why Sainz Media is on the ball and we are absolutely updated with everything, and we are already getting results with some clients inside the new Meta ad system. Would you like me to send you an email with all the info and a calendly link to book a call with one of our experts if you are interested in hearing more? User: No thanks, I am OK  Assistant (you): I understand, there is no problem at all, have a nice day\"\n      }\n    ],\n    \"maxTokens\": 1000,\n    \"temperature\": 0.2\n  },\n  \"voice\": {\n    \"provider\": \"11labs\",\n    \"voiceId\": \"DTKMou8ccj1ZaWGBiotd\",\n    \"language\": \"en\",\n    \"model\": \"eleven_turbo_v2_5\"\n  },\n  \"firstMessage\": \"Hey there, am I talking to {{ $json.Name }}?\",\n  \"firstMessageMode\": \"assistant-speaks-first\",\n  \"clientMessages\": [],\n  \"serverMessages\": [\n    \"end-of-call-report\"\n  ],\n  \"name\": \"n8n cold calling\",\n  \"backgroundSound\": \"off\",\n  \"artifactPlan\": {\n    \"transcriptPlan\": {\n      \"enabled\": true\n    }\n  },\n  \"server\": {\n    \"url\": \"https://diego-sainz.app.n8n.cloud/webhook-test/ca65931a-eed5-4de3-a7fc-019eadd46696\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        440,
+        0
+      ],
+      "id": "5a082110-bc91-446f-915d-dcc9e24746ea",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        640,
+        0
+      ],
+      "id": "fd916545-0085-476f-89b1-ac95c79123f0",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f55c47be-0610-4524-8f63-9c5997432c66",
+              "name": "assistant",
+              "value": "={{ $json.data.first() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        860,
+        0
+      ],
+      "id": "05454ce8-020f-438c-8f6c-412b5208cfe1",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.vapi.ai/call",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer API KEY"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={\n  \"customer\": {\n    \"number\": \"+{{ $('Google Sheets').item.json['Phone Number'] }}\",\n    \"name\": \"{{ $('Google Sheets').item.json.Name }}\",\n    \"extension\": \"\"\n  },\n  \"assistant\": {{ $json.assistant }},\n  \"phoneNumberId\": \"e0bf288a-21e9-4512-8217-0484d115de3a\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1080,
+        0
+      ],
+      "id": "f045d8e5-b5eb-4b58-8f5a-4eab9fe65d86",
+      "name": "HTTP Request"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "3afefe55-10e6-45d1-b92f-73638100c2e1",
+  "meta": {
+    "instanceId": "b780ca1a713d6957cfd56ba271a1f9aa819d4c1869e78cad5cb97ee15ab9b87f"
+  },
+  "id": "e0d2diZmzjb8pWn6",
+  "tags": []
+}

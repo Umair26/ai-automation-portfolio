@@ -1,0 +1,590 @@
+{
+  "name": "My workflow 3",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "888f60c0-dd4a-4b07-9bf8-441f4898e733",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "6a971b75-2e4d-4c4d-ae4d-62b57fa5636e",
+      "name": "Webhook",
+      "webhookId": "888f60c0-dd4a-4b07-9bf8-441f4898e733"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b7b254a1-c745-4b7d-870e-960506b82a7f",
+              "leftValue": "={{ $json.body.name }}",
+              "rightValue": "Description_Sell_Property",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        440,
+        0
+      ],
+      "id": "ccdd89ad-c3d3-42a5-86a4-7e7580f3b2fa",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a75b21bf-f9ec-455c-ad66-040c64cb0f50",
+              "leftValue": "={{ $json.body.name }}",
+              "rightValue": "Description_Buy_Property",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        620,
+        140
+      ],
+      "id": "c0ca0d0d-cd7e-4961-ab82-79fbbd5ef955",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "49627f90-c414-490b-ba02-2fb871252171",
+              "leftValue": "={{ $json.body.event }}",
+              "rightValue": "call_ended",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        900,
+        580
+      ],
+      "id": "b902eeec-f728-45e1-bd65-b124bad161bc",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "app5T3lB3AUCy4JWb",
+          "mode": "list",
+          "cachedResultName": "Real Estate n8n",
+          "cachedResultUrl": "https://airtable.com/app5T3lB3AUCy4JWb"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbls6ZPxsBp2GJisp",
+          "mode": "list",
+          "cachedResultName": "Sell property",
+          "cachedResultUrl": "https://airtable.com/app5T3lB3AUCy4JWb/tbls6ZPxsBp2GJisp"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Phone Number": "Add when testing with a phone",
+            "Street": "={{ $('Webhook').item.json.body.args.street }}",
+            "Price": "={{ $('Webhook').item.json.body.args.Price }}",
+            "Flat or detached": "={{ $('Webhook').item.json.body.args.Flat_Detached }}",
+            "Number of bedrroms": "={{ $('Webhook').item.json.body.args.Number_Bedrooms }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Street",
+              "displayName": "Street",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Number of bedrroms",
+              "displayName": "Number of bedrroms",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Flat or detached",
+              "displayName": "Flat or detached",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Price",
+              "displayName": "Price",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        660,
+        -100
+      ],
+      "id": "371e7de6-83b6-4171-9644-2d415952f159",
+      "name": "Airtable",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "N5prfYraU4R41TaV",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "xxxx@gmail.com",
+        "subject": "New property to buy (a lead wants to sell)",
+        "emailType": "text",
+        "message": "=Hey James Williams, a new lead wants to sell his property, go check the AirTable",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        880,
+        -100
+      ],
+      "id": "c4625405-3382-4c78-8fae-834a7559d50c",
+      "name": "Gmail",
+      "webhookId": "9fb83ceb-cdf7-46ca-b18c-17334e4f8e5d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "cqLqwEgycoRtVnUH",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Description of the property the lead wants to buy: {{ $('Webhook').item.json.body.args.description_buy_property }}",
+        "options": {
+          "systemMessage": "=You are a helpful and experienced assistant whose job is to identify the property that the user is refering to and to inform if it is available or not\n\n#Task\nWith the description the user has given of the property he wants to buy ({{ $json.body.args.description_buy_property }}) you have to use the AirTable tool to look inside the rows and find the property he is looking for, and then output if the property is available for a viewing or not\n\n#Tool\n-AirTable tool: Use this tool to look inside the AirTable table and find the property the user is refering to and output wether it is available for viewing or not\n\n#Example\n\nUser description: the property of Broadway one two three with three bathrooms and a garage\n\nAI output: the user is refering to the property 100 and it is available for viewing"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        820,
+        160
+      ],
+      "id": "08018c8b-dbd5-4f16-8056-f0e448664b61",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        860,
+        420
+      ],
+      "id": "678d35d7-d61a-4825-929a-ebfe49e3960d",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "oeIAKevr6gs5rGzy",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "app5T3lB3AUCy4JWb",
+          "mode": "list",
+          "cachedResultName": "Real Estate n8n",
+          "cachedResultUrl": "https://airtable.com/app5T3lB3AUCy4JWb"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblSEfgr6hgsljcQ9",
+          "mode": "list",
+          "cachedResultName": "List of properties",
+          "cachedResultUrl": "https://airtable.com/app5T3lB3AUCy4JWb/tblSEfgr6hgsljcQ9"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        980,
+        420
+      ],
+      "id": "a56ab5b8-8e94-4f0f-9f20-2f099537f716",
+      "name": "Airtable1",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "N5prfYraU4R41TaV",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1100,
+        -100
+      ],
+      "id": "cf9fa3dd-dfa4-4660-a69c-3f3dba2a0c4a",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1200,
+        200
+      ],
+      "id": "d69ff4ff-bdb6-465c-b899-7da44b8a39b3",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "app5T3lB3AUCy4JWb",
+          "mode": "list",
+          "cachedResultName": "Real Estate n8n",
+          "cachedResultUrl": "https://airtable.com/app5T3lB3AUCy4JWb"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblyK16ErOXVntC8C",
+          "mode": "list",
+          "cachedResultName": "Call analysis",
+          "cachedResultUrl": "https://airtable.com/app5T3lB3AUCy4JWb/tblyK16ErOXVntC8C"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Transcript",
+              "displayName": "Transcript",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Recording URL",
+              "displayName": "Recording URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Call Cost",
+              "displayName": "Call Cost",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1180,
+        500
+      ],
+      "id": "1880e2a0-4309-4bff-8fc5-a1977358f37a",
+      "name": "Airtable2",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "N5prfYraU4R41TaV",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1360,
+        340
+      ],
+      "id": "2b3e8bd4-3aa2-48da-97b1-3aada94b1b69",
+      "name": "Respond to Webhook2"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Airtable",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Airtable2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable2": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "02baba57-c7cb-4bd7-b890-e8498f40a896",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a69d6549eb540438aa4b3a31fa93fc201f8b071819a20a52860bb5ec9f1d688c"
+  },
+  "id": "AZhG8PGT8IaWWRjB",
+  "tags": []
+}
