@@ -1,0 +1,2219 @@
+{
+    "name": "Dynamic Report (new)",
+    "flow": [
+        {
+            "id": 1,
+            "module": "gateway:CustomWebHook",
+            "version": 1,
+            "parameters": {
+                "hook": 1708652,
+                "maxResults": 1
+            },
+            "mapper": {},
+            "metadata": {
+                "designer": {
+                    "x": 0,
+                    "y": 0
+                },
+                "restore": {
+                    "parameters": {
+                        "hook": {
+                            "data": {
+                                "editable": "true"
+                            },
+                            "label": "My gateway-webhook 2"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "hook",
+                        "type": "hook:gateway-webhook",
+                        "label": "Webhook",
+                        "required": true
+                    },
+                    {
+                        "name": "maxResults",
+                        "type": "number",
+                        "label": "Maximum number of results"
+                    }
+                ],
+                "advanced": true
+            }
+        },
+        {
+            "id": 2,
+            "module": "openai-gpt-3:messageAssistantAdvanced",
+            "version": 1,
+            "parameters": {
+                "__IMTCONN__": 5708442
+            },
+            "mapper": {
+                "role": "user",
+                "message": "You are tasked with creating a custom pricing proposal for a potential client of our AI + SMS lead reactivation offer. \n\nThe output should be structured in JSON format, written in natural language, and keep the responses concise.\n\nInstructions:Tone: Use a conversational and informal tone that feels approachable yet confident.\n\nFormat: Structure the response as a JSON object with the required sections clearly labeled.\n\nContent: Ensure the answers are concise but provide enough detail to convey our expertise and value.\n\nAddress the client in the 2nd person. \n {{1.` What is the typical price point of your service?`}} = how much a typical client is worth \n{{1.`4. How many leads are in your CRM?`}} = how many leads they have in their CRM  \n{{1.`3. Which industry are you in?`}} = The industry the client works in\n{{1.first_name}} = the leads first name\n{{1.website}} = their company website\n\n“Summary”: “Brief summary of the client's current situation and common challenges in their industry. Make sure to check out their website to find more infomation to create this summary. Write 2-3 sentences of 100 words maximum. Format the text and add line spaces where necessary so it's easily readable. Do not say hello, just output the summary text.\"\n\n“Projected Revenue”: “Calculate how much they could potentially make from 1000 leads converting at 1%. So it would be 10 multiplied by their average client value. Output the calculation as a number, and if the number is over 9999, make sure to add a comma like 10,000 .\"\n",
+                "assistantId": "asst_kgyrZu2juLvAFyeN8ZFNaufD",
+                "tool_choice": "none",
+                "response_format": "json_object",
+                "parseJSONResponse": false
+            },
+            "metadata": {
+                "designer": {
+                    "x": 300,
+                    "y": 0
+                },
+                "restore": {
+                    "expect": {
+                        "role": {
+                            "label": "User"
+                        },
+                        "model": {
+                            "mode": "chose"
+                        },
+                        "tools": {
+                            "mode": "chose"
+                        },
+                        "image_urls": {
+                            "mode": "chose"
+                        },
+                        "assistantId": {
+                            "mode": "chose",
+                            "label": " (gpt-4o)",
+                            "nested": []
+                        },
+                        "image_files": {
+                            "mode": "chose"
+                        },
+                        "tool_choice": {
+                            "mode": "chose",
+                            "label": "None"
+                        },
+                        "response_format": {
+                            "mode": "chose",
+                            "label": "JSON Object"
+                        },
+                        "parseJSONResponse": {
+                            "mode": "chose"
+                        },
+                        "truncation_strategy": {
+                            "mode": "chose",
+                            "label": "Empty"
+                        },
+                        "file_search_resources": {
+                            "mode": "chose"
+                        },
+                        "code_interpreter_resources": {
+                            "mode": "chose"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "openai-gpt-3"
+                            },
+                            "label": "My OpenAI connection"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:openai-gpt-3",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "assistantId",
+                        "type": "select",
+                        "label": "Assistant",
+                        "required": true
+                    },
+                    {
+                        "name": "role",
+                        "type": "select",
+                        "label": "Role",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "user",
+                                "assistant"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "threadId",
+                        "type": "text",
+                        "label": "Thread ID"
+                    },
+                    {
+                        "name": "model",
+                        "type": "select",
+                        "label": "Model"
+                    },
+                    {
+                        "name": "tools",
+                        "type": "select",
+                        "label": "Tools",
+                        "multiple": true,
+                        "validate": {
+                            "enum": [
+                                "file_search",
+                                "code_interpreter"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "file_search_resources",
+                        "type": "select",
+                        "label": "File Search Resources"
+                    },
+                    {
+                        "name": "code_interpreter_resources",
+                        "type": "select",
+                        "label": "Code Interpreter Resources",
+                        "multiple": true,
+                        "validate": {
+                            "maxItems": 20
+                        }
+                    },
+                    {
+                        "name": "tool_choice",
+                        "type": "select",
+                        "label": "Tool Choice",
+                        "validate": {
+                            "enum": [
+                                "none",
+                                "auto",
+                                "required",
+                                "file_search",
+                                "code_interpreter",
+                                "function"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "instructions",
+                        "type": "text",
+                        "label": "Instructions"
+                    },
+                    {
+                        "name": "max_prompt_tokens",
+                        "type": "uinteger",
+                        "label": "Max Prompt Tokens"
+                    },
+                    {
+                        "name": "max_completion_tokens",
+                        "type": "uinteger",
+                        "label": "Max Completion Tokens"
+                    },
+                    {
+                        "name": "temperature",
+                        "type": "number",
+                        "label": "Temperature",
+                        "validate": {
+                            "max": 2,
+                            "min": 0
+                        }
+                    },
+                    {
+                        "name": "top_p",
+                        "type": "number",
+                        "label": "Top P",
+                        "validate": {
+                            "max": 1,
+                            "min": 0
+                        }
+                    },
+                    {
+                        "name": "response_format",
+                        "type": "select",
+                        "label": "Response Format",
+                        "validate": {
+                            "enum": [
+                                "auto",
+                                "json_object",
+                                "text"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "truncation_strategy",
+                        "type": "select",
+                        "label": "Truncation Strategy",
+                        "validate": {
+                            "enum": [
+                                "auto",
+                                "last_messages"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "message",
+                        "type": "text",
+                        "label": "Message",
+                        "required": true
+                    },
+                    {
+                        "name": "image_files",
+                        "type": "select",
+                        "label": "Image Files",
+                        "multiple": true
+                    },
+                    {
+                        "name": "image_urls",
+                        "spec": {
+                            "name": "value",
+                            "type": "url",
+                            "label": "Image URL",
+                            "required": true
+                        },
+                        "type": "array",
+                        "label": "Image URLs"
+                    },
+                    {
+                        "name": "parseJSONResponse",
+                        "type": "boolean",
+                        "label": "Parse JSON Response",
+                        "required": true
+                    }
+                ],
+                "advanced": true
+            }
+        },
+        {
+            "id": 11,
+            "module": "json:ParseJSON",
+            "version": 1,
+            "parameters": {
+                "type": ""
+            },
+            "mapper": {
+                "json": "{{2.result}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 596,
+                    "y": -23
+                },
+                "restore": {
+                    "parameters": {
+                        "type": {
+                            "label": "Choose a data structure"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "type",
+                        "type": "udt",
+                        "label": "Data structure"
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "json",
+                        "type": "text",
+                        "label": "JSON string",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 17,
+            "module": "google-slides:createPresentation",
+            "version": 1,
+            "parameters": {
+                "__IMTCONN__": 5708576
+            },
+            "mapper": {
+                "from": "drive",
+                "title": "Your {{1.`3. Which industry are you in?`}} Business's Hidden Revenue Repor",
+                "select": "value",
+                "shared": false,
+                "folderId": "/165C3ff6RMpGbBSnbsc4skefSvZjFYnlk/1eLAi8-2JQaiya9M481G0MXQ5y1VR2LlR",
+                "requests": {
+                    "leads": "{{1.`4. How many leads are in your CRM?`}}",
+                    "summary": "{{11.Summary}}",
+                    "ad_spend": "{{1.`1. How are you generating leads right now?`}}",
+                    "industry": "{{1.`3. Which industry are you in?`}}",
+                    "first_name": "{{1.first_name}}",
+                    "client_value": "{{1.` 2. What is the typical price point of your service?`}}",
+                    "potential_revenue": "{{11.`Projected Revenue`}}"
+                },
+                "destination": "drive",
+                "presentation": "/165C3ff6RMpGbBSnbsc4skefSvZjFYnlk/1eLAi8-2JQaiya9M481G0MXQ5y1VR2LlR/16Gvdbm-YjSP5mK60pgucRkK-MsMIK-L7pvzzzw7Ioxs"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 883,
+                    "y": -14
+                },
+                "restore": {
+                    "expect": {
+                        "from": {
+                            "label": "My Drive"
+                        },
+                        "select": {
+                            "label": "By Dropdown"
+                        },
+                        "shared": {
+                            "mode": "chose"
+                        },
+                        "folderId": {
+                            "mode": "chose",
+                            "path": [
+                                "AI Alchemy",
+                                "Custom Reports"
+                            ]
+                        },
+                        "destination": {
+                            "label": "My Drive"
+                        },
+                        "presentation": {
+                            "path": [
+                                "AI Alchemy",
+                                "Custom Reports",
+                                "Your {{{industry}} Business's Hidden Revenue Report"
+                            ],
+                            "nested": [
+                                {
+                                    "name": "requests",
+                                    "spec": [
+                                        {
+                                            "name": "industry",
+                                            "type": "text",
+                                            "label": "industry"
+                                        },
+                                        {
+                                            "name": "first_name",
+                                            "type": "text",
+                                            "label": "first_name"
+                                        },
+                                        {
+                                            "name": "summary",
+                                            "type": "text",
+                                            "label": "summary"
+                                        },
+                                        {
+                                            "name": "leads",
+                                            "type": "text",
+                                            "label": "leads"
+                                        },
+                                        {
+                                            "name": "phone_collected",
+                                            "type": "text",
+                                            "label": "phone_collected"
+                                        },
+                                        {
+                                            "name": "client_value",
+                                            "type": "text",
+                                            "label": "client_value"
+                                        },
+                                        {
+                                            "name": "ad_spend",
+                                            "type": "text",
+                                            "label": "ad_spend"
+                                        },
+                                        {
+                                            "name": "potential_revenue",
+                                            "type": "text",
+                                            "label": "potential_revenue"
+                                        }
+                                    ],
+                                    "type": "collection",
+                                    "label": "Values"
+                                }
+                            ]
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "google"
+                            },
+                            "label": "My Google connection (tom@emailalchemy.co)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:google",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "title",
+                        "type": "text",
+                        "label": "Title",
+                        "required": true
+                    },
+                    {
+                        "name": "select",
+                        "type": "select",
+                        "label": "Copy a Presentation",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "map",
+                                "value"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "destination",
+                        "type": "select",
+                        "label": "New Drive Location",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "drive",
+                                "share",
+                                "team"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "shared",
+                        "type": "boolean",
+                        "label": "Shared",
+                        "required": true
+                    },
+                    {
+                        "name": "from",
+                        "type": "select",
+                        "label": "Choose a Drive",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "drive",
+                                "share",
+                                "team"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "presentation",
+                        "type": "file",
+                        "label": "Presentation ID",
+                        "required": true
+                    },
+                    {
+                        "name": "requests",
+                        "spec": [
+                            {
+                                "name": "industry",
+                                "type": "text"
+                            },
+                            {
+                                "name": "first_name",
+                                "type": "text"
+                            },
+                            {
+                                "name": "summary",
+                                "type": "text"
+                            },
+                            {
+                                "name": "leads",
+                                "type": "text"
+                            },
+                            {
+                                "name": "phone_collected",
+                                "type": "text"
+                            },
+                            {
+                                "name": "client_value",
+                                "type": "text"
+                            },
+                            {
+                                "name": "ad_spend",
+                                "type": "text"
+                            },
+                            {
+                                "name": "potential_revenue",
+                                "type": "text"
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Values"
+                    },
+                    {
+                        "name": "folderId",
+                        "type": "folder",
+                        "label": "New Document's Location"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 18,
+            "module": "google-drive:getAFile",
+            "version": 4,
+            "parameters": {
+                "__IMTCONN__": 5708597
+            },
+            "mapper": {
+                "file": "{{17.id}}",
+                "select": "map",
+                "formatDrawings": "image/jpeg",
+                "formatDocuments": "application/pdf",
+                "formatSpreadsheets": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "formatPresentations": "application/pdf"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1185,
+                    "y": -18
+                },
+                "restore": {
+                    "expect": {
+                        "select": {
+                            "label": "Enter manually"
+                        },
+                        "formatDrawings": {
+                            "label": "JPEG"
+                        },
+                        "formatDocuments": {
+                            "label": "PDF"
+                        },
+                        "formatSpreadsheets": {
+                            "label": "MS Excel"
+                        },
+                        "formatPresentations": {
+                            "label": "PDF"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "google-restricted"
+                            },
+                            "label": "My Google Restricted connection (tom@emailalchemy.co)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:google-restricted",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "type": "hidden"
+                    },
+                    {
+                        "name": "select",
+                        "type": "select",
+                        "label": "Enter a File ID",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "map",
+                                "value"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "formatDocuments",
+                        "type": "select",
+                        "label": "Convert Google Documents Files to Format",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                                "application/pdf",
+                                "application/vnd.oasis.opendocument.text",
+                                "text/html",
+                                "text/plain",
+                                "application/rtf"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "formatSpreadsheets",
+                        "type": "select",
+                        "label": "Convert Google Spreadsheets Files to Format",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                "application/x-vnd.oasis.opendocument.spreadsheet",
+                                "application/pdf"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "formatPresentations",
+                        "type": "select",
+                        "label": "Convert Google Slides Files to Format",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                                "application/pdf"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "formatDrawings",
+                        "type": "select",
+                        "label": "Convert Google Drawings Files to Format",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "image/jpeg",
+                                "image/png",
+                                "image/svg+xml",
+                                "application/pdf"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "file",
+                        "type": "text",
+                        "label": "File ID",
+                        "required": true
+                    }
+                ],
+                "advanced": true
+            }
+        },
+        {
+            "id": 19,
+            "module": "google-drive:uploadAFile",
+            "version": 4,
+            "parameters": {
+                "__IMTCONN__": 5708597
+            },
+            "mapper": {
+                "data": "{{18.data}}",
+                "select": "value",
+                "convert": false,
+                "filename": "{{18.name}}",
+                "folderId": "/165C3ff6RMpGbBSnbsc4skefSvZjFYnlk/1eLAi8-2JQaiya9M481G0MXQ5y1VR2LlR/113VCqymMlSg9uLsE0CEujS1DnNv7lWoq",
+                "destination": "drive"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1426,
+                    "y": -18
+                },
+                "restore": {
+                    "expect": {
+                        "select": {
+                            "label": "Select from the list"
+                        },
+                        "folderId": {
+                            "mode": "chose",
+                            "path": [
+                                "AI Alchemy",
+                                "Custom Reports",
+                                "FOR LEADS"
+                            ]
+                        },
+                        "destination": {
+                            "label": "My Drive"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "google-restricted"
+                            },
+                            "label": "My Google Restricted connection (tom@emailalchemy.co)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:google-restricted",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "type": "hidden"
+                    },
+                    {
+                        "name": "select",
+                        "type": "select",
+                        "label": "Enter a Folder ID",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "map",
+                                "value"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "title",
+                        "type": "text",
+                        "label": "New File Name"
+                    },
+                    {
+                        "name": "filename",
+                        "type": "text",
+                        "label": "File Name",
+                        "required": true
+                    },
+                    {
+                        "name": "data",
+                        "type": "buffer",
+                        "label": "Data",
+                        "required": true
+                    },
+                    {
+                        "name": "convert",
+                        "type": "boolean",
+                        "label": "Convert a File",
+                        "required": true
+                    },
+                    {
+                        "name": "destination",
+                        "type": "select",
+                        "label": "New Drive Location",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "drive",
+                                "share",
+                                "team"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "folderId",
+                        "type": "folder",
+                        "label": "New Folder Location",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 4,
+            "module": "google-drive:shareAFileFolder",
+            "version": 4,
+            "parameters": {
+                "__IMTCONN__": 5708597
+            },
+            "mapper": {
+                "file": "{{19.id}}",
+                "role": "reader",
+                "type": "anyone",
+                "select": "file",
+                "destination": "drive",
+                "allowFileDiscovery": false
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1673,
+                    "y": -26
+                },
+                "restore": {
+                    "expect": {
+                        "file": {
+                            "mode": "edit",
+                            "path": []
+                        },
+                        "role": {
+                            "mode": "chose",
+                            "label": "Reader"
+                        },
+                        "type": {
+                            "mode": "chose",
+                            "label": "Anyone"
+                        },
+                        "select": {
+                            "label": "File"
+                        },
+                        "destination": {
+                            "label": "My Drive"
+                        },
+                        "allowFileDiscovery": {
+                            "mode": "chose"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "google-restricted"
+                            },
+                            "label": "My Google Restricted connection (tom@emailalchemy.co)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:google-restricted",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "type": "hidden"
+                    },
+                    {
+                        "name": "destination",
+                        "type": "select",
+                        "label": "Choose a Drive",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "drive",
+                                "share",
+                                "team"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "select",
+                        "type": "select",
+                        "label": "Select",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "file",
+                                "folder"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "role",
+                        "type": "select",
+                        "label": "Role",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "owner",
+                                "writer",
+                                "commenter",
+                                "reader"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "type": "select",
+                        "label": "Type",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "user",
+                                "group",
+                                "domain",
+                                "anyone"
+                            ]
+                        }
+                    },
+                    {
+                        "mode": "edit",
+                        "name": "file",
+                        "type": "file",
+                        "label": "File ID",
+                        "required": true
+                    },
+                    {
+                        "name": "allowFileDiscovery",
+                        "type": "boolean",
+                        "label": "Allow File Discovery",
+                        "required": true
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "fileId",
+                        "type": "text",
+                        "label": "File ID"
+                    },
+                    {
+                        "name": "kind",
+                        "type": "text",
+                        "label": "Kind"
+                    },
+                    {
+                        "name": "id",
+                        "type": "text",
+                        "label": "Permission ID"
+                    },
+                    {
+                        "name": "type",
+                        "type": "text",
+                        "label": "Type"
+                    },
+                    {
+                        "name": "shareLink",
+                        "type": "url",
+                        "label": "Share Link"
+                    },
+                    {
+                        "name": "emailAddress",
+                        "type": "text",
+                        "label": "Email Address"
+                    },
+                    {
+                        "name": "domain",
+                        "type": "text",
+                        "label": "Domain"
+                    },
+                    {
+                        "name": "role",
+                        "type": "text",
+                        "label": "Role"
+                    },
+                    {
+                        "name": "allowFileDiscovery",
+                        "type": "boolean",
+                        "label": "Allow File Discovery"
+                    },
+                    {
+                        "name": "displayName",
+                        "type": "text",
+                        "label": "Display Name"
+                    },
+                    {
+                        "name": "photoLink",
+                        "type": "text",
+                        "label": "Photo Link"
+                    },
+                    {
+                        "name": "expirationTime",
+                        "type": "date",
+                        "label": "Expiration Time"
+                    },
+                    {
+                        "name": "teamDrivePermissionDetails",
+                        "spec": {
+                            "spec": [
+                                {
+                                    "name": "teamDrivePermissionType",
+                                    "type": "text",
+                                    "label": "Team Drive Permission Type"
+                                },
+                                {
+                                    "name": "role",
+                                    "type": "text",
+                                    "label": "Role"
+                                },
+                                {
+                                    "name": "inheritedFrom",
+                                    "type": "text",
+                                    "label": "Inherited From"
+                                },
+                                {
+                                    "name": "inherited",
+                                    "type": "boolean",
+                                    "label": "Inherited"
+                                }
+                            ],
+                            "type": "collection"
+                        },
+                        "type": "array",
+                        "label": "Team Drive Permission Details"
+                    },
+                    {
+                        "name": "permissionDetails",
+                        "spec": {
+                            "spec": [
+                                {
+                                    "name": "permissionType",
+                                    "type": "text",
+                                    "label": "Permission Type"
+                                },
+                                {
+                                    "name": "role",
+                                    "type": "text",
+                                    "label": "Role"
+                                },
+                                {
+                                    "name": "inheritedFrom",
+                                    "type": "text",
+                                    "label": "Inherited From"
+                                },
+                                {
+                                    "name": "inherited",
+                                    "type": "boolean",
+                                    "label": "Inherited"
+                                }
+                            ],
+                            "type": "collection"
+                        },
+                        "type": "array",
+                        "label": "Permission Details"
+                    },
+                    {
+                        "name": "deleted",
+                        "type": "boolean",
+                        "label": "Deleted"
+                    },
+                    {
+                        "name": "pendingOwner",
+                        "type": "boolean",
+                        "label": "Pending Owner"
+                    },
+                    {
+                        "name": "webContentLink",
+                        "type": "url",
+                        "label": "Web Content Link"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 5,
+            "module": "highlevel:updateAContact",
+            "version": 1,
+            "parameters": {
+                "__IMTCONN__": 5708615
+            },
+            "mapper": {
+                "address": {},
+                "contact": "{{1.contact_id}}",
+                "customField": {
+                    "NEoQrxZV19g4oaCtqfeZ": "{{4.shareLink}}"
+                }
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1955,
+                    "y": -21
+                },
+                "restore": {
+                    "expect": {
+                        "dnd": {
+                            "mode": "chose"
+                        },
+                        "tags": {
+                            "mode": "chose"
+                        },
+                        "address": {
+                            "nested": {
+                                "country": {
+                                    "mode": "chose"
+                                }
+                            }
+                        },
+                        "contact": {
+                            "mode": "edit"
+                        },
+                        "timezone": {
+                            "mode": "chose",
+                            "label": "Empty"
+                        },
+                        "customField": {
+                            "nested": {
+                                "4G2rPBkAcgVIP0euRg8Y": {
+                                    "mode": "chose"
+                                },
+                                "9RuI7WbfRwDNre4YfKPm": {
+                                    "mode": "chose"
+                                },
+                                "MQqQyCv0Sfy7LV8pYR7P": {
+                                    "mode": "chose"
+                                },
+                                "MsIKb0qfYD11XJwmksos": {
+                                    "mode": "chose"
+                                },
+                                "UhfRsexvAG1pGdGU8sga": {
+                                    "mode": "chose"
+                                },
+                                "XakjUhI4jxjEYHb4Qj43": {
+                                    "mode": "chose"
+                                },
+                                "e8VRQolSl2U9k9x4W7Yq": {
+                                    "mode": "chose"
+                                },
+                                "kgyUTnDlhnmrIUfMKiQs": {
+                                    "mode": "chose",
+                                    "label": "Empty"
+                                },
+                                "l5gXz6KsozTwaF5cOhcE": {
+                                    "mode": "chose"
+                                },
+                                "nro6CsUzTGVaazy3giQT": {
+                                    "mode": "chose",
+                                    "label": "Empty"
+                                }
+                            }
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "highlevel3"
+                            },
+                            "label": "My GoHighlevel Location OAuth 2.0 connection (Location: Email Alchemy)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:highlevel,highlevel3",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "mode": "edit",
+                        "name": "contact",
+                        "type": "select",
+                        "label": "Contact ID",
+                        "required": true
+                    },
+                    {
+                        "name": "firstName",
+                        "type": "text",
+                        "label": "First Name"
+                    },
+                    {
+                        "name": "lastName",
+                        "type": "text",
+                        "label": "Last Name"
+                    },
+                    {
+                        "name": "email",
+                        "type": "email",
+                        "label": "Email"
+                    },
+                    {
+                        "name": "phone",
+                        "type": "text",
+                        "label": "Phone"
+                    },
+                    {
+                        "name": "dateOfBirth",
+                        "time": false,
+                        "type": "date",
+                        "label": "Date of Birth"
+                    },
+                    {
+                        "name": "companyName",
+                        "type": "text",
+                        "label": "Company Name"
+                    },
+                    {
+                        "name": "website",
+                        "type": "url",
+                        "label": "Website"
+                    },
+                    {
+                        "name": "tags",
+                        "type": "select",
+                        "label": "Tags",
+                        "multiple": true
+                    },
+                    {
+                        "name": "address",
+                        "spec": [
+                            {
+                                "name": "address1",
+                                "type": "text",
+                                "label": "Street"
+                            },
+                            {
+                                "name": "city",
+                                "type": "text",
+                                "label": "City"
+                            },
+                            {
+                                "name": "state",
+                                "type": "text",
+                                "label": "State"
+                            },
+                            {
+                                "name": "postalCode",
+                                "type": "text",
+                                "label": "PostalCode"
+                            },
+                            {
+                                "name": "country",
+                                "type": "select",
+                                "label": "Country"
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Address"
+                    },
+                    {
+                        "name": "source",
+                        "type": "text",
+                        "label": "Source"
+                    },
+                    {
+                        "name": "timezone",
+                        "type": "select",
+                        "label": "Timezone"
+                    },
+                    {
+                        "name": "dnd",
+                        "type": "boolean",
+                        "label": "Dnd"
+                    },
+                    {
+                        "name": "customField",
+                        "spec": [
+                            {
+                                "name": "l5gXz6KsozTwaF5cOhcE",
+                                "type": "select",
+                                "label": "Current State",
+                                "multiple": true,
+                                "validate": {
+                                    "enum": [
+                                        "Solo Agent",
+                                        "Two Agent Partnership",
+                                        "Small team (1 - 5 Agents)",
+                                        "Large team (6 - 15 Agents)",
+                                        "Broker/Owner",
+                                        "Other"
+                                    ]
+                                }
+                            },
+                            {
+                                "name": "zXFYRoqnjvyxBJtUWQFO",
+                                "type": "text",
+                                "label": "In your own opinion, why do you think you are unable to achieve the desired state?"
+                            },
+                            {
+                                "name": "oK7Ih7Ld0foIkO0tbx71",
+                                "type": "number",
+                                "label": "MemoryCode"
+                            },
+                            {
+                                "name": "e8VRQolSl2U9k9x4W7Yq",
+                                "type": "select",
+                                "label": "I am a?",
+                                "multiple": true,
+                                "validate": {
+                                    "enum": [
+                                        "Solo Agent",
+                                        "Two Agent Team",
+                                        "Small Team (up to 5 agents)",
+                                        "Large Team (5 to 15 agents)",
+                                        "Mega Team (Over 15 agents)",
+                                        "Broker/Owner of Franchise"
+                                    ]
+                                }
+                            },
+                            {
+                                "name": "NBgWp2v2HtYFsdU11u37",
+                                "type": "text",
+                                "label": "Chaser_Memory"
+                            },
+                            {
+                                "name": "MQqQyCv0Sfy7LV8pYR7P",
+                                "type": "select",
+                                "label": "Let's talk about financial resources for a second... Are you able to invest between $700 to $2500 per month into your business? (If we show you how you can, at bare minimum double your GCI)",
+                                "multiple": true,
+                                "validate": {
+                                    "enum": [
+                                        "Yes ",
+                                        "No"
+                                    ]
+                                }
+                            },
+                            {
+                                "name": "ROUfW2Qyf8LlMuNoR6Kh",
+                                "type": "text",
+                                "label": "utm_source"
+                            },
+                            {
+                                "name": "4G2rPBkAcgVIP0euRg8Y",
+                                "type": "select",
+                                "label": "What is your goal in the next 6 or 12 months? ",
+                                "multiple": true,
+                                "validate": {
+                                    "enum": [
+                                        "At least double my current GCI",
+                                        "More than double my current GCI",
+                                        "Improve my lead generation pipeline",
+                                        "Improve my social media presence ",
+                                        "Improve my brand marketing",
+                                        "Set myself apart from the competition",
+                                        "Increase the closing rate of my prospect meetings ",
+                                        "Improve my time management",
+                                        "Improve my mental & physical health "
+                                    ]
+                                }
+                            },
+                            {
+                                "name": "XakjUhI4jxjEYHb4Qj43",
+                                "type": "select",
+                                "label": "How many deals are you or your team doing per month? Ballpark number? (We will need this info to properly assess your current situation.)",
+                                "multiple": true,
+                                "validate": {
+                                    "enum": [
+                                        "1 Per Month",
+                                        "2 - 3 Per Month",
+                                        "4 - 6 Per Month",
+                                        "Over 7 Per Month"
+                                    ]
+                                }
+                            },
+                            {
+                                "name": "UbOQltS1WssPsBhUsHIi",
+                                "type": "text",
+                                "label": "What motivated you to reach out?"
+                            },
+                            {
+                                "name": "Er47wukXGsL4FO9IoVfk",
+                                "type": "text",
+                                "label": "ChatGPT : Previous Reminders"
+                            },
+                            {
+                                "name": "9RuI7WbfRwDNre4YfKPm",
+                                "type": "select",
+                                "label": "How soon are you looking to solve this problem?",
+                                "multiple": true,
+                                "validate": {
+                                    "enum": [
+                                        "Today",
+                                        "This Month",
+                                        "2 - 3 Months"
+                                    ]
+                                }
+                            },
+                            {
+                                "name": "MsIKb0qfYD11XJwmksos",
+                                "type": "select",
+                                "label": "Confirmation",
+                                "multiple": true,
+                                "validate": {
+                                    "enum": [
+                                        "Yes send me my invite to the Free 5 Day training. By clicking this check box I agree to receive email and text message marketing material. Opt out any time.  Msg and data rates may apply."
+                                    ]
+                                }
+                            },
+                            {
+                                "name": "2tQNw3lbYPQnN2or9ygF",
+                                "type": "text",
+                                "label": "ChatGPT First Message"
+                            },
+                            {
+                                "name": "UhfRsexvAG1pGdGU8sga",
+                                "type": "select",
+                                "label": "How are you currently generating new business for yourself or your team?",
+                                "multiple": true,
+                                "validate": {
+                                    "enum": [
+                                        "Word of mouth referrals",
+                                        "Facebook/Instagram Ads",
+                                        "Google Ads",
+                                        "YouTube Ads",
+                                        "TikTok",
+                                        "Open Houses",
+                                        "Bus Stop Ads",
+                                        "Door Knocking & Cold Calling",
+                                        "Email Marketing",
+                                        "Circle Prospecting"
+                                    ]
+                                }
+                            },
+                            {
+                                "name": "tOdFvon9eMCKfvwfuQ9C",
+                                "type": "text",
+                                "label": "In your own opinion why don't you think you are able to achieve your real estate goals on your own?"
+                            },
+                            {
+                                "name": "h9FiX45Lcy4Xzb82uAVY",
+                                "type": "text",
+                                "label": "Grade"
+                            },
+                            {
+                                "name": "g4PtkRiX7XVHRqPdBBft",
+                                "type": "text",
+                                "label": "Prompt"
+                            },
+                            {
+                                "name": "ItTFyNKxNKIHDduP2ZWJ",
+                                "type": "text",
+                                "label": "Time Offered 1"
+                            },
+                            {
+                                "name": "oodKvdFlga54IpFtKUf0",
+                                "type": "text",
+                                "label": "Memory"
+                            },
+                            {
+                                "name": "aEWDO519TOpMwivbFsgJ",
+                                "type": "text",
+                                "label": "Lead Response"
+                            },
+                            {
+                                "name": "WDahKXNM5XFelz3PZj7A",
+                                "type": "text",
+                                "label": "Lead Generation Date"
+                            },
+                            {
+                                "name": "zzRos87Xi1y7RZsuxUOK",
+                                "type": "text",
+                                "label": "Chat-GPT"
+                            },
+                            {
+                                "name": "I3F4STkqj1ksBkP8Kwnn",
+                                "type": "text",
+                                "label": "First Message Sent"
+                            },
+                            {
+                                "name": "5JGZc7pnxM1opZMSYm6J",
+                                "type": "text",
+                                "label": "Goodbye?"
+                            },
+                            {
+                                "name": "Zkqe4tKEqeIGgq88N9ha",
+                                "type": "text",
+                                "label": "Call Back Time"
+                            },
+                            {
+                                "name": "hHcsqHE0zjgES13oY2w5",
+                                "type": "text",
+                                "label": "AI Memory"
+                            },
+                            {
+                                "name": "Z7eMEuvuaEHEr2QBb5zm",
+                                "type": "text",
+                                "label": "Reach Back Out Time"
+                            },
+                            {
+                                "name": "j7UjFnFjooQPJU08xmfX",
+                                "type": "text",
+                                "label": "Time Offered 2"
+                            },
+                            {
+                                "name": "cTaPNxqfzGtJcz6pB3Di",
+                                "type": "text",
+                                "label": "No Bump?"
+                            },
+                            {
+                                "name": "CmVRJrQqcrV9MYHHj43K",
+                                "type": "text",
+                                "label": "What is your total debt? "
+                            },
+                            {
+                                "name": "LRbBasug9xHq0yjRFXLt",
+                                "type": "text",
+                                "label": "What have you done to reduce?"
+                            },
+                            {
+                                "name": "xAzMGdokDGNwERqkJ6rH",
+                                "type": "text",
+                                "label": "Custom Field 1"
+                            },
+                            {
+                                "name": "wWigDNyPIupHXu2ty296",
+                                "type": "text",
+                                "label": "Custom Field 2"
+                            },
+                            {
+                                "name": "8p1W64d4kqYsiOGPQ080",
+                                "type": "text",
+                                "label": "IP Location"
+                            },
+                            {
+                                "name": "YKSqFdO7EY1yIE1k2xMK",
+                                "type": "text",
+                                "label": "Prospect Enquired"
+                            },
+                            {
+                                "name": "61i02FEidMuWktcpAPOt",
+                                "type": "text",
+                                "label": "IP Address"
+                            },
+                            {
+                                "name": "ltSVRwnC3sI5KzJGFDAj",
+                                "type": "text",
+                                "label": "Affiliate Link"
+                            },
+                            {
+                                "name": "HZsTL5t5KIDcwJxPn9y6",
+                                "type": "text",
+                                "label": "Prospect ID"
+                            },
+                            {
+                                "name": "DAcCzI9WBR8cfuw4O5jH",
+                                "type": "text",
+                                "label": "Bought?"
+                            },
+                            {
+                                "name": "ivCVZPyQNAwXZHqKaS1A",
+                                "type": "text",
+                                "label": "Lead Response Received"
+                            },
+                            {
+                                "name": "hGmmocxJjvrtFjkwUxbZ",
+                                "type": "text",
+                                "label": "Property Address"
+                            },
+                            {
+                                "name": "v8RULrHelqT253iFUYP7",
+                                "type": "text",
+                                "label": "Chat History"
+                            },
+                            {
+                                "name": "kgyUTnDlhnmrIUfMKiQs",
+                                "type": "select",
+                                "label": "Choose a time slot:"
+                            },
+                            {
+                                "name": "nro6CsUzTGVaazy3giQT",
+                                "type": "select",
+                                "label": "Communication Channel"
+                            },
+                            {
+                                "name": "Y2TIRtwl2hYh0sIRh03x",
+                                "type": "text",
+                                "label": "How much is a typical client worth to you?"
+                            },
+                            {
+                                "name": "rcr37U73amhz1uyv41SK",
+                                "type": "text",
+                                "label": "How much are you spending on ads per month? "
+                            },
+                            {
+                                "name": "H1TIEioXWGMS8isgSckP",
+                                "type": "text",
+                                "label": "How many leads do you have in your CRM?"
+                            },
+                            {
+                                "name": "7QSwRoa9p56uRlOuJ7RX",
+                                "type": "text",
+                                "label": "Are you collecting phone numbers? "
+                            },
+                            {
+                                "name": "bivxTEeLOykugHaf42sL",
+                                "type": "text",
+                                "label": "What industry do you work in? "
+                            },
+                            {
+                                "name": "NEoQrxZV19g4oaCtqfeZ",
+                                "type": "text",
+                                "label": "Pricing Report"
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Custom Fields"
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "id",
+                        "type": "text",
+                        "label": "Contact ID"
+                    },
+                    {
+                        "name": "timezone",
+                        "type": "text",
+                        "label": "Timezone"
+                    },
+                    {
+                        "name": "type",
+                        "type": "text",
+                        "label": "Type"
+                    },
+                    {
+                        "name": "locationId",
+                        "type": "text",
+                        "label": "Location ID"
+                    },
+                    {
+                        "name": "dnd",
+                        "type": "boolean",
+                        "label": "Dnd"
+                    },
+                    {
+                        "name": "inboundDndSettings",
+                        "spec": [
+                            {
+                                "name": "all",
+                                "spec": [
+                                    {
+                                        "name": "message",
+                                        "type": "text",
+                                        "label": "Message"
+                                    },
+                                    {
+                                        "name": "status",
+                                        "type": "text",
+                                        "label": "Status"
+                                    }
+                                ],
+                                "type": "collection",
+                                "label": "All"
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Inbound Dnd Settings"
+                    },
+                    {
+                        "name": "dndSettings",
+                        "spec": [
+                            {
+                                "name": "Call",
+                                "spec": [
+                                    {
+                                        "name": "code",
+                                        "type": "text",
+                                        "label": "Code"
+                                    },
+                                    {
+                                        "name": "message",
+                                        "type": "text",
+                                        "label": "Message"
+                                    },
+                                    {
+                                        "name": "status",
+                                        "type": "text",
+                                        "label": "Status"
+                                    }
+                                ],
+                                "type": "collection",
+                                "label": "Call"
+                            },
+                            {
+                                "name": "Email",
+                                "spec": [
+                                    {
+                                        "name": "code",
+                                        "type": "text",
+                                        "label": "Code"
+                                    },
+                                    {
+                                        "name": "message",
+                                        "type": "text",
+                                        "label": "Message"
+                                    },
+                                    {
+                                        "name": "status",
+                                        "type": "text",
+                                        "label": "Status"
+                                    }
+                                ],
+                                "type": "collection",
+                                "label": "Email"
+                            },
+                            {
+                                "name": "SMS",
+                                "spec": [
+                                    {
+                                        "name": "code",
+                                        "type": "text",
+                                        "label": "Code"
+                                    },
+                                    {
+                                        "name": "message",
+                                        "type": "text",
+                                        "label": "Message"
+                                    },
+                                    {
+                                        "name": "status",
+                                        "type": "text",
+                                        "label": "Status"
+                                    }
+                                ],
+                                "type": "collection",
+                                "label": "SMS"
+                            },
+                            {
+                                "name": "WhatsApp",
+                                "spec": [
+                                    {
+                                        "name": "code",
+                                        "type": "text",
+                                        "label": "Code"
+                                    },
+                                    {
+                                        "name": "message",
+                                        "type": "text",
+                                        "label": "Message"
+                                    },
+                                    {
+                                        "name": "status",
+                                        "type": "text",
+                                        "label": "Status"
+                                    }
+                                ],
+                                "type": "collection",
+                                "label": "WhatsApp"
+                            },
+                            {
+                                "name": "GMB",
+                                "spec": [
+                                    {
+                                        "name": "code",
+                                        "type": "text",
+                                        "label": "Code"
+                                    },
+                                    {
+                                        "name": "message",
+                                        "type": "text",
+                                        "label": "Message"
+                                    },
+                                    {
+                                        "name": "status",
+                                        "type": "text",
+                                        "label": "Status"
+                                    }
+                                ],
+                                "type": "collection",
+                                "label": "GMB"
+                            },
+                            {
+                                "name": "FB",
+                                "spec": [
+                                    {
+                                        "name": "code",
+                                        "type": "text",
+                                        "label": "Code"
+                                    },
+                                    {
+                                        "name": "message",
+                                        "type": "text",
+                                        "label": "Message"
+                                    },
+                                    {
+                                        "name": "status",
+                                        "type": "text",
+                                        "label": "Status"
+                                    }
+                                ],
+                                "type": "collection",
+                                "label": "FB"
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Dnd Settings"
+                    },
+                    {
+                        "name": "createdBy",
+                        "spec": [
+                            {
+                                "name": "sourceId",
+                                "type": "text",
+                                "label": "Source ID"
+                            },
+                            {
+                                "name": "channel",
+                                "type": "text",
+                                "label": "Channel"
+                            },
+                            {
+                                "name": "source",
+                                "type": "text",
+                                "label": "Source"
+                            },
+                            {
+                                "name": "sourceName",
+                                "type": "text",
+                                "label": "Source Name"
+                            },
+                            {
+                                "name": "timestamp",
+                                "type": "date",
+                                "label": "Timestamp"
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Created By"
+                    },
+                    {
+                        "name": "tags",
+                        "type": "array",
+                        "label": "Tags"
+                    },
+                    {
+                        "name": "dateAdded",
+                        "type": "date",
+                        "label": "Date Added"
+                    },
+                    {
+                        "name": "additionalEmails",
+                        "type": "array",
+                        "label": "Additional Emails"
+                    },
+                    {
+                        "name": "additionalPhones",
+                        "type": "array",
+                        "label": "Additional Phones"
+                    },
+                    {
+                        "name": "country",
+                        "type": "text",
+                        "label": "Country"
+                    },
+                    {
+                        "name": "lastName",
+                        "type": "text",
+                        "label": "Last Name"
+                    },
+                    {
+                        "name": "lastNameLowerCase",
+                        "type": "text",
+                        "label": "Last Name Lower Case"
+                    },
+                    {
+                        "name": "emailLowerCase",
+                        "type": "text",
+                        "label": "Email Lower Case"
+                    },
+                    {
+                        "name": "email",
+                        "type": "text",
+                        "label": "Email"
+                    },
+                    {
+                        "name": "postalCode",
+                        "type": "text",
+                        "label": "Postal Code"
+                    },
+                    {
+                        "name": "dateUpdated",
+                        "type": "date",
+                        "label": "Date Updated"
+                    },
+                    {
+                        "name": "fullNameLowerCase",
+                        "type": "text",
+                        "label": "Full Name Lower Case"
+                    },
+                    {
+                        "name": "firstName",
+                        "type": "text",
+                        "label": "First Name"
+                    },
+                    {
+                        "name": "firstNameLowerCase",
+                        "type": "text",
+                        "label": "First Name Lower Case"
+                    },
+                    {
+                        "name": "source",
+                        "type": "text",
+                        "label": "Source"
+                    },
+                    {
+                        "name": "companyName",
+                        "type": "text",
+                        "label": "Company Name"
+                    },
+                    {
+                        "name": "website",
+                        "type": "text",
+                        "label": "Website"
+                    },
+                    {
+                        "name": "phone",
+                        "type": "text",
+                        "label": "Phone"
+                    },
+                    {
+                        "name": "customField",
+                        "spec": [
+                            {
+                                "name": "l5gXz6KsozTwaF5cOhcE",
+                                "type": "array",
+                                "label": "Current State"
+                            },
+                            {
+                                "name": "zXFYRoqnjvyxBJtUWQFO",
+                                "type": "text",
+                                "label": "In your own opinion, why do you think you are unable to achieve the desired state?"
+                            },
+                            {
+                                "name": "oK7Ih7Ld0foIkO0tbx71",
+                                "type": "number",
+                                "label": "MemoryCode"
+                            },
+                            {
+                                "name": "e8VRQolSl2U9k9x4W7Yq",
+                                "type": "array",
+                                "label": "I am a?"
+                            },
+                            {
+                                "name": "NBgWp2v2HtYFsdU11u37",
+                                "type": "text",
+                                "label": "Chaser_Memory",
+                                "multiline": true
+                            },
+                            {
+                                "name": "MQqQyCv0Sfy7LV8pYR7P",
+                                "type": "array",
+                                "label": "Let's talk about financial resources for a second... Are you able to invest between $700 to $2500 per month into your business? (If we show you how you can, at bare minimum double your GCI)"
+                            },
+                            {
+                                "name": "ROUfW2Qyf8LlMuNoR6Kh",
+                                "type": "text",
+                                "label": "utm_source"
+                            },
+                            {
+                                "name": "4G2rPBkAcgVIP0euRg8Y",
+                                "type": "array",
+                                "label": "What is your goal in the next 6 or 12 months? "
+                            },
+                            {
+                                "name": "XakjUhI4jxjEYHb4Qj43",
+                                "type": "array",
+                                "label": "How many deals are you or your team doing per month? Ballpark number? (We will need this info to properly assess your current situation.)"
+                            },
+                            {
+                                "name": "UbOQltS1WssPsBhUsHIi",
+                                "type": "text",
+                                "label": "What motivated you to reach out?"
+                            },
+                            {
+                                "name": "Er47wukXGsL4FO9IoVfk",
+                                "type": "text",
+                                "label": "ChatGPT : Previous Reminders",
+                                "multiline": true
+                            },
+                            {
+                                "name": "9RuI7WbfRwDNre4YfKPm",
+                                "type": "array",
+                                "label": "How soon are you looking to solve this problem?"
+                            },
+                            {
+                                "name": "MsIKb0qfYD11XJwmksos",
+                                "type": "array",
+                                "label": "Confirmation"
+                            },
+                            {
+                                "name": "2tQNw3lbYPQnN2or9ygF",
+                                "type": "text",
+                                "label": "ChatGPT First Message",
+                                "multiline": true
+                            },
+                            {
+                                "name": "UhfRsexvAG1pGdGU8sga",
+                                "type": "array",
+                                "label": "How are you currently generating new business for yourself or your team?"
+                            },
+                            {
+                                "name": "tOdFvon9eMCKfvwfuQ9C",
+                                "type": "text",
+                                "label": "In your own opinion why don't you think you are able to achieve your real estate goals on your own?"
+                            },
+                            {
+                                "name": "h9FiX45Lcy4Xzb82uAVY",
+                                "type": "text",
+                                "label": "Grade"
+                            },
+                            {
+                                "name": "g4PtkRiX7XVHRqPdBBft",
+                                "type": "text",
+                                "label": "Prompt",
+                                "multiline": true
+                            },
+                            {
+                                "name": "ItTFyNKxNKIHDduP2ZWJ",
+                                "type": "text",
+                                "label": "Time Offered 1"
+                            },
+                            {
+                                "name": "oodKvdFlga54IpFtKUf0",
+                                "type": "text",
+                                "label": "Memory"
+                            },
+                            {
+                                "name": "aEWDO519TOpMwivbFsgJ",
+                                "type": "text",
+                                "label": "Lead Response"
+                            },
+                            {
+                                "name": "WDahKXNM5XFelz3PZj7A",
+                                "type": "text",
+                                "label": "Lead Generation Date"
+                            },
+                            {
+                                "name": "zzRos87Xi1y7RZsuxUOK",
+                                "type": "text",
+                                "label": "Chat-GPT"
+                            },
+                            {
+                                "name": "I3F4STkqj1ksBkP8Kwnn",
+                                "type": "text",
+                                "label": "First Message Sent"
+                            },
+                            {
+                                "name": "5JGZc7pnxM1opZMSYm6J",
+                                "type": "text",
+                                "label": "Goodbye?"
+                            },
+                            {
+                                "name": "Zkqe4tKEqeIGgq88N9ha",
+                                "type": "text",
+                                "label": "Call Back Time"
+                            },
+                            {
+                                "name": "hHcsqHE0zjgES13oY2w5",
+                                "type": "text",
+                                "label": "AI Memory"
+                            },
+                            {
+                                "name": "Z7eMEuvuaEHEr2QBb5zm",
+                                "type": "text",
+                                "label": "Reach Back Out Time"
+                            },
+                            {
+                                "name": "j7UjFnFjooQPJU08xmfX",
+                                "type": "text",
+                                "label": "Time Offered 2"
+                            },
+                            {
+                                "name": "cTaPNxqfzGtJcz6pB3Di",
+                                "type": "text",
+                                "label": "No Bump?"
+                            },
+                            {
+                                "name": "CmVRJrQqcrV9MYHHj43K",
+                                "type": "text",
+                                "label": "What is your total debt? "
+                            },
+                            {
+                                "name": "LRbBasug9xHq0yjRFXLt",
+                                "type": "text",
+                                "label": "What have you done to reduce?"
+                            },
+                            {
+                                "name": "xAzMGdokDGNwERqkJ6rH",
+                                "type": "text",
+                                "label": "Custom Field 1"
+                            },
+                            {
+                                "name": "wWigDNyPIupHXu2ty296",
+                                "type": "text",
+                                "label": "Custom Field 2"
+                            },
+                            {
+                                "name": "8p1W64d4kqYsiOGPQ080",
+                                "type": "text",
+                                "label": "IP Location"
+                            },
+                            {
+                                "name": "YKSqFdO7EY1yIE1k2xMK",
+                                "type": "text",
+                                "label": "Prospect Enquired"
+                            },
+                            {
+                                "name": "61i02FEidMuWktcpAPOt",
+                                "type": "text",
+                                "label": "IP Address"
+                            },
+                            {
+                                "name": "ltSVRwnC3sI5KzJGFDAj",
+                                "type": "text",
+                                "label": "Affiliate Link"
+                            },
+                            {
+                                "name": "HZsTL5t5KIDcwJxPn9y6",
+                                "type": "text",
+                                "label": "Prospect ID"
+                            },
+                            {
+                                "name": "DAcCzI9WBR8cfuw4O5jH",
+                                "type": "text",
+                                "label": "Bought?"
+                            },
+                            {
+                                "name": "ivCVZPyQNAwXZHqKaS1A",
+                                "type": "text",
+                                "label": "Lead Response Received"
+                            },
+                            {
+                                "name": "hGmmocxJjvrtFjkwUxbZ",
+                                "type": "text",
+                                "label": "Property Address"
+                            },
+                            {
+                                "name": "v8RULrHelqT253iFUYP7",
+                                "type": "text",
+                                "label": "Chat History",
+                                "multiline": true
+                            },
+                            {
+                                "name": "kgyUTnDlhnmrIUfMKiQs",
+                                "type": "text",
+                                "label": "Choose a time slot:"
+                            },
+                            {
+                                "name": "nro6CsUzTGVaazy3giQT",
+                                "type": "text",
+                                "label": "Communication Channel"
+                            },
+                            {
+                                "name": "Y2TIRtwl2hYh0sIRh03x",
+                                "type": "text",
+                                "label": "How much is a typical client worth to you?"
+                            },
+                            {
+                                "name": "rcr37U73amhz1uyv41SK",
+                                "type": "text",
+                                "label": "How much are you spending on ads per month? "
+                            },
+                            {
+                                "name": "H1TIEioXWGMS8isgSckP",
+                                "type": "text",
+                                "label": "How many leads do you have in your CRM?"
+                            },
+                            {
+                                "name": "7QSwRoa9p56uRlOuJ7RX",
+                                "type": "text",
+                                "label": "Are you collecting phone numbers? "
+                            },
+                            {
+                                "name": "bivxTEeLOykugHaf42sL",
+                                "type": "text",
+                                "label": "What industry do you work in? "
+                            },
+                            {
+                                "name": "NEoQrxZV19g4oaCtqfeZ",
+                                "type": "text",
+                                "label": "Pricing Report"
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Custom Fields"
+                    }
+                ]
+            }
+        }
+    ],
+    "metadata": {
+        "instant": true,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "slots": null,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": {
+            "orphans": []
+        },
+        "zone": "eu2.make.com",
+        "notes": []
+    }
+}
