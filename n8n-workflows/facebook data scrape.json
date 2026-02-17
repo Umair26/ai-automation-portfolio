@@ -1,0 +1,563 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "45f3d303-096c-4b65-af3e-5e4dc385451f",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "fbb0ff51-c5f2-4c16-aac5-1bd394539187",
+      "name": "Webhook",
+      "webhookId": "45f3d303-096c-4b65-af3e-5e4dc385451f"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1XRinC13kk6SzRj9hiwmGUJN9CRdkmxyiqWhyuRWw0YY",
+          "mode": "list",
+          "cachedResultName": "result",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1XRinC13kk6SzRj9hiwmGUJN9CRdkmxyiqWhyuRWw0YY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1230535098,
+          "mode": "list",
+          "cachedResultName": "result",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1XRinC13kk6SzRj9hiwmGUJN9CRdkmxyiqWhyuRWw0YY/edit#gid=1230535098"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "profileUrl": "={{ $json.profileURL.profileUrl }}",
+            "name": "={{ $json.profileURL.name }}",
+            "firstName": "={{ $json.profileURL.firstName }}",
+            "lastName": "={{ $json.profileURL.lastName }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "profileUrl",
+              "displayName": "profileUrl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "firstName",
+              "displayName": "firstName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "lastName",
+              "displayName": "lastName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "profilePicture",
+              "displayName": "profilePicture",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "groupName",
+              "displayName": "groupName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "groupUrl",
+              "displayName": "groupUrl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "memberSince",
+              "displayName": "memberSince",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "additionalData",
+              "displayName": "additionalData",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "friendshipStatus",
+              "displayName": "friendshipStatus",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "uid",
+              "displayName": "uid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        2420,
+        60
+      ],
+      "id": "6491538d-686a-4d7f-8eb1-98c4bd594ee2",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "5IbPszOUfsrlZQiy",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8ce6c014-da1b-4ac5-a82c-147bee72ea65",
+              "name": "=First step",
+              "value": "={{ $json.body.resultObject.replaceAll(\"[\",\"\") }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        0
+      ],
+      "id": "3c6ed0db-1077-408a-baa9-5c71735aa761",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "afa912db-1d61-4455-90a7-68d6a5652dcd",
+              "name": "Final step",
+              "value": "={{ $json['First step'].replaceAll(\"]\",\"\") }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        440,
+        0
+      ],
+      "id": "49af8aa2-372b-4523-b541-adaa48696aa0",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Divide these into different items that start with {profileURL:{{ $json['Final step'] }}"
+            }
+          ]
+        },
+        "simplify": false,
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        660,
+        0
+      ],
+      "id": "9716522e-4847-4922-b4bd-0f8108dff3ed",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "vp9X5dvyo3WZkbrJ",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "choices[0].message.content.profiles",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        0
+      ],
+      "id": "d26c6f6c-b233-4c60-accc-4df20b16d44d",
+      "name": "Split Out",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=The information of the leads: {{ $json.profileURL.name }},{{ $json.profileURL.firstName }},{{ $json.profileURL.lastName }},{{ $json.profileURL.groupName }},{{ $json.profileURL.additionalData }},{{ $json.profileURL.memberSince }}",
+        "options": {
+          "systemMessage": "=Create a personalized message for each of the leads that you have received using the information you have been given. The message has to be oriented to selling Real Estate properties\n\nUse {{ $json.profileURL.additionalData }} to make it even more personalized. If {{ $json.profileURL.additionalData }} is empty just go ahead with the normal message\n\nYou can also use if you want the {{ $json.profileURL.memberSince }} to use it inside the message\n\nExample:\n\nHey {{ $json.profileURL.firstName }}, I hope everything is going well. I saw you joined the group of Real Estate Los Cabos last Tuesday. I am a big Real Estate Agent there, would you be interested in knowing more about my offers?"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        1240,
+        0
+      ],
+      "id": "1a28eef8-98d8-47ec-92f9-7fd7887b6060",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1280,
+        220
+      ],
+      "id": "379ce97b-c3f9-40fb-92b2-f1026dc70f83",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "vp9X5dvyo3WZkbrJ",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1MuURZwIE9dAHNM_6hsYAx78k73wHvwxfDJP-OdnjFU8",
+          "mode": "list",
+          "cachedResultName": "Facebook DM Video",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1MuURZwIE9dAHNM_6hsYAx78k73wHvwxfDJP-OdnjFU8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1MuURZwIE9dAHNM_6hsYAx78k73wHvwxfDJP-OdnjFU8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "profileUrl": "={{ $('Split Out').item.json.profileURL.profileUrl }}",
+            "Name": "={{ $('Split Out').item.json.profileURL.name }}",
+            "First Name": "={{ $('Split Out').item.json.profileURL.firstName }}",
+            "Last Name": "={{ $('Split Out').item.json.profileURL.lastName }}",
+            "Group Name": "={{ $('Split Out').item.json.profileURL.groupName }}",
+            "Message": "={{ $json.output }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "profileUrl",
+              "displayName": "profileUrl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Group Name",
+              "displayName": "Group Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Message",
+              "displayName": "Message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Done?",
+              "displayName": "Done?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1600,
+        0
+      ],
+      "id": "6c67b29e-98b8-4c16-a491-243e8a91b93a",
+      "name": "Google Sheets1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "5IbPszOUfsrlZQiy",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "mercedes-sanchez.app.n8n.cloud",
+            "user-agent": "Needle/2.2.4 (Node.js v22.14.0; linux x64)",
+            "content-length": "2048",
+            "accept": "application/json",
+            "accept-encoding": "gzip, br",
+            "cdn-loop": "cloudflare; loops=1; subreqs=1",
+            "cf-connecting-ip": "51.158.156.251",
+            "cf-ew-via": "15",
+            "cf-ipcountry": "FR",
+            "cf-ray": "9304bb39a1d8b939-AMS",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "cf-worker": "n8n.cloud",
+            "content-type": "application/json; charset=utf-8",
+            "x-forwarded-for": "51.158.156.251, 172.71.103.209",
+            "x-forwarded-host": "mercedes-sanchez.app.n8n.cloud",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "traefik-prod-users-gwc-51-795c6dc87-pvj8f",
+            "x-is-trusted": "yes",
+            "x-real-ip": "51.158.156.251"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "agentId": "4945781409618350",
+            "agentName": "Untitled Facebook Group Members Export",
+            "containerId": "5883020381082122",
+            "script": "Facebook Group Members Export.js",
+            "scriptOrg": "phantombuster",
+            "branch": "master",
+            "launchDuration": 315,
+            "runDuration": 11139,
+            "resultObject": "[{\"profileUrl\":\"https://www.facebook.com/conchitabeltran.conchita\",\"name\":\"Cony Beltran\",\"firstName\":\"Cony\",\"lastName\":\"Beltran\",\"profilePicture\":\"https://scontent-lhr8-2.xx.fbcdn.net/v/t39.30808-1/367492664_10218732000569463_4194007952798447877_n.jpg?stp=dst-jpg_s120x120_tt6&_nc_cat=103&ccb=1-7&_nc_sid=e99d92&_nc_ohc=B59TXUcDLPUQ7kNvwHLBtd7&_nc_oc=AdmfsmWyszjKyr3TAj-ygwSiScvQqa6Af7TJ_Rapcxduv1qESWozsxCtO6NrI1EUgFQ&_nc_zt=24&_nc_ht=scontent-lhr8-2.xx&_nc_gid=9IApSn_9_l1EECrkO8j4hg&oh=00_AfGUTsXwVAtkUt-EcHn3B2oaAM4yn-kApa6thvUABdnj8g&oe=68031B6F\",\"groupName\":\"Real Estate Los Cabos Mexico\",\"groupUrl\":\"https://www.facebook.com/groups/565323611392229/\",\"memberSince\":\"Se unió el martes pasado\",\"additionalData\":\"\",\"friendshipStatus\":\"CAN_REQUEST\",\"uid\":\"1782906659\",\"timestamp\":\"2025-04-14T16:55:30.534Z\"},{\"profileUrl\":\"https://www.facebook.com/MariaLourdesPro\",\"name\":\"Maria Pro\",\"firstName\":\"Maria\",\"lastName\":\"Pro\",\"profilePicture\":\"https://scontent-lhr6-1.xx.fbcdn.net/v/t39.30808-1/341907618_1409666723185940_8201136094360391900_n.jpg?stp=dst-jpg_s120x120_tt6&_nc_cat=109&ccb=1-7&_nc_sid=1d2534&_nc_ohc=lgw2c5N0C0YQ7kNvwG7U3ga&_nc_oc=AdmKXUNxt6J5YXBfPTcKdR03pDoTEIDOlzmhvcmG3FFef3ChJb6X1ISIWYG_UADl5Y8&_nc_zt=24&_nc_ht=scontent-lhr6-1.xx&_nc_gid=9IApSn_9_l1EECrkO8j4hg&oh=00_AfFBBhHkpHObmmusHreEONgLbfWPlKa8Zk8OsauYKaQ9Og&oe=68032632\",\"groupName\":\"Real Estate Los Cabos Mexico\",\"groupUrl\":\"https://www.facebook.com/groups/565323611392229/\",\"memberSince\":\"Se unió el martes pasado\",\"additionalData\":\"Owner en 9Meses USA \\\"Boutique de Maternidad\\\"\",\"friendshipStatus\":\"\",\"uid\":\"100009565954691\",\"timestamp\":\"2025-04-14T16:55:30.534Z\"}]",
+            "exitMessage": "finished",
+            "exitCode": 0
+          },
+          "webhookUrl": "https://mercedes-sanchez.app.n8n.cloud/webhook-test/45f3d303-096c-4b65-af3e-5e4dc385451f",
+          "executionMode": "test"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "43379ed1-8929-4e17-83a3-8c34af5c845e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "47ea885f89585e2eec759895b3d7ea74c5ef8fc9c3a253e1417a03307578dbb7"
+  },
+  "id": "kCDv0aWhrSXCmrji",
+  "tags": []
+}
