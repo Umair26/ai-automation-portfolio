@@ -1,0 +1,707 @@
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "db8e62c7-785b-4677-b8cb-4d124006a5bc",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -800,
+        0
+      ],
+      "id": "f85f8050-701f-44e4-a6ce-0e63c65ca3f6",
+      "name": "Webhook",
+      "webhookId": "db8e62c7-785b-4677-b8cb-4d124006a5bc"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=The message of the user:  {{ $json.body.args.user_output }}\n\nChat history: {{ $json.body.call.transcript }}\n\nPhone Number of the user: {{ $json.body.call.from_number }}",
+        "options": {
+          "systemMessage": "=#Role\nYou are the experienced assistant of the Real Estate Agent James Williams and your job is to attend the questions of the users\n\n#Task\nAttend the questions of the users, collect information, send SMS and book appointments. Depending on what the user says, follow these different paths:\n##If the user asks a question that requires going into the knowledge base\nUse the Knowledge Base Google Docs tool to search for it and answer it with that information. End the response saying, is there anything more in which I can help you?\n##If the user says he wants to buy a property. Follow these steps\n1. Start saying \"Great, what property are you interested in, can you give a description of it?\"\n2. With the description that has been given to you use the List of properties Google Sheets tool to find the one he is referring to. then ask him if he is referring to the property that you have found\n3. If he says yes now ask him for his name and budget, so that James Williams can get in contact with him shortly\n4. Once he has given it to you use the Buy process Google Sheets tool to include all the information in a new row (using as phone number the one with which the call has been sent by the user) and ask him if he would like to schedule a viewing\n5. If he says no just say thank you and end the call, but if he says yes go ahead and ask him when we would like to do a viewing, reminding that Joe is available all 7 days of the week from 8 AM to 6 PM\n6. Once he gives you the day and hour he would like to, use the check availability Google Calendar tool to check if it is available, and if it is, use the book calendar Google Calendar tool to book the appointment. Inform the user that the appointment has been booked\n7. finally, send an SMS using the Twilio tool to the user's number including all the details of the appointment like date, attendees, property or address of the property\n##If the user says he wants to sell his property. Follow these steps\n1. Start saying \"Great, for that I will need to collect your name, address of the property you want to sell and the price for what you want it to sell, to pass it to James\"\n2. Then use the Sell process/info Google Sheets tool to include all the information there\n3. Inform the user that James will get in contact with him really shortly\n\n#Details\n-Remember to use human expressions like hhhmmm or eeeh when talking\n-This task is crucial for the success of James Williams\n-Remember to include information you already know like the phone number without having to ask\n\n#Context\n##The Real Estate Agent\nJames Williams is a real estate agent who mainly operates in Florida and New York, selling properties from both states. He is known in both states for his accuracy when selling properties\n\n##The system\nYou are part of the system of lead acquisition of James Williams in which your job is to attend calls from the users, answer their questions, collect information, send SMS and book appointments\n\n\nThe message you output doesn't have to include any information of tools executed, just follow the steps provided and answer informaing like a normal human\n\nRemember the date the user refers to is always after today's date"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        200,
+        -20
+      ],
+      "id": "6989f77b-80b0-450d-8c89-042a7e517f59",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        20,
+        180
+      ],
+      "id": "30944327-fe48-4ea0-aa84-65d83368b44a",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "LXmIjOSMIdbYfMXK",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "calendar",
+        "calendar": {
+          "__rl": true,
+          "value": "tribexagency@gmail.com",
+          "mode": "list",
+          "cachedResultName": "tribexagency@gmail.com"
+        },
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start_Time', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End_Time', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        140,
+        380
+      ],
+      "id": "4e884b8b-8cc4-49bb-9250-75fb26e761bc",
+      "name": "Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "hnFdSrqziMs39Iqg",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "tribexagency@gmail.com",
+          "mode": "list",
+          "cachedResultName": "tribexagency@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {
+          "attendees": [
+            "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('attendees0_Attendees', ``, 'string') }}"
+          ],
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "location": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Location', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        480,
+        380
+      ],
+      "id": "ddbb4df4-b9a9-4710-a1f7-22e516abbe63",
+      "name": "Google Calendar1",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "hnFdSrqziMs39Iqg",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "documentURL": "1X4Tgxynx9qjXPYeT3j8gtnTehhpCsbOfy6Q5bDaOcOM"
+      },
+      "type": "n8n-nodes-base.googleDocsTool",
+      "typeVersion": 2,
+      "position": [
+        660,
+        380
+      ],
+      "id": "f6d0f9b1-9f0f-4767-988c-533b7e9dbac4",
+      "name": "Knowledge base",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "olL18vrM8qyNrWsF",
+          "name": "Google Docs account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1SzTwFMQoUBBS_y_BIKgGzWqHCv6rE8hHFkjre6gtshU",
+          "mode": "list",
+          "cachedResultName": "n8n Voice Video",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SzTwFMQoUBBS_y_BIKgGzWqHCv6rE8hHFkjre6gtshU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SzTwFMQoUBBS_y_BIKgGzWqHCv6rE8hHFkjre6gtshU/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.6,
+      "position": [
+        1140,
+        380
+      ],
+      "id": "b20cf21c-d90c-45dd-a2f4-7d2d2f943c66",
+      "name": "List of properties",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bEWGpVeMw9Ve4d8u",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1SzTwFMQoUBBS_y_BIKgGzWqHCv6rE8hHFkjre6gtshU",
+          "mode": "list",
+          "cachedResultName": "n8n Voice Video",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SzTwFMQoUBBS_y_BIKgGzWqHCv6rE8hHFkjre6gtshU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1481202523,
+          "mode": "list",
+          "cachedResultName": "Sell",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SzTwFMQoUBBS_y_BIKgGzWqHCv6rE8hHFkjre6gtshU/edit#gid=1481202523"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Name', ``, 'string') }}",
+            "Phone Number": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Phone_Number', ``, 'string') }}",
+            "Address of property": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Address_of_property', ``, 'string') }}",
+            "Number of bedrroms": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Number_of_bedrroms', ``, 'string') }}",
+            "Number of bathrooms": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Number_of_bathrooms', ``, 'string') }}",
+            "Square foot": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Square_foot', ``, 'string') }}",
+            "Price": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Price', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Address of property",
+              "displayName": "Address of property",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Number of bedrroms",
+              "displayName": "Number of bedrroms",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Number of bathrooms",
+              "displayName": "Number of bathrooms",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Square foot",
+              "displayName": "Square foot",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Price",
+              "displayName": "Price",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.6,
+      "position": [
+        800,
+        380
+      ],
+      "id": "18b45baa-67cf-48e3-95c8-01cc94f0bf0c",
+      "name": "Sell process/info",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bEWGpVeMw9Ve4d8u",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1SzTwFMQoUBBS_y_BIKgGzWqHCv6rE8hHFkjre6gtshU",
+          "mode": "list",
+          "cachedResultName": "n8n Voice Video",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SzTwFMQoUBBS_y_BIKgGzWqHCv6rE8hHFkjre6gtshU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 868756452,
+          "mode": "list",
+          "cachedResultName": "Buy",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SzTwFMQoUBBS_y_BIKgGzWqHCv6rE8hHFkjre6gtshU/edit#gid=868756452"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "NAme": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('NAme', ``, 'string') }}",
+            "Phone Number": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Phone_Number', ``, 'string') }}",
+            "Budget": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Budget', ``, 'string') }}",
+            "Property interested": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Property_interested', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "NAme",
+              "displayName": "NAme",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Budget",
+              "displayName": "Budget",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Property interested",
+              "displayName": "Property interested",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.6,
+      "position": [
+        960,
+        380
+      ],
+      "id": "5ad80722-e33a-4e00-9ca8-499284c39555",
+      "name": "Buy process",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bEWGpVeMw9Ve4d8u",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "from": "+13159619771",
+        "to": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.twilioTool",
+      "typeVersion": 1,
+      "position": [
+        320,
+        380
+      ],
+      "id": "2c0f6d01-dd5d-419e-b815-944842c9e0bd",
+      "name": "Twilio1",
+      "credentials": {
+        "twilioApi": {
+          "id": "VIgCYfnagn2gVSwh",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.3,
+      "position": [
+        560,
+        -20
+      ],
+      "id": "16ed74ba-3b57-4c7d-9edb-ab76ec3a59b2",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "db6d8f83-0086-40fd-a99f-fd1cfa01632d",
+              "leftValue": "={{ $json.body.event }}",
+              "rightValue": "call_started",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -560,
+        0
+      ],
+      "id": "ec990078-9591-47bb-92a2-3e78195a69e7",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "25d4d5f1-e647-4ee8-8a47-c47ae9dec514",
+              "leftValue": "={{ $('Webhook').item.json.body.event }}",
+              "rightValue": "call_ended",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -360,
+        0
+      ],
+      "id": "2a3ab638-f8b3-42f4-9de3-ec8df26ffbfb",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1SzTwFMQoUBBS_y_BIKgGzWqHCv6rE8hHFkjre6gtshU",
+          "mode": "list",
+          "cachedResultName": "n8n Voice Video",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SzTwFMQoUBBS_y_BIKgGzWqHCv6rE8hHFkjre6gtshU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1077298074,
+          "mode": "list",
+          "cachedResultName": "Trasncripts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1SzTwFMQoUBBS_y_BIKgGzWqHCv6rE8hHFkjre6gtshU/edit#gid=1077298074"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Transcript": "={{ $json.body.call.transcript }}",
+            "Recording URL": "={{ $json.body.call.recording_url }}",
+            "Phone Number": "={{ $json.body.call.from_number }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Transcript",
+              "displayName": "Transcript",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Recording URL",
+              "displayName": "Recording URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -180,
+        360
+      ],
+      "id": "eccba4e1-9d4a-46e3-8022-2cfeadea35b7",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bEWGpVeMw9Ve4d8u",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Calendar1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Knowledge base": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List of properties": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sell process/info": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buy process": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Twilio1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f26f929b-dee0-4a90-9cfa-91146c8c04fe",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "76a54d8f6e6adf5b126d28ffaca4a4fe1941d5a7f3c7f41f2c98913ce1292413"
+  },
+  "id": "xm73nDEPubVhbfAK",
+  "tags": []
+}
