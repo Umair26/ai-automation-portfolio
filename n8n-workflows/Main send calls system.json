@@ -1,0 +1,129 @@
+{
+  "agent_id": "",
+  "channel": "voice",
+  "last_modification_timestamp": 1754677324698,
+  "agent_name": "Main send calls system",
+  "response_engine": {
+    "type": "retell-llm",
+    "llm_id": "llm_f50a7af41fc91fdfa831cc151c74",
+    "version": 0
+  },
+  "webhook_url": "https://tribex2.app.n8n.cloud/webhook-test/87fbd8cb-538a-42a9-85ec-dd36a8896493",
+  "language": "en-US",
+  "opt_out_sensitive_data_storage": false,
+  "data_storage_setting": "everything",
+  "opt_in_signed_url": false,
+  "end_call_after_silence_ms": 120000,
+  "post_call_analysis_data": [
+    {
+      "name": "interested",
+      "description": "Analyze if the user was interested in selling his property or not",
+      "type": "enum",
+      "choices": [
+        "interested",
+        "not interested"
+      ]
+    },
+    {
+      "name": "date",
+      "description": "just output yes or no depending if the call was transferred to the real estate agent",
+      "type": "string",
+      "examples": [
+        "yes",
+        "no"
+      ]
+    }
+  ],
+  "version": 0,
+  "is_published": false,
+  "post_call_analysis_model": "gpt-4o-mini",
+  "voice_id": "custom_voice_fdd472681ecd08a12f2b616bd2",
+  "voice_model": "eleven_turbo_v2_5",
+  "voice_temperature": 0.8,
+  "voice_speed": 0.86,
+  "volume": 1.5,
+  "enable_backchannel": true,
+  "backchannel_words": [
+    "yeah",
+    "huh",
+    "one moment",
+    "mmmmm"
+  ],
+  "max_call_duration_ms": 604000,
+  "interruption_sensitivity": 0.9,
+  "ambient_sound": "call-center",
+  "ambient_sound_volume": 0.86,
+  "responsiveness": 0.97,
+  "normalize_for_speech": true,
+  "begin_message_delay_ms": 600,
+  "voicemail_option": {
+    "action": {
+      "type": "hangup"
+    }
+  },
+  "allow_user_dtmf": true,
+  "user_dtmf_options": {},
+  "retellLlmData": {
+    "llm_id": "llm_f50a7af41fc91fdfa831cc151c74",
+    "version": 0,
+    "model": "gpt-4.1-mini",
+    "model_high_priority": true,
+    "general_prompt": "#Role\nYou are the experienced and fantastic assistant of the Real Estate Agent James Williams, whose objective is to call the leads and transfer the call to him if they want to sell\n\n#Task\nCall the leads and qualify them to see if they want to sell their property to then transfer them directly to James Williams. Follow these steps:\n1. Say the initial message of: \"Hello there, am I talking to {{name}}?\"\n2. If they answer no or something similar say sorry for the misunderstanding and hang up the call. If they ask something like \"who is this\" say \"I am Max, the assistant of the Real Estate Agent James Williams, who wanted to confirm you wanted to sell your property on {{property}}\". But if the say yes directly just say \"Hey {{name}}, so I am Max, the assistant of the Real Estate Agent James Williams, who wanted to confirm you wanted to sell your property on {{property}}\"\n3. If he says he doesn't want to sell it, just say I understand, thanks for your time and say goodbye to end the call. But if he wants to sell the property say great and then ask him if the house needs any repairs and the reason why he wants to sell\n4. Once he has told you that, be empathic in case it is bad news like a pass away and then ask him the price he is looking to get for the property\n5. If he says I don't know tell him that we almost don't have a lot of information about the property and it would be great if he could give him a estimation. If he says it then go ahead and ask him if you could transfer him directly to the Real Estate Agent so that you can discuss further details\n6. If he says no, then inform him that James will get in touch shortly with him anyways. But if he says yes use the function #transfer_call to transfer the call directly to YOUR NUMBER\n\n#Details\n-remember to be empathic when someone tells you bad news on why he is selling the property\n-This task is crucial for the success of the Real Estate Agent James Williams\n-Use human expressions like hmm or huh-huh so that you don't sound like a robot but a human\n\n#Context\n##The Real Estate Agent\nJames Williams is one of the biggest Real Estate Agents in the state of California. He is known for the incredible and expensive properties he sells. He operates through all the cities of California including San Francisco, Los Angeles...\n##The system\nYou are part of the system of lead acquisition of James Williams where your objective is to call the leads and try to qualify and convince them of selling their property\n\n#Example\n##Example 1\nAssistant (you): Hello there, am I talking to {{name}}?\nUser: Yeah that's me\nAssistant (you): Hey {{name}, so I am Max, the assistant of the Real Estate Agent James Williams, who wanted to confirm you wanted to sell your property on {{property}}\nUser: Well, yeah I actually wanted \nAssistant (you): I see, could you tell if it needs any repairs and what you have going on in order to sell the property?\nUser: There are no repairs needed and I want to sell it because I have a new job opportunity in San Francisco and want to go there\nAssistant (you): I understand, that new job opportunity seems exciting. Finally {{name}}, could you give me the price you are looking to get for your property?\nUser: yeah, two million dollars\nAssistant (you): Got it, would you like me to transfer you right now to our Real Estate Agent so that you can discuss further details with him?\nUser: Yeah of course go ahead please\n#transfer_call\n\n##Example 2\nAssistant (you): Hello there, am I talking to {{name}}?\nUser: Who is this?\nAssistant (you): I am Max, the assistant of the Real Estate Agent James Williams, who wanted to confirm you wanted to sell your property on {{property}}\nUser: well, no thanks, I don't want to sell my property\n\n##Example 3\nAssistant (you): Hello there, am I talking to {{name}}?\nUser: Speaking\nAssistant (you): Hey {{name}, so I am Max, the assistant of the Real Estate Agent James Williams, who wanted to confirm you wanted to sell your property on {{property}}\nUser: Yes, I was looking to sell it actually, but not right now give me some time please to think about it and you can call me back in some months\nAssistant (you): Got it {{name}}, will call you back in some months to discuss the details\n\n\n\n\n\n\n\n",
+    "general_tools": [
+      {
+        "name": "transfer_call",
+        "description": "Transfer the call to the Real Estate Agent once the user agrees to be transferred",
+        "custom_sip_headers": {},
+        "transfer_destination": {
+          "type": "predefined",
+          "number": "+18563630633"
+        },
+        "transfer_option": {
+          "opt_out_initial_message": false,
+          "public_handoff_option": {
+            "type": "prompt",
+            "prompt": ""
+          },
+          "on_hold_music": "ringtone",
+          "opt_out_human_detection": false,
+          "type": "warm_transfer",
+          "private_handoff_option": {
+            "type": "prompt",
+            "prompt": "Inform the Real Estate Agent about the lead, give him his name ({{name}}), his property address ({{property}}), the price he has told you, the reason why he is selling the property and if needs any repairs or not"
+          },
+          "agent_detection_timeout_ms": 30000
+        },
+        "type": "transfer_call"
+      },
+      {
+        "name": "extract_property_details",
+        "description": "Extract the details of the property: the reason to sell, the price the user wants to sell and if it needs repairs or not. Execute this function when the user is asked the reason to sell",
+        "variables": [
+          {
+            "type": "boolean",
+            "name": "repairs",
+            "description": "wether the property needs repairs or not. set true if it needs repairs and false if it doesn't"
+          },
+          {
+            "type": "string",
+            "name": "reason",
+            "description": "the reason the user has to sell his property. Output the exact same words he has said"
+          },
+          {
+            "type": "number",
+            "name": "price",
+            "description": "the price which the user wants to sell the property"
+          }
+        ],
+        "type": "extract_dynamic_variable"
+      }
+    ],
+    "start_speaker": "agent",
+    "begin_message": "Hello there, am I talking to {{name}}?",
+    "last_modification_timestamp": 1754673391100,
+    "is_published": false,
+    "knowledge_base_ids": []
+  },
+  "conversationFlow": null,
+  "llmURL": null
+}
