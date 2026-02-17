@@ -1,0 +1,335 @@
+{
+  "name": "My Sub-Workflow 1",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "date"
+            }
+          ]
+        }
+      },
+      "id": "c055762a-8fe7-4141-a639-df2372f30060",
+      "typeVersion": 1.1,
+      "name": "When Executed by Another Workflow",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        272,
+        352
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7ffad197-4dd1-4583-9985-041411dcb744",
+              "name": "date start",
+              "value": "={{ $json.date.toDateTime().format('yyyy-MM-dd') + \"T\" + \"16:00:00+02:00\" }}",
+              "type": "string"
+            },
+            {
+              "id": "02c8d446-a344-4165-8398-360d84a2c16e",
+              "name": "date end",
+              "value": "={{ $json.date.toDateTime().format('yyyy-MM-dd') + \"T\" + \"21:00:00+02:00\" }}",
+              "type": "string"
+            },
+            {
+              "id": "7bc97780-29d7-47af-be15-715abb3d17ea",
+              "name": "date",
+              "value": "={{ $json.date }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        480,
+        352
+      ],
+      "id": "1cdc7902-1f6a-47c8-96fc-cba47031df29",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "url": "https://api.cal.com/v1/slots",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "apiKey",
+              "value": "API KEY"
+            },
+            {
+              "name": "startTime",
+              "value": "={{ $json['date start'] }}"
+            },
+            {
+              "name": "endTime",
+              "value": "={{ $json['date end'] }}"
+            },
+            {
+              "name": "timeZone",
+              "value": "Europe/Madrid"
+            },
+            {
+              "name": "eventTypeId",
+              "value": "524421"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        768,
+        352
+      ],
+      "id": "e5f7fddd-64ba-47b7-ac63-f49791a8782b",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c8ec48ea-64e6-4963-b7de-6162505f432c",
+              "name": "slots",
+              "value": "={{ $json.slots }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1008,
+        352
+      ],
+      "id": "6c008d94-09ea-454e-8b80-917b6af89168",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5b9bd9f4-d8ff-4c88-a918-b39d4e9d2fb1",
+              "leftValue": "={{ $json.slots }}",
+              "rightValue": "={{ $('When Executed by Another Workflow').item.json.date }}",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1168,
+        320
+      ],
+      "id": "8fee179a-2d7d-4c40-8526-f58971d0827b",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ff199c6d-69cb-4086-87cc-ca639c73db11",
+              "name": "correct date",
+              "value": "={{ $('Edit Fields').item.json.date.toDateTime().minus(2, 'hours').format('yyyy-MM-dd') + \"T\" + $('Edit Fields').item.json.date.toDateTime().minus(2, 'hours').format('HH:mm:ss') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1376,
+        224
+      ],
+      "id": "0e539fce-c716-444d-adbd-a22683a8fa3e",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.cal.com/v2/bookings",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "cal-api-version",
+              "value": "2024-08-13"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer API KEY"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={\n  \"attendee\": {\n    \"language\": \"en\",\n    \"name\": \"Diego\",\n    \"timeZone\": \"Europe/Madrid\",\n    \"phoneNumber\": \"+34666666666\"\n  },\n  \"eventTypeId\": 524421,\n  \"start\": \"{{ $json['correct date'] }}\",\n  \"location\": {\n    \"type\": \"address\"\n  },\n  \"bookingFieldsResponses\": {\n    \"description\": \"you have a spa session at this hour, please remember to be 5 minutes earlier there\",\n    \"title\": \"spa session\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1632,
+        256
+      ],
+      "id": "1a390103-b786-4812-87ea-0c7480d4f2fb",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "43da48a9-9e47-43d5-a5d7-2fc3e02b5e11",
+              "name": "response",
+              "value": "the session in the spa has been booked successfully",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1792,
+        272
+      ],
+      "id": "72c347ce-87b3-4b6d-bbbf-24034109a069",
+      "name": "Edit Fields3"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "date": "2025-08-20T19:00:00"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "3f8f1aa8-9c52-4bef-9ab3-94e242ee0b9d",
+  "meta": {
+    "instanceId": "cc3d73b93b697d365502470db086898cc8a1e267b0a823f51f1bea633036d5ed"
+  },
+  "id": "5RaURF2U1M1dV6Hb",
+  "tags": []
+}
