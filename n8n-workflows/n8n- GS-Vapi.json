@@ -1,0 +1,132 @@
+{
+  "name": "Free project",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "c7048fa3-95a0-4bd4-bd66-570dba718bcb",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1uwW2ravWv38NcE4t-R7apy2CIBNjdkk-6vlbvM41kC4",
+          "mode": "list",
+          "cachedResultName": "Free project",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1uwW2ravWv38NcE4t-R7apy2CIBNjdkk-6vlbvM41kC4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1uwW2ravWv38NcE4t-R7apy2CIBNjdkk-6vlbvM41kC4/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Call sent"
+            }
+          ]
+        },
+        "options": {
+          "returnFirstMatch": true
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        0
+      ],
+      "id": "a464a31d-c7b9-4e2e-8e40-7d0d20b03b22",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "hgrlbD6ypbaxDJcy",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.vapi.ai/call",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer API KEY"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={\n  \"assistantOverrides\": {\n    \"variableValues\": {\n      \"name\": \"{{ $json.Name }}\",\n      \"company\": \"{{ $json.Company }}\",\n      \"email\": \"{{ $json.Email }}\",\n      \"position\": \"{{ $json.Position }}\",\n      \"service\": \"{{ $json.Service }}\",\n      \"location\": \"{{ $json.Location }}\"\"\n    }\n  },\n  \"assistantId\": \"\",\n  \"customer\": {\n    \"number\": \"+{{ $json.Number }}\",\n    \"name\": \"{{ $json.Name }}\",\n    \"extension\": \"\",\n    \"email\": \"{{ $json.Email }}\"\n  },\n  \"phoneNumberId\": \"\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        528,
+        0
+      ],
+      "id": "c26ec960-8d98-4574-bb8f-79be9e255e86",
+      "name": "HTTP Request"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d1700b6e-e19a-4954-978d-f1e4449402c7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cc3d73b93b697d365502470db086898cc8a1e267b0a823f51f1bea633036d5ed"
+  },
+  "id": "4GDGUKIFeE9KtE9V",
+  "tags": []
+}
