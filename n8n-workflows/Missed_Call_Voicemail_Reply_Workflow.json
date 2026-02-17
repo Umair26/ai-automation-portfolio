@@ -1,0 +1,532 @@
+{
+  "name": "Missed Call Voicemail Reply Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "/twilio-voicemail",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [
+        -1600,
+        400
+      ],
+      "id": "540f91d0-5675-44b4-90b2-a3f8509cf092",
+      "name": "Twilio Voicemail Webhook",
+      "webhookId": "a1577408-3592-4d05-8477-23d43b1b1813"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "has-recording",
+              "leftValue": "={{ $json.body.RecordingUrl }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -1380,
+        400
+      ],
+      "id": "87f2b2f6-7587-4b8a-b817-a5c25a4fc050",
+      "name": "Has Recording?"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.body.RecordingUrl }}.mp3",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "twilioApi",
+        "options": {
+          "response": {}
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1160,
+        300
+      ],
+      "id": "c17f5f0a-1984-457b-8446-bc37e49282e2",
+      "name": "Download Recording",
+      "credentials": {
+        "twilioApi": {
+          "id": "4ACi5Wl2IeZcGku1",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "caller-phone",
+              "name": "callerPhone",
+              "value": "={{ $json.body.From }}",
+              "type": "string"
+            },
+            {
+              "id": "call-sid",
+              "name": "callSid",
+              "value": "={{ $json.body.CallSid }}",
+              "type": "string"
+            },
+            {
+              "id": "call-duration",
+              "name": "callDuration",
+              "value": "={{ $json.body.RecordingDuration }}",
+              "type": "string"
+            },
+            {
+              "id": "timestamp",
+              "name": "timestamp",
+              "value": "={{ $now }}",
+              "type": "string"
+            },
+            {
+              "id": "dec71932-5adf-42a5-98d1-ece4f485e632",
+              "name": "recordingUrl",
+              "value": "={{ $json.body.RecordingUrl }}",
+              "type": "string"
+            },
+            {
+              "id": "2b087094-b7d5-4399-8141-fd21cffece34",
+              "name": "recordingSid",
+              "value": "={{ $json.body.RecordingSid }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -940,
+        300
+      ],
+      "id": "a7a7ef1d-bcb3-44ab-8442-297d3770892c",
+      "name": "Extract Call Data"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.4,
+      "position": [
+        -720,
+        300
+      ],
+      "id": "462c557d-f4b9-4805-9c18-b8c2e634c7c3",
+      "name": "Transcribe with Whisper",
+      "credentials": {
+        "openAiApi": {
+          "id": "wLEE6fG6sE3GDheh",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are responding to a voicemail for [YOUR BUSINESS NAME]. Write a personalized SMS response (under 160 characters) that:\n\n1. Acknowledges what they specifically mentioned\n2. Sounds conversational and helpful\n3. Includes a booking link when appropriate\n4. Uses their name if mentioned\n\nBusiness info:\n- Services: [YOUR SERVICES]\n- Booking: https://calendly.com/yourbusiness/consultation\n- Support: https://yourbusiness.com/support\n\nReturn ONLY the SMS text, no quotes or formatting.",
+              "role": "system"
+            },
+            {
+              "content": "=Voicemail transcript: \"{{ $('Transcribe with Whisper').item.json.text }}\"\n\nWrite an SMS response:"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {
+          "temperature": 0.1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.4,
+      "position": [
+        -500,
+        300
+      ],
+      "id": "38f3dbc8-ca8e-43c7-a025-f19165516ed9",
+      "name": "Analyze Intent",
+      "credentials": {
+        "openAiApi": {
+          "id": "wLEE6fG6sE3GDheh",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1WJSeHbYSiDfh2deRyOT_Kc5D8-K5LKj9IjuMRO2oPtY",
+          "mode": "list",
+          "cachedResultName": "Missed Call Voicemail logging",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1WJSeHbYSiDfh2deRyOT_Kc5D8-K5LKj9IjuMRO2oPtY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1WJSeHbYSiDfh2deRyOT_Kc5D8-K5LKj9IjuMRO2oPtY/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "timestamp": "={{ $json.timestamp }}",
+            "caller_phone": "={{ $json.callerPhone }}",
+            "call_sid": "={{ $json.callSid }}",
+            "intent": "={{ $json.intent }}",
+            "urgency": "={{ $json.urgency }}",
+            "topic": "={{ $json.topic }}",
+            "caller_name": "={{ $json.caller_name }}",
+            "response_type": "={{ $json.responseType }}",
+            "transcription": "={{ $json.transcription }}",
+            "response_sent": "=Yes"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.4,
+      "position": [
+        96,
+        300
+      ],
+      "id": "25243cf6-2418-4191-811b-9a006f7b0f05",
+      "name": "Log to Spreadsheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "cZ04m1r8jo5x2ch6",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "success-response",
+              "name": "success",
+              "value": "true",
+              "type": "boolean"
+            },
+            {
+              "id": "message",
+              "name": "message",
+              "value": "Voicemail processed and response sent",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        316,
+        300
+      ],
+      "id": "11786fc8-4f96-4f6b-909c-967345886b9c",
+      "name": "Success Response"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "error-response",
+              "name": "error",
+              "value": "No recording found in voicemail",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1160,
+        500
+      ],
+      "id": "0fe80b65-96d4-47e0-8335-1d7329014097",
+      "name": "No Recording Response"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        536,
+        300
+      ],
+      "id": "17f5d5e2-e577-4823-b222-146e027f649e",
+      "name": "Webhook Response"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        -940,
+        500
+      ],
+      "id": "d153445d-70bb-4b9c-82ac-4706ed0cfaf5",
+      "name": "Error Webhook Response"
+    },
+    {
+      "parameters": {
+        "from": "+1 620 390 3869",
+        "to": "+17202713824",
+        "message": "={{ $json.message.content.message }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        -120,
+        300
+      ],
+      "id": "52d90b9f-a1ee-4644-8b84-78fbbb2119c1",
+      "name": "Twilio",
+      "credentials": {
+        "twilioApi": {
+          "id": "4ACi5Wl2IeZcGku1",
+          "name": "Twilio account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Twilio Voicemail Webhook": [
+      {
+        "json": {
+          "headers": {
+            "connection": "upgrade",
+            "host": "n8n.emailalchemy.co",
+            "content-length": "708",
+            "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+            "referer": "https://handler.twilio.com/twiml/EH293f5bd80ec52c51908bfeaaf0914b43",
+            "x-twilio-service-flow-event": "%7B%22flow_id%22%3A%22voice_twimlverb_01jxvcz2csessax2yhgw05es92%22%2C%22type%22%3A%22api_event%22%2C%22action%22%3A%22twiml_fetch%22%2C%22sub_action%22%3A%22completed%22%2C%22result%22%3A%22success%22%2C%22metadata%22%3A%7B%22transfer_type%22%3A%22call_transfer_url%22%7D%7D",
+            "i-twilio-idempotency-token": "97449d08-abcb-421c-b51f-aec08e934436",
+            "x-twilio-signature": "BeGATBdxHzfEdoRNLQaZEW9dQ4k=",
+            "accept": "*/*",
+            "x-home-region": "us1",
+            "user-agent": "TwilioProxy/1.1"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "Called": "+16203903869",
+            "Digits": "hangup",
+            "RecordingUrl": "https://api.twilio.com/2010-04-01/Accounts/ACbe48d829684ee0b0acbb63394ef21abb/Recordings/RE0c07dfc1aeef75cd57c0de2700033325",
+            "ToState": "KS",
+            "CallerCountry": "US",
+            "Direction": "inbound",
+            "CallerState": "CO",
+            "ToZip": "67202",
+            "CallSid": "CA3510381c2f54a5a9d3cc1c86f4401dab",
+            "To": "+16203903869",
+            "CallerZip": "80439",
+            "ToCountry": "US",
+            "CalledZip": "67202",
+            "ApiVersion": "2010-04-01",
+            "CalledCity": "WICHITA",
+            "CallStatus": "completed",
+            "RecordingSid": "RE0c07dfc1aeef75cd57c0de2700033325",
+            "From": "+17202713824",
+            "AccountSid": "ACbe48d829684ee0b0acbb63394ef21abb",
+            "CalledCountry": "US",
+            "CallerCity": "DENVER",
+            "ToCity": "WICHITA",
+            "FromCountry": "US",
+            "Caller": "+17202713824",
+            "FromCity": "DENVER",
+            "CalledState": "KS",
+            "FromZip": "80439",
+            "FromState": "CO",
+            "RecordingDuration": "9"
+          },
+          "webhookUrl": "https://n8n.emailalchemy.co/webhook-test/twilio-voicemail",
+          "executionMode": "test"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Twilio Voicemail Webhook": {
+      "main": [
+        [
+          {
+            "node": "Has Recording?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Recording?": {
+      "main": [
+        [
+          {
+            "node": "Download Recording",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Recording Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Recording": {
+      "main": [
+        [
+          {
+            "node": "Extract Call Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Call Data": {
+      "main": [
+        [
+          {
+            "node": "Transcribe with Whisper",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribe with Whisper": {
+      "main": [
+        [
+          {
+            "node": "Analyze Intent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze Intent": {
+      "main": [
+        [
+          {
+            "node": "Twilio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log to Spreadsheet": {
+      "main": [
+        [
+          {
+            "node": "Success Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Success Response": {
+      "main": [
+        [
+          {
+            "node": "Webhook Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No Recording Response": {
+      "main": [
+        [
+          {
+            "node": "Error Webhook Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Twilio": {
+      "main": [
+        [
+          {
+            "node": "Log to Spreadsheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2dbeba6f-87b2-417f-9ba2-cf9bd823d6bb",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f728ac8b256bc0332b9cc850d0cf415bb9be6d8f439bde96f0fa8f4178c36ca3"
+  },
+  "id": "eZqymQbVNJS6RFX1",
+  "tags": []
+}
