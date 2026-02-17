@@ -1,0 +1,260 @@
+{
+  "name": "Reminder",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "13972734-a178-43c4-a730-126371895f2d",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "tribexagency@gmail.com",
+          "mode": "list",
+          "cachedResultName": "tribexagency@gmail.com"
+        },
+        "returnAll": true,
+        "timeMax": "={{ $now.plus({ hour: 12 }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        220,
+        0
+      ],
+      "id": "f641c403-2a92-4c62-b346-0492ff998fa3",
+      "name": "Google Calendar",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "8oL8G8DRuyBehSu7",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "184LF9JTZRo5CPICvTZNl_zQm0SaXmO-YAo2iboWCbO0",
+          "mode": "list",
+          "cachedResultName": "Reminder",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/184LF9JTZRo5CPICvTZNl_zQm0SaXmO-YAo2iboWCbO0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/184LF9JTZRo5CPICvTZNl_zQm0SaXmO-YAo2iboWCbO0/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Email",
+              "lookupValue": "={{ $json.attendees[1].email }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        440,
+        0
+      ],
+      "id": "74f7b91c-9481-480e-b6c3-e2f74a6fced8",
+      "name": "Google Sheets",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "10bFkqPvYHi1HlIc",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"transcriber\": {\n    \"provider\": \"deepgram\",\n    \"language\": \"en\",\n    \"model\": \"nova-2\"\n  },\n  \"voice\": {\n    \"provider\": \"11labs\",\n    \"voiceId\": \"3gsg3cxXyFLcGIfNbM6C\",\n    \"language\": \"en\",\n    \"model\": \"eleven_turbo_v2_5\"\n  },\n  \"model\": {\n    \"provider\": \"deep-seek\",\n    \"model\": \"deepseek-reasoner\",\n    \"maxTokens\": 1000,\n    \"messages\": [\n      {\n        \"role\": \"system\",\n        \"content\": \"# Role You are Raj, the experienced and fantastic assistant of the CEO of the marketing agency James Williams and your job is to send call reminders to the people he is gonna have meetings with  # Task Remind the people James Williams is gonna have meetings with the time of his meeting. Follow this steps: 1. Say the initial message of: “Hey {{ $json.Name }}, this is Raj, the assistant of James Williams of Sainz Marketing. This is just a reminder that you have scheduled today a meeting at {{ $json['Hour of the appointment'] }}. See you then!!” 2. If the user says something meaning that he will be attending it then say perfect , be grateful and say goodbye. But if the user says that he wants to reschedule or that he can’t make it to the meeting then inform him that he can reschedule the meeting inside the email that we sent him with the event confirmation  # Details -Remember to use human expressions like hmm or eeeh -Remember to inform the user about rescheduling the call when he says he can’t make it to an event  # Examples ## Example 1 Assistant (you): Hey {{ $json.Name }}, this is Raj, the assistant of James Williams of Sainz Marketing. This is just a reminder that you have scheduled today a meeting at {{ $json['Hour of the appointment'] }}. See you then!! User: Ok perfect I will be there  ## Example 2 Assistant (you): Hey {{ $json.Name }}, this is Raj, the assistant of James Williams of Sainz Marketing. This is just a reminder that you have scheduled today a meeting at {{ $json['Hour of the appointment'] }}. See you then!! User: I don’t know which meeting are you taking about Assistant (you): Well you scheduled some time ago a meeting with James Williams, the CEO of Sainz Marketing, that one. User: Oh I remember, perfect I will be there  ## Example 3 Assistant (you): Hey {{ $json.Name }}, this is Raj, the assistant of James Williams of Sainz Marketing. This is just a reminder that you have scheduled today a meeting at {{ $json['Hour of the appointment'] }}. See you then!! User: I don’t think I will be able to make it, can I reschedule the appointment? Assistant (you): Yes of course, for that just go to the email we sent you with the event confirmation and click in the rescheduling link User: Perfect thanks, I will do it\"\n      }\n    ],\n    \"temperature\": 0.2\n  },\n  \"firstMessage\": \"Hey {{ $json.Name }}, this is Raj, the assistant of James Williams of Sainz Marketing. This is just a reminder that you have scheduled today a meeting at {{ $json['Hour of the appointment'] }}. See you then!!\",\n  \"firstMessageMode\": \"assistant-speaks-first\",\n  \"clientMessages\": [],\n  \"serverMessages\": [\n    \"end-of-call-report\"\n  ],\n  \"name\": \"Assistant of reminders\",\n  \"server\": {\n    \"url\": \"https://webhook.com\"\n  },\n  \"artifactPlan\": {\n    \"transcriptPlan\": {\n      \"enabled\": true\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        660,
+        0
+      ],
+      "id": "e997dd94-cc6d-447e-a9f4-f2463e218c3d",
+      "name": "Edit Fields",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        880,
+        0
+      ],
+      "id": "15bf5486-8484-4893-a85c-6ee8c40da289",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "13d0e36a-2d35-43ce-863d-23463bc03499",
+              "name": "assistant",
+              "value": "={{ $json.data.first() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1100,
+        0
+      ],
+      "id": "0028ab3e-7b62-4862-a5e2-d35709fa0e63",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.vapi.ai/call",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 79f2090c-3b3a-4e2d-93df-ad8e34b86d32"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={\n  \"phoneNumberId\": \"669fd70c-a08e-4ea4-bdc9-db50a8295093\",\n  \"customer\": {\n    \"number\": \"+{{ $('Google Sheets').item.json['Phone Number'] }}\",\n    \"extension\": \"\",\n    \"name\": \"{{ $('Google Sheets').item.json.Name }}\"\n  },\n  \"assistant\": {{ $json.assistant }}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1320,
+        0
+      ],
+      "id": "4b2fe064-3ba3-4587-9480-0a3399ae15f0",
+      "name": "HTTP Request"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Google Calendar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Calendar": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "3db7ebd8-83b7-4f0f-ab06-ea4b874b11e0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "986c143b9d773017a748a44e58df269680fe7e7d3ea46008b4d860360511f1b5"
+  },
+  "id": "xoYMcPUeTF1DsRu2",
+  "tags": []
+}
