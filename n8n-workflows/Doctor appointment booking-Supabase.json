@@ -1,0 +1,2492 @@
+{
+  "name": "My workflow 3",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "c0477fd0-8bb0-441d-bc9f-9d0c2f7528ab",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -816,
+        288
+      ],
+      "id": "a70fb9b5-6db1-4653-8354-36d7f962bcce",
+      "name": "Webhook",
+      "webhookId": "c0477fd0-8bb0-441d-bc9f-9d0c2f7528ab"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=The date the user wants to book an appointment: {{ $json.body.date }}\n\nThe type of doctor the user wants to book an appointment with: {{ $json.body.type }}",
+        "options": {
+          "systemMessage": "=You are a fantastic assistant who is in charge of checking the availability of the date and time in which the user has said that he wants to book an appointment\n\nSelect the tool of Get Many Events of {{ $json.body.type }} to check if the hour of the user is available or not\n\nIf it available use the tool of Book {{ $json.body.type }} to book an appointment\n\nTake into account:\n\nIt has to be in the future, date of right now is {{ $now }}\n\nHe wants the appointment to be in {{ $json.body.date }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        48,
+        -16
+      ],
+      "id": "b84b7c37-771b-4a3b-aebf-b749e1c416ff",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -368,
+        208
+      ],
+      "id": "2ac1779c-4162-451a-bbd7-6d39d8981f8c",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "JxkhUt423CxJTC0a",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "fc043c14e810eaf261db0c8375ba25a93e34ba41947e31e9cb53fd779c90f79f@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Derma"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -240,
+        208
+      ],
+      "id": "1d46a616-1e35-400b-9dd0-9785826c3e07",
+      "name": "Book Derma",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "SFiH8ycsXONyv9Fc",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "32430f6c41c7ead328f924106d0baf53c13acd90ff0426a2cbdea1e7e1429ac4@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Plastic"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -112,
+        208
+      ],
+      "id": "43b53056-7725-41a4-9c72-b74add0f2a29",
+      "name": "Book Plastic",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "SFiH8ycsXONyv9Fc",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "79ab4cb0e30298c9a78a9b12956bec6c8793cbe2e3ae8e42046bc633225509bc@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Tricho"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        16,
+        208
+      ],
+      "id": "4d453b50-aa3c-4feb-952e-bde08dc941f7",
+      "name": "Book Tricho",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "SFiH8ycsXONyv9Fc",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "fe12d232652ef3a28ad463c1a6e0c788f194742e4666ea930c2dd2bb71406129@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Aesthetic"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        144,
+        208
+      ],
+      "id": "bd8cb4f8-b975-445c-bd52-40ebf9dd4da1",
+      "name": "Book Aesthetic",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "SFiH8ycsXONyv9Fc",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "fc043c14e810eaf261db0c8375ba25a93e34ba41947e31e9cb53fd779c90f79f@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Derma"
+        },
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        272,
+        208
+      ],
+      "id": "ec91237f-0ba7-4049-8d4c-123adc614270",
+      "name": "Check Derma",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "SFiH8ycsXONyv9Fc",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "79ab4cb0e30298c9a78a9b12956bec6c8793cbe2e3ae8e42046bc633225509bc@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Tricho"
+        },
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        400,
+        208
+      ],
+      "id": "244d70a5-0aed-499a-94c4-1b0083a41481",
+      "name": "Check Tricho",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "SFiH8ycsXONyv9Fc",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "fe12d232652ef3a28ad463c1a6e0c788f194742e4666ea930c2dd2bb71406129@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Aesthetic"
+        },
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        528,
+        208
+      ],
+      "id": "9224b892-a6df-4eae-ad44-d0f75986f3f8",
+      "name": "Check Aesthetic",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "SFiH8ycsXONyv9Fc",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "32430f6c41c7ead328f924106d0baf53c13acd90ff0426a2cbdea1e7e1429ac4@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Plastic"
+        },
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        656,
+        208
+      ],
+      "id": "824ee518-37a2-4f3a-a1fc-b29330f5fbd6",
+      "name": "Check Plastic",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "SFiH8ycsXONyv9Fc",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1056,
+        -16
+      ],
+      "id": "aa29f239-12d9-4ff3-abad-57c48a9e1265",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "7f5827b3-bff3-4f6f-96d4-0358cb97c56b",
+              "leftValue": "={{ $json.body.agent }}",
+              "rightValue": "book",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -592,
+        288
+      ],
+      "id": "d6ecd304-556d-47b1-aa33-2eab40ff33a3",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f592aa04-909d-4d31-a8a4-b6bcb6cc05ad",
+              "leftValue": "={{ $json.body.agent }}",
+              "rightValue": "cancel",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        144,
+        432
+      ],
+      "id": "b9d9a393-90a6-4797-ab23-5e73b7c1ece8",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=The date of the appointment the user wants to cancel: {{ $('Webhook').item.json.body.type }}\n\nThe type of doctor the user was going to have the appointment with: {{ $('Webhook').item.json.body.type }}",
+        "options": {
+          "systemMessage": "=You are a helpful assistant from Sainz Cosmetics and your objective is to delete the appointment of this user, because he is not gonna be able to be there\n\nSelect the tool of Get Many Events of {{ $('If').item.json.body.type }} to get the event the user is referring to \n\nOnce you find it use the tool of Delete Event of {{ $('If').item.json.body.type }} to delete the appointment\n\nTake into account:\n\nIt has to be in the future, date of right now is {{ $now }}\n\nThe appointment was gonna be in {{ $json.body.date }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        960,
+        176
+      ],
+      "id": "dfcadcbc-22ee-41c3-800c-4cf86174dfd1",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "fc043c14e810eaf261db0c8375ba25a93e34ba41947e31e9cb53fd779c90f79f@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Derma"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        864,
+        400
+      ],
+      "id": "94ee9b48-69e9-446c-bacc-3e8ad0b7a3e7",
+      "name": "Delete Derma",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "SFiH8ycsXONyv9Fc",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "79ab4cb0e30298c9a78a9b12956bec6c8793cbe2e3ae8e42046bc633225509bc@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Tricho"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        992,
+        400
+      ],
+      "id": "f979958b-6316-46f6-9641-ae3a28a5734c",
+      "name": "Delete Tricho",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "SFiH8ycsXONyv9Fc",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "fe12d232652ef3a28ad463c1a6e0c788f194742e4666ea930c2dd2bb71406129@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Aesthetic"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1120,
+        400
+      ],
+      "id": "a3887b1b-a4f4-4707-85c2-0284f5acb21f",
+      "name": "Delete Aesthetic",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "SFiH8ycsXONyv9Fc",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "32430f6c41c7ead328f924106d0baf53c13acd90ff0426a2cbdea1e7e1429ac4@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Plastic"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1248,
+        400
+      ],
+      "id": "67cfcab0-80b8-4c5e-9caa-e7490914e34f",
+      "name": "Delete Plastic",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "SFiH8ycsXONyv9Fc",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "66f02770-1447-4137-81dc-faec4d317ef5",
+              "leftValue": "={{ $json.body.message.type }}",
+              "rightValue": "end-of-call-report",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1056,
+        576
+      ],
+      "id": "60905663-702f-4447-962f-1e67b9321935",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Transcript of the call:  {{ $json.body.message.artifact.transcript }}",
+        "options": {
+          "systemMessage": "=You are a helpful assistant of Sainz Cosmetics who is in charge of analizing the transcript and deciding if the user wanted to apply for the new job, book at first an appoinment, cancel their appointment, or modify their already existing appointment\n\nOutput 0 if he wanted to apply for the job\nOutput 1 if he booked his FIRST appointment\nOutput 2 if he wanted to cancel his appointment\nOutput 3 if he wanted to modify his already existing appointment\n\nTake into account the transcript to decide: {{ $json.body.message.artifact.transcript }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        1456,
+        576
+      ],
+      "id": "90147be7-f64d-4dc4-861f-f4780894b3a3",
+      "name": "AI Agent2"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.output }}",
+                    "rightValue": "0",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "e78f971f-4feb-4ecb-b44a-3cd7e8980db5"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "3afe3a2e-51f6-4491-9c2c-cf157e5c1a81",
+                    "leftValue": "={{ $json.output }}",
+                    "rightValue": "1",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "0efc1b1d-d2b7-40a3-96a9-d88815db46ec",
+                    "leftValue": "={{ $json.output }}",
+                    "rightValue": "2",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "72039ee5-0535-4b75-a611-9aa29cb6a0ac",
+                    "leftValue": "={{ $json.output }}",
+                    "rightValue": "3",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1856,
+        544
+      ],
+      "id": "8f64efbd-996a-4a3e-96be-17b8071b1d24",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "Customer Support Centralized table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "keyValue": "1"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2176,
+        144
+      ],
+      "id": "2b9c909e-d771-480b-a2a2-be70a2724856",
+      "name": "Get a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "VkzENE4RzhLz9TSi",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "Customer Support Centralized table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "1"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Calls done or received",
+              "fieldValue": "={{ [$json['Calls done or received'].abs(),1].sum() }}"
+            },
+            {
+              "fieldId": "Applications",
+              "fieldValue": "={{ [$json.Applications.abs(),1].sum() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2480,
+        144
+      ],
+      "id": "ca590ded-1093-44a8-8cd5-bcaeccf2be62",
+      "name": "Update a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "VkzENE4RzhLz9TSi",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "max@cosmetics.com",
+        "subject": "New job application",
+        "emailType": "text",
+        "message": "=Hey Max, a new person has just called interested in applying for the job. In case you couldn't catch the transferred the call, this is his number{{ $('If2').item.json.body.message.call.customer.number }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2704,
+        144
+      ],
+      "id": "71606efc-299b-4d5e-8025-8747e714f75a",
+      "name": "Send a message",
+      "webhookId": "2f8cb735-9405-458b-9be6-39d2229d8a06",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "FL8o0MQXmDKA8QWf",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Transcript: {{ $('If1').item.json.body.message.transcript }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are a helpful assistant of Sainz Cosmetics whose job is to analyze the transcript and extract the name of the user, the date in which he has booked an appointment and the type of doctor he has chosen (dermatologist, trichologist, plastic surgeon or aesthetic)\n\nUse the transcript: {{ $('If1').item.json.body.message.artifact.transcript }}\n\nFor the date use this format: MM/DD/YYYY HH:mm"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        2080,
+        336
+      ],
+      "id": "0b3f1406-6faa-4c12-8511-1ecd554a187f",
+      "name": "AI Agent3",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"name\": \"Diego\",\n\t\"type\": \"dermatologists\",\n    \"date\": \"06/15/2025 11 AM\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        2176,
+        560
+      ],
+      "id": "01a9d567-4ffe-4c48-aa9a-f04986bc4044",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "tableId": "Customer Support Interested people",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Type",
+              "fieldValue": "={{ $json.output.type }}"
+            },
+            {
+              "fieldId": "Date of appointment",
+              "fieldValue": "={{ $json.output.date }}"
+            },
+            {
+              "fieldId": "Name",
+              "fieldValue": "={{ $json.output.name }}"
+            },
+            {
+              "fieldId": "transcript",
+              "fieldValue": "={{ $('Webhook').item.json.body.message.transcript }}"
+            },
+            {
+              "fieldId": "Recording URl",
+              "fieldValue": "={{ $('If2').item.json.body.message.artifact.recordingUrl }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2480,
+        432
+      ],
+      "id": "56f209d7-306a-43d2-8778-280bda20f206",
+      "name": "Create a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "VkzENE4RzhLz9TSi",
+          "name": "Supabase account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "Customer Support Centralized table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "1"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Calls done or received",
+              "fieldValue": "={{ [$json['Calls done or received'].abs(),1].sum() }}"
+            },
+            {
+              "fieldId": "Appointments",
+              "fieldValue": "={{ [$json.Appointments.abs(),1].sum() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2928,
+        432
+      ],
+      "id": "f3d886dc-4525-4750-9d7d-a09711f75591",
+      "name": "Update a row1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "VkzENE4RzhLz9TSi",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "Customer Support Centralized table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "keyValue": "1"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2704,
+        432
+      ],
+      "id": "c5e7bd99-34a3-4a28-adbe-e0c6ae7443d8",
+      "name": "Get a row1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "VkzENE4RzhLz9TSi",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "tableId": "Customer Support Interested people",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "Number",
+              "condition": "eq",
+              "keyValue": "={{ $('Webhook').item.json.body.message.customer.number }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2176,
+        736
+      ],
+      "id": "8a534db3-1555-4389-aad3-2778d7b9271f",
+      "name": "Delete a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "VkzENE4RzhLz9TSi",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Transcript: {{ $('Webhook').item.json.body.message.artifact.transcript }}",
+        "options": {
+          "systemMessage": "=You are a helpful assistant of Sainz Cosmetics and your objective is to analyze th transcript and extract the date of the new appointment that the user booked\n\nTranscript: {{ $('Webhook').item.json.body.message.artifact.transcript }}\n\nRemember the format is: MM/DD/YYYY HH:mm"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        2080,
+        928
+      ],
+      "id": "2515191e-8bfc-4ddf-9ff8-6220a861099c",
+      "name": "AI Agent4",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "Customer Support Interested people",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "Number",
+              "condition": "eq",
+              "keyValue": "={{ $('Webhook').item.json.body.message.call.customer.number }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Date of appointment",
+              "fieldValue": "={{ $json.output }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2480,
+        928
+      ],
+      "id": "aa3e27be-622a-4257-ab10-bfbe71889d5b",
+      "name": "Update a row2",
+      "credentials": {
+        "supabaseApi": {
+          "id": "VkzENE4RzhLz9TSi",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "max@cosmetics.com",
+        "subject": "New job application",
+        "emailType": "text",
+        "message": "=Hey Max, a new person has modified his appointment, his number is ......\nand the new date of his appointment will be{ { $('AI Agent4').item.json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2704,
+        928
+      ],
+      "id": "8b9dd7e3-7940-4dbd-8bfb-e27a5f7a8485",
+      "name": "Send a message1",
+      "webhookId": "2f8cb735-9405-458b-9be6-39d2229d8a06",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "FL8o0MQXmDKA8QWf",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "la cita ha sido cancelada correctamente",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1312,
+        176
+      ],
+      "id": "5ff69fe4-72dd-4e50-81b1-8e83ad7bd1f3",
+      "name": "Respond to Webhook1"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "trytribex.app.n8n.cloud",
+            "user-agent": "axios/1.8.3",
+            "content-length": "24077",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, br",
+            "baggage": "sentry-environment=production,sentry-public_key=a0021577936aec367b16615ad816c078,sentry-trace_id=b5a20a790fd64e349602fd38af6e5053",
+            "cdn-loop": "cloudflare; loops=1; subreqs=1",
+            "cf-connecting-ip": "54.213.72.219",
+            "cf-ew-via": "15",
+            "cf-ipcountry": "US",
+            "cf-ray": "96224b9681648b90-PDX",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "cf-worker": "n8n.cloud",
+            "content-type": "application/json",
+            "cookie": "callId=403d48e8-7754-4f6b-a118-2e98a16efc9d",
+            "sentry-trace": "b5a20a790fd64e349602fd38af6e5053-9c0a406ca2adfc6e",
+            "traceparent": "00-9f33ee0eb5b7bd3edd0607ef742bd239-2defc5b2b5b4b426-00",
+            "x-call-id": "403d48e8-7754-4f6b-a118-2e98a16efc9d",
+            "x-forwarded-for": "54.213.72.219, 172.68.175.93",
+            "x-forwarded-host": "trytribex.app.n8n.cloud",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "traefik-prod-users-gwc-87-bcb9f59f7-5h62q",
+            "x-is-trusted": "yes",
+            "x-real-ip": "54.213.72.219",
+            "x-vapi-secret": ""
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "message": {
+              "timestamp": 1753012795906,
+              "type": "end-of-call-report",
+              "analysis": {
+                "summary": "An AI from Sainz Cosmetics greeted the user, who then requested to cancel an appointment. The AI asked for specific details regarding the appointment's date, time, doctor, and the reason for cancellation before the call ended.",
+                "successEvaluation": "false"
+              },
+              "artifact": {
+                "messages": [
+                  {
+                    "role": "bot",
+                    "message": "Hey there, I am James, the assistant of the Sainz Cosmetics, the biggest cosmetic clinic in Madrid. How can I help you?",
+                    "time": 1753012767349,
+                    "source": "model",
+                    "duration": 5758,
+                    "endTime": 1753012767593,
+                    "secondsFromStart": 0.772
+                  },
+                  {
+                    "role": "user",
+                    "message": "Yes. I wanted to cancel my appointment.",
+                    "time": 1753012776201.999,
+                    "endTime": 1753012778061.999,
+                    "secondsFromStart": 9.621,
+                    "duration": 1860
+                  },
+                  {
+                    "role": "bot",
+                    "message": "I understand, can you tell me the date and time in which your appointment is gonna take place, and the doctor you were gonna have it, like a dermatologist or trichologist. Can you also tell me the reason why you are cancelling? ",
+                    "time": 1753012777846,
+                    "source": "model",
+                    "duration": 11749,
+                    "endTime": 1753012778055,
+                    "secondsFromStart": 11.244
+                  }
+                ],
+                "messagesOpenAIFormatted": [
+                  {
+                    "role": "assistant",
+                    "content": "Hey there, I am James, the assistant of the Sainz Cosmetics, the biggest cosmetic clinic in Madrid. How can I help you?"
+                  },
+                  {
+                    "role": "user",
+                    "content": "Yes. I wanted to cancel my appointment."
+                  },
+                  {
+                    "role": "assistant",
+                    "content": "I understand, can you tell me the date and time in which your appointment is gonna take place, and the doctor you were gonna have it, like a dermatologist or trichologist. Can you also tell me the reason why you are cancelling? "
+                  }
+                ],
+                "transcript": "AI: Hey there, I am James, the assistant of the Sainz Cosmetics, the biggest cosmetic clinic in Madrid. How can I help you?\nUser: Yes. I wanted to cancel my appointment.\nAI: I understand, can you tell me the date and time in which your appointment is gonna take place, and the doctor you were gonna have it, like a dermatologist or trichologist. Can you also tell me the reason why you are cancelling? \n",
+                "recordingUrl": "https://storage.vapi.ai/403d48e8-7754-4f6b-a118-2e98a16efc9d-1753012793884-64cc5b93-4086-4b66-b56b-276d2eaa0f3b-mono.wav",
+                "stereoRecordingUrl": "https://storage.vapi.ai/403d48e8-7754-4f6b-a118-2e98a16efc9d-1753012793884-90bbff17-892e-4d6f-a8ed-f2a495a432f5-stereo.wav",
+                "pcapUrl": "https://storage.vapi.ai/403d48e8-7754-4f6b-a118-2e98a16efc9d-1753012794070-996b3283-5769-4cbc-8ce8-7b7ec61e26c0-sip.pcap",
+                "recording": {
+                  "stereoUrl": "https://storage.vapi.ai/403d48e8-7754-4f6b-a118-2e98a16efc9d-1753012793884-90bbff17-892e-4d6f-a8ed-f2a495a432f5-stereo.wav",
+                  "mono": {
+                    "combinedUrl": "https://storage.vapi.ai/403d48e8-7754-4f6b-a118-2e98a16efc9d-1753012793884-64cc5b93-4086-4b66-b56b-276d2eaa0f3b-mono.wav",
+                    "assistantUrl": "https://storage.vapi.ai/403d48e8-7754-4f6b-a118-2e98a16efc9d-1753012793884-65832809-ecb2-40ea-94e0-01c32e928141-mono.wav",
+                    "customerUrl": "https://storage.vapi.ai/403d48e8-7754-4f6b-a118-2e98a16efc9d-1753012793884-0bf4cbb9-8035-4ce1-b378-5869fc481bbe-mono.wav"
+                  }
+                },
+                "nodes": [
+                  {
+                    "nodeName": "introduction",
+                    "messages": [
+                      {
+                        "role": "bot",
+                        "message": "Hey there, I am James, the assistant of the Sainz Cosmetics, the biggest cosmetic clinic in Madrid. How can I help you?",
+                        "time": 1753012767349,
+                        "source": "model",
+                        "duration": 5758,
+                        "endTime": 1753012767593,
+                        "secondsFromStart": 0.772
+                      },
+                      {
+                        "role": "user",
+                        "message": "Yes. I wanted to cancel my appointment.",
+                        "time": 1753012776201.999,
+                        "endTime": 1753012778061.999,
+                        "secondsFromStart": 9.621,
+                        "duration": 1860
+                      }
+                    ],
+                    "variables": {},
+                    "variableValues": {}
+                  }
+                ],
+                "variables": {
+                  "now": "Jul 20, 2025, 11:59 AM UTC",
+                  "date": "Jul 20, 2025 UTC",
+                  "time": "11:59 AM UTC",
+                  "year": "2025",
+                  "month": "July",
+                  "day": "20",
+                  "customer": {
+                    "number": "+34619267734",
+                    "sipUri": "sip:+34619267734@44.229.228.186:5060"
+                  },
+                  "phoneNumber": {
+                    "id": "f0230f96-154e-4460-a69f-992ecbad5009",
+                    "orgId": "8fe32327-e5e8-4689-a279-95a2b1e9ab6a",
+                    "number": "+17069918608",
+                    "createdAt": "2025-05-12T17:24:04.552Z",
+                    "updatedAt": "2025-07-20T10:23:08.713Z",
+                    "name": "Unlabeled",
+                    "provider": "vapi",
+                    "status": "active",
+                    "providerResourceId": "32967da6-7792-4353-8171-c3aa48b382ea",
+                    "smsEnabled": true,
+                    "workflowId": "49835298-8a8e-49c6-99ae-dcbc431cc73d"
+                  }
+                },
+                "variableValues": {
+                  "now": "Jul 20, 2025, 11:59 AM UTC",
+                  "date": "Jul 20, 2025 UTC",
+                  "time": "11:59 AM UTC",
+                  "year": "2025",
+                  "month": "July",
+                  "day": "20",
+                  "customer": {
+                    "number": "+34619267734",
+                    "sipUri": "sip:+34619267734@44.229.228.186:5060"
+                  },
+                  "phoneNumber": {
+                    "id": "f0230f96-154e-4460-a69f-992ecbad5009",
+                    "orgId": "8fe32327-e5e8-4689-a279-95a2b1e9ab6a",
+                    "number": "+17069918608",
+                    "createdAt": "2025-05-12T17:24:04.552Z",
+                    "updatedAt": "2025-07-20T10:23:08.713Z",
+                    "name": "Unlabeled",
+                    "provider": "vapi",
+                    "status": "active",
+                    "providerResourceId": "32967da6-7792-4353-8171-c3aa48b382ea",
+                    "smsEnabled": true,
+                    "workflowId": "49835298-8a8e-49c6-99ae-dcbc431cc73d"
+                  }
+                }
+              },
+              "startedAt": "2025-07-20T11:59:26.621Z",
+              "endedAt": "2025-07-20T11:59:51.378Z",
+              "endedReason": "customer-ended-call",
+              "cost": 0.0497,
+              "costBreakdown": {
+                "stt": 0.0024,
+                "llm": 0,
+                "tts": 0.0265,
+                "vapi": 0.0206,
+                "chat": 0,
+                "total": 0.0497,
+                "llmPromptTokens": 0,
+                "llmCompletionTokens": 0,
+                "ttsCharacters": 0,
+                "voicemailDetectionCost": 0,
+                "knowledgeBaseCost": 0,
+                "analysisCostBreakdown": {
+                  "summary": 0.0002,
+                  "summaryPromptTokens": 156,
+                  "summaryCompletionTokens": 45,
+                  "structuredData": 0,
+                  "structuredDataPromptTokens": 0,
+                  "structuredDataCompletionTokens": 0,
+                  "successEvaluation": 0.0001,
+                  "successEvaluationPromptTokens": 229,
+                  "successEvaluationCompletionTokens": 6
+                }
+              },
+              "costs": [
+                {
+                  "type": "transcriber",
+                  "transcriber": {
+                    "provider": "deepgram",
+                    "model": "nova-2-phonecall"
+                  },
+                  "minutes": 0.48543333333333333,
+                  "cost": 0.00237691
+                },
+                {
+                  "type": "model",
+                  "model": {
+                    "provider": "vapi",
+                    "model": "custom-1"
+                  },
+                  "promptTokens": 0,
+                  "completionTokens": 0,
+                  "cost": 0
+                },
+                {
+                  "type": "voice",
+                  "voice": {
+                    "provider": "11labs",
+                    "voiceId": "2BJW5coyhAzSr8STdHbE",
+                    "model": "eleven_turbo_v2_5"
+                  },
+                  "characters": 0,
+                  "cost": 0.0265
+                },
+                {
+                  "type": "vapi",
+                  "subType": "normal",
+                  "minutes": 0.4126,
+                  "cost": 0.02063
+                },
+                {
+                  "type": "analysis",
+                  "analysisType": "summary",
+                  "model": {
+                    "provider": "google",
+                    "model": "gemini-2.5-flash"
+                  },
+                  "promptTokens": 156,
+                  "completionTokens": 45,
+                  "cost": 0.0001593
+                },
+                {
+                  "type": "analysis",
+                  "analysisType": "successEvaluation",
+                  "model": {
+                    "provider": "google",
+                    "model": "gemini-2.5-flash"
+                  },
+                  "promptTokens": 229,
+                  "completionTokens": 6,
+                  "cost": 0.0000837
+                },
+                {
+                  "type": "knowledge-base",
+                  "model": {
+                    "provider": "google",
+                    "model": "gemini-1.5-flash"
+                  },
+                  "promptTokens": 0,
+                  "completionTokens": 0,
+                  "cost": 0
+                }
+              ],
+              "durationMs": 24757,
+              "durationSeconds": 24.757,
+              "durationMinutes": 0.4126,
+              "summary": "An AI from Sainz Cosmetics greeted the user, who then requested to cancel an appointment. The AI asked for specific details regarding the appointment's date, time, doctor, and the reason for cancellation before the call ended.",
+              "transcript": "AI: Hey there, I am James, the assistant of the Sainz Cosmetics, the biggest cosmetic clinic in Madrid. How can I help you?\nUser: Yes. I wanted to cancel my appointment.\nAI: I understand, can you tell me the date and time in which your appointment is gonna take place, and the doctor you were gonna have it, like a dermatologist or trichologist. Can you also tell me the reason why you are cancelling? \n",
+              "messages": [
+                {
+                  "role": "bot",
+                  "message": "Hey there, I am James, the assistant of the Sainz Cosmetics, the biggest cosmetic clinic in Madrid. How can I help you?",
+                  "time": 1753012767349,
+                  "source": "model",
+                  "duration": 5758,
+                  "endTime": 1753012767593,
+                  "secondsFromStart": 0.772
+                },
+                {
+                  "role": "user",
+                  "message": "Yes. I wanted to cancel my appointment.",
+                  "time": 1753012776201.999,
+                  "endTime": 1753012778061.999,
+                  "secondsFromStart": 9.621,
+                  "duration": 1860
+                },
+                {
+                  "role": "bot",
+                  "message": "I understand, can you tell me the date and time in which your appointment is gonna take place, and the doctor you were gonna have it, like a dermatologist or trichologist. Can you also tell me the reason why you are cancelling? ",
+                  "time": 1753012777846,
+                  "source": "model",
+                  "duration": 11749,
+                  "endTime": 1753012778055,
+                  "secondsFromStart": 11.244
+                }
+              ],
+              "recordingUrl": "https://storage.vapi.ai/403d48e8-7754-4f6b-a118-2e98a16efc9d-1753012793884-64cc5b93-4086-4b66-b56b-276d2eaa0f3b-mono.wav",
+              "stereoRecordingUrl": "https://storage.vapi.ai/403d48e8-7754-4f6b-a118-2e98a16efc9d-1753012793884-90bbff17-892e-4d6f-a8ed-f2a495a432f5-stereo.wav",
+              "call": {
+                "id": "403d48e8-7754-4f6b-a118-2e98a16efc9d",
+                "orgId": "8fe32327-e5e8-4689-a279-95a2b1e9ab6a",
+                "createdAt": "2025-07-20T11:59:26.459Z",
+                "updatedAt": "2025-07-20T11:59:26.459Z",
+                "type": "inboundPhoneCall",
+                "monitor": {
+                  "listenUrl": "wss://phone-call-websocket.aws-us-west-2-backend-production2.vapi.ai/403d48e8-7754-4f6b-a118-2e98a16efc9d/listen",
+                  "controlUrl": "https://phone-call-websocket.aws-us-west-2-backend-production2.vapi.ai/403d48e8-7754-4f6b-a118-2e98a16efc9d/control"
+                },
+                "transport": {
+                  "provider": "vapi.sip",
+                  "callSid": "c21ab68d-c835-449d-abb5-ada11ee5f9fb",
+                  "sbcCallSid": "68544213-3962001566-480732074@msc1.382COM.COM"
+                },
+                "phoneCallProvider": "vapi",
+                "phoneCallProviderId": "c21ab68d-c835-449d-abb5-ada11ee5f9fb",
+                "phoneCallTransport": "sip",
+                "phoneCallProviderDetails": {
+                  "sbcCallId": "68544213-3962001566-480732074@msc1.382COM.COM"
+                },
+                "status": "ringing",
+                "assistantOverrides": {
+                  "variableValues": {
+                    "account-sid": "c033b672-5b99-42ae-9ce2-b231e9a522fb",
+                    "cid": "68544213-3962001566-480732074@msc1.382COM.COM",
+                    "forwarded-for": "64.125.111.10",
+                    "originating-carrier": "382com",
+                    "voip-carrier-sid": "a5569621-84ac-49cc-a8b8-11c7fb96b905",
+                    "application-sid": "79d078c8-76b2-452a-99e0-ddd5abbf6269"
+                  }
+                },
+                "workflowId": "49835298-8a8e-49c6-99ae-dcbc431cc73d",
+                "phoneNumberId": "f0230f96-154e-4460-a69f-992ecbad5009",
+                "customer": {
+                  "number": "+34619267734",
+                  "sipUri": "sip:+34619267734@44.229.228.186:5060"
+                }
+              },
+              "phoneNumber": {
+                "id": "f0230f96-154e-4460-a69f-992ecbad5009",
+                "orgId": "8fe32327-e5e8-4689-a279-95a2b1e9ab6a",
+                "number": "+17069918608",
+                "createdAt": "2025-05-12T17:24:04.552Z",
+                "updatedAt": "2025-07-20T10:23:08.713Z",
+                "name": "Unlabeled",
+                "provider": "vapi",
+                "status": "active",
+                "providerResourceId": "32967da6-7792-4353-8171-c3aa48b382ea",
+                "smsEnabled": true,
+                "workflowId": "49835298-8a8e-49c6-99ae-dcbc431cc73d"
+              },
+              "customer": {
+                "number": "+34619267734",
+                "sipUri": "sip:+34619267734@44.229.228.186:5060"
+              },
+              "assistant": {
+                "model": {
+                  "provider": "vapi",
+                  "model": "custom-1",
+                  "workflowId": "49835298-8a8e-49c6-99ae-dcbc431cc73d",
+                  "workflow": {
+                    "id": "49835298-8a8e-49c6-99ae-dcbc431cc73d",
+                    "name": "Customer support",
+                    "orgId": "8fe32327-e5e8-4689-a279-95a2b1e9ab6a",
+                    "nodes": [
+                      {
+                        "name": "introduction",
+                        "type": "conversation",
+                        "prompt": "You are a helpful assistant from Sainz Cosmetics and you have to decide if the user just wanted to ask a question, if he wanted to make an appointment with any of the doctors and he wants to be treated, if he wants to change an appointment, if he wants to cancel an appointment and if he wants to apply for the job.",
+                        "isStart": true,
+                        "metadata": {
+                          "position": {
+                            "x": -430.7055872494491,
+                            "y": -465.83283165355533
+                          }
+                        },
+                        "messagePlan": {
+                          "firstMessage": "Hey there, I am James, the assistant of the Sainz Cosmetics, the biggest cosmetic clinic in Madrid. How can I help you?"
+                        }
+                      },
+                      {
+                        "name": "conversation_1752860903457",
+                        "type": "conversation",
+                        "prompt": "ask him what does he need or what does he help with or why does he want to come. Later decide in which of these groups is he gonna fit\n\n1. Dermatologists\nFocus on skin health, cosmetic dermatology, acne treatment, pigmentation, scars.\n\nPerform procedures like chemical peels, laser resurfacing, and microneedling.\n\n2. Plastic Surgeons / Cosmetic Surgeons\nHandle surgical procedures: facelifts, liposuction, breast augmentation, blepharoplasty.\n\nMay also perform minimally invasive procedures.\n\n3. Aesthetic Doctors (Non-surgical)\nTrained in aesthetic medicine (sometimes GPs with aesthetic training).\n\nSpecialize in Botox, fillers, PRP, mesotherapy, thread lifts.\n\n4. Trichologists\nSpecialists in hair and scalp health.\n\nTreat hair loss, perform PRP for hair, and advise on hair transplants.\n\n\n\nAdd the title to the variable of type\n\n\nAT FIRST, YOU DON'T HAVE TO ASK FOR CONFIRMATION. Once he gives you a small description don't fucking ask again for confirmation, pass to the next step\n",
+                        "metadata": {
+                          "position": {
+                            "x": -999.7278168250248,
+                            "y": 122.75409996093511
+                          }
+                        },
+                        "messagePlan": {
+                          "firstMessage": ""
+                        },
+                        "variableExtractionPlan": {
+                          "output": [
+                            {
+                              "enum": [
+                                "dermatologists",
+                                "plastic surgeons",
+                                "aesthetic doctors",
+                                "trichologits"
+                              ],
+                              "type": "string",
+                              "title": "type",
+                              "description": "the type of doctor the user is gonna need help from.\n\nIt can be dermatologists, plastic surgeons, aesthetic doctors and trichologits\n\nOutput those exact names when each of them is corresponded "
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "name": "conversation_1752860952151",
+                        "type": "conversation",
+                        "prompt": "",
+                        "metadata": {
+                          "position": {
+                            "x": -24.456554892274596,
+                            "y": 120.2776976884997
+                          }
+                        },
+                        "messagePlan": {
+                          "firstMessage": "I understand, can you tell me the date and time in which your appointment is gonna take place, and the doctor you were gonna have it, like a dermatologist or trichologist. Can you also tell me the reason why you are cancelling?"
+                        }
+                      },
+                      {
+                        "name": "conversation_1752860969455",
+                        "type": "conversation",
+                        "prompt": "",
+                        "metadata": {
+                          "position": {
+                            "x": 1123.6999376106187,
+                            "y": 39.892119193332945
+                          }
+                        },
+                        "messagePlan": {
+                          "firstMessage": "I understand, can you tell me the date and time in which your appointment is gonna take place, and the doctor you were gonna have it, like a dermatologist or trichologist. Can you also tell me the reason why you are cancelling? We will first cancel the appointment to then book you another one"
+                        }
+                      },
+                      {
+                        "name": "conversation_1752861003961",
+                        "type": "conversation",
+                        "prompt": "",
+                        "metadata": {
+                          "position": {
+                            "x": -2863.3965101041017,
+                            "y": 71.91967416233028
+                          }
+                        },
+                        "messagePlan": {
+                          "firstMessage": "Ok, so do you want to transfer you to our director so that you can talk further details with him?"
+                        }
+                      },
+                      {
+                        "name": "conversation_1752861888317",
+                        "type": "conversation",
+                        "prompt": "ask him now when he would like to have an appointment with one of our doctors, inform him that our clinic opens from Monday to Friday from 8 AM to 5 PM. He has to say a day and time. Please ask also for his name and the number in order to book an appointment\n\nAT FIRST, YOU DON'T HAVE TO ASK FOR CONFIRMATION\n",
+                        "metadata": {
+                          "position": {
+                            "x": -1000.8333333333334,
+                            "y": 789.1666666666667
+                          }
+                        },
+                        "messagePlan": {
+                          "firstMessage": ""
+                        },
+                        "variableExtractionPlan": {
+                          "output": [
+                            {
+                              "enum": [],
+                              "type": "string",
+                              "title": "date",
+                              "description": "the date in which the prospect wants to have an appointment with us\n\nOutput only the day and hour inside the tool"
+                            },
+                            {
+                              "enum": [],
+                              "type": "string",
+                              "title": "name",
+                              "description": "the name of the user"
+                            },
+                            {
+                              "enum": [],
+                              "type": "string",
+                              "title": "number",
+                              "description": "the number of the user"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "name": "apiRequest_1752880151235",
+                        "tool": {
+                          "url": "https://trytribex.app.n8n.cloud/webhook-test/c0477fd0-8bb0-441d-bc9f-9d0c2f7528ab",
+                          "body": {
+                            "type": "object",
+                            "required": [
+                              "date",
+                              "type",
+                              "name",
+                              "number",
+                              "agent"
+                            ],
+                            "properties": {
+                              "date": {
+                                "type": "string",
+                                "value": "",
+                                "description": "the date in which the user wants to book an appointment"
+                              },
+                              "name": {
+                                "type": "string",
+                                "value": "",
+                                "description": "the name of the user"
+                              },
+                              "type": {
+                                "enum": [
+                                  "dermatologists",
+                                  "plastic surgeons",
+                                  "aesthetic",
+                                  "trichologists"
+                                ],
+                                "type": "string",
+                                "value": "",
+                                "description": "the type of doctor the user is gonna need help from."
+                              },
+                              "agent": {
+                                "type": "string",
+                                "value": "book",
+                                "description": ""
+                              },
+                              "number": {
+                                "type": "number",
+                                "value": "",
+                                "description": "the number of the user"
+                              },
+                              "description": {
+                                "type": "string",
+                                "value": "",
+                                "description": "a small description of what the user is looking to accomplish with the appointment"
+                              }
+                            }
+                          },
+                          "name": "appointment",
+                          "type": "apiRequest",
+                          "method": "POST",
+                          "function": {
+                            "name": "api_request_tool",
+                            "parameters": {
+                              "type": "object",
+                              "required": [],
+                              "properties": {}
+                            },
+                            "description": "API request tool"
+                          },
+                          "messages": [
+                            {
+                              "type": "request-start",
+                              "blocking": false
+                            }
+                          ],
+                          "variableExtractionPlan": {
+                            "schema": {
+                              "type": "object",
+                              "required": [],
+                              "properties": {}
+                            },
+                            "aliases": []
+                          }
+                        },
+                        "type": "tool",
+                        "metadata": {
+                          "position": {
+                            "x": -987.7456891596181,
+                            "y": 1344.0679594223845
+                          }
+                        }
+                      },
+                      {
+                        "name": "conversation_1752918838158",
+                        "type": "conversation",
+                        "prompt": "",
+                        "metadata": {
+                          "position": {
+                            "x": -1434.4314418738336,
+                            "y": 1762.0937614448612
+                          }
+                        },
+                        "messagePlan": {
+                          "firstMessage": "So, it seems that the hour you have chosen is not available, could you please choose another one"
+                        }
+                      },
+                      {
+                        "name": "conversation_1752918839625",
+                        "type": "conversation",
+                        "prompt": "",
+                        "metadata": {
+                          "position": {
+                            "x": -399.9154425711549,
+                            "y": 1601.3087267473397
+                          }
+                        },
+                        "messagePlan": {
+                          "firstMessage": "perfect, your appointment has been booked at {{date}}, see you then, thanks for everything. Do you have any remaining questions?"
+                        }
+                      },
+                      {
+                        "name": "hangup_1752919107203",
+                        "tool": {
+                          "type": "endCall"
+                        },
+                        "type": "tool",
+                        "metadata": {
+                          "position": {
+                            "x": -390.44769154583554,
+                            "y": 2056.8607430616385
+                          }
+                        }
+                      },
+                      {
+                        "name": "apiRequest_1752919898443",
+                        "tool": {
+                          "url": "https://trytribex.app.n8n.cloud/webhook-test/c0477fd0-8bb0-441d-bc9f-9d0c2f7528ab",
+                          "body": {
+                            "type": "object",
+                            "required": [
+                              "type",
+                              "reason",
+                              "agent"
+                            ],
+                            "properties": {
+                              "date": {
+                                "type": "string",
+                                "value": "",
+                                "description": "the date of the appointment the user wants to cancel"
+                              },
+                              "type": {
+                                "enum": [
+                                  "dermatologists",
+                                  "plastic surgeons",
+                                  "aesthetic",
+                                  "trichologists"
+                                ],
+                                "type": "string",
+                                "value": "",
+                                "description": "the type of doctor that the user was going to go to the appointment that is gonna be canceled"
+                              },
+                              "agent": {
+                                "type": "string",
+                                "value": "cancel",
+                                "description": ""
+                              },
+                              "reason": {
+                                "type": "string",
+                                "value": "",
+                                "description": "the reason of cancelling the appointment of the user"
+                              }
+                            }
+                          },
+                          "name": "cancel",
+                          "type": "apiRequest",
+                          "method": "POST",
+                          "function": {
+                            "name": "api_request_tool",
+                            "parameters": {
+                              "type": "object",
+                              "required": [],
+                              "properties": {}
+                            },
+                            "description": "API request tool"
+                          },
+                          "messages": [
+                            {
+                              "type": "request-start",
+                              "blocking": false
+                            }
+                          ],
+                          "variableExtractionPlan": {
+                            "schema": {
+                              "type": "object",
+                              "required": [],
+                              "properties": {}
+                            },
+                            "aliases": []
+                          }
+                        },
+                        "type": "tool",
+                        "metadata": {
+                          "position": {
+                            "x": -0.6565395965404548,
+                            "y": 611.0712453783106
+                          }
+                        }
+                      },
+                      {
+                        "name": "conversation_1752922872969",
+                        "type": "conversation",
+                        "prompt": "",
+                        "metadata": {
+                          "position": {
+                            "x": -418.99213422521103,
+                            "y": 915.9592489288807
+                          }
+                        },
+                        "messagePlan": {
+                          "firstMessage": "oops, I see there was an error, I wasn't able to cancel the appointment. Can you confirm me again the doctor you were have it with and the date and time"
+                        }
+                      },
+                      {
+                        "name": "conversation_1752922876048",
+                        "type": "conversation",
+                        "prompt": "",
+                        "metadata": {
+                          "position": {
+                            "x": 330.1549412623018,
+                            "y": 901.9034480639755
+                          }
+                        },
+                        "messagePlan": {
+                          "firstMessage": "ok, your appointment has been cancelled. To confirm, do you want to book another one?"
+                        }
+                      },
+                      {
+                        "name": "hangup_1752922937804",
+                        "tool": {
+                          "type": "endCall",
+                          "function": {
+                            "name": "untitled_tool",
+                            "parameters": {
+                              "type": "object",
+                              "required": [],
+                              "properties": {}
+                            }
+                          },
+                          "messages": [
+                            {
+                              "type": "request-start",
+                              "content": "perfect, thanks for your time, see you soon",
+                              "blocking": true
+                            }
+                          ]
+                        },
+                        "type": "tool",
+                        "metadata": {
+                          "position": {
+                            "x": 585.3354923585919,
+                            "y": 1424.155341395288
+                          }
+                        }
+                      },
+                      {
+                        "name": "transfer_1752923747637",
+                        "tool": {
+                          "type": "transferCall",
+                          "function": {
+                            "name": "untitled_tool",
+                            "parameters": {
+                              "type": "object",
+                              "required": [],
+                              "properties": {}
+                            }
+                          },
+                          "messages": [
+                            {
+                              "type": "request-start",
+                              "blocking": false
+                            }
+                          ],
+                          "destinations": [
+                            {
+                              "type": "number",
+                              "number": "+34666666666",
+                              "message": "Great, transferring right to him",
+                              "transferPlan": {
+                                "mode": "blind-transfer",
+                                "sipVerb": "refer"
+                              },
+                              "numberE164CheckEnabled": true
+                            }
+                          ]
+                        },
+                        "type": "tool",
+                        "metadata": {
+                          "position": {
+                            "x": -2442.427729452,
+                            "y": 447.476470273791
+                          }
+                        }
+                      },
+                      {
+                        "name": "hangup_1752923813658",
+                        "tool": {
+                          "type": "endCall",
+                          "function": {
+                            "name": "untitled_tool",
+                            "parameters": {
+                              "type": "object",
+                              "required": [],
+                              "properties": {}
+                            }
+                          },
+                          "messages": [
+                            {
+                              "type": "request-start",
+                              "content": "thanks for your time then, see you soon",
+                              "blocking": true
+                            }
+                          ]
+                        },
+                        "type": "tool",
+                        "metadata": {
+                          "position": {
+                            "x": -3317.080052202601,
+                            "y": 885.1366279027485
+                          }
+                        }
+                      },
+                      {
+                        "name": "conversation_1752923822153",
+                        "type": "conversation",
+                        "prompt": "",
+                        "metadata": {
+                          "position": {
+                            "x": -3221.1658753679417,
+                            "y": 401.57398567390214
+                          }
+                        },
+                        "messagePlan": {
+                          "firstMessage": "the only way for you to apply for the job is to talk with our director, are you sure you don't want to talk with him"
+                        }
+                      }
+                    ],
+                    "edges": [
+                      {
+                        "to": "conversation_1752860903457",
+                        "from": "introduction",
+                        "condition": {
+                          "type": "ai",
+                          "prompt": "if the user wants to be treated here and wants to make an appointment with any of the doctors"
+                        }
+                      },
+                      {
+                        "to": "conversation_1752860952151",
+                        "from": "introduction",
+                        "condition": {
+                          "type": "ai",
+                          "prompt": "User wants to cancel an appointment"
+                        }
+                      },
+                      {
+                        "to": "conversation_1752860969455",
+                        "from": "introduction",
+                        "condition": {
+                          "type": "ai",
+                          "prompt": "USer wants to modify and change an appointment"
+                        }
+                      },
+                      {
+                        "to": "conversation_1752861003961",
+                        "from": "introduction",
+                        "condition": {
+                          "type": "ai",
+                          "prompt": "User wants to apply for the new job"
+                        }
+                      },
+                      {
+                        "to": "conversation_1752861888317",
+                        "from": "conversation_1752860903457",
+                        "condition": {
+                          "type": "ai",
+                          "prompt": "you have decided what he needs and the user is ready to book an appointment. AT FIRST, YOU DON'T HAVE TO ASK FOR CONFIRMATION.  Once he gives you a small description don't fucking ask again for confirmation, pass to the next step"
+                        }
+                      },
+                      {
+                        "to": "conversation_1752918838158",
+                        "from": "apiRequest_1752880151235",
+                        "condition": {
+                          "type": "ai",
+                          "prompt": "there is no availability in the hour the user has chosen"
+                        }
+                      },
+                      {
+                        "to": "conversation_1752918839625",
+                        "from": "apiRequest_1752880151235",
+                        "condition": {
+                          "type": "ai",
+                          "prompt": "in case the hour is available and the appointment has been booked"
+                        }
+                      },
+                      {
+                        "to": "apiRequest_1752880151235",
+                        "from": "conversation_1752918838158",
+                        "condition": {
+                          "type": "ai",
+                          "prompt": "user says the date and time"
+                        }
+                      },
+                      {
+                        "to": "apiRequest_1752880151235",
+                        "from": "conversation_1752861888317",
+                        "condition": {
+                          "type": "ai",
+                          "prompt": "user said the date and time, his name, and his number"
+                        }
+                      },
+                      {
+                        "to": "hangup_1752919107203",
+                        "from": "conversation_1752918839625",
+                        "condition": {
+                          "type": "ai",
+                          "prompt": "if the user said he doesn't have any questions"
+                        }
+                      },
+                      {
+                        "to": "apiRequest_1752919898443",
+                        "from": "conversation_1752860952151",
+                        "condition": {
+                          "type": "ai",
+                          "prompt": "if the user said the date and time of his appointment, the reason and the doctor"
+                        }
+                      },
+                      {
+                        "to": "conversation_1752922872969",
+                        "from": "apiRequest_1752919898443",
+                        "condition": {
+                          "type": "ai",
+                          "prompt": "if the appointment wasn't cancelled, there was an error"
+                        }
+                      },
+                      {
+                        "to": "conversation_1752922876048",
+                        "from": "apiRequest_1752919898443",
+                        "condition": {
+                          "type": "ai",
+                          "prompt": "appointment was canceled"
+                        }
+                      },
+                      {
+                        "to": "hangup_1752922937804",
+                        "from": "conversation_1752922876048",
+                        "condition": {
+                          "type": "ai",
+                          "prompt": "user said no"
+                        }
+                      },
+                      {
+                        "to": "conversation_1752860903457",
+                        "from": "conversation_1752922876048",
+                        "condition": {
+                          "type": "ai",
+                          "prompt": "user said yes"
+                        }
+                      },
+                      {
+                        "to": "apiRequest_1752919898443",
+                        "from": "conversation_1752922872969",
+                        "condition": {
+                          "type": "ai",
+                          "prompt": "user said all the information"
+                        }
+                      },
+                      {
+                        "to": "apiRequest_1752919898443",
+                        "from": "conversation_1752860969455",
+                        "condition": {
+                          "type": "ai",
+                          "prompt": "user said the date and time, the doctor, and the reason"
+                        }
+                      },
+                      {
+                        "to": "transfer_1752923747637",
+                        "from": "conversation_1752861003961",
+                        "condition": {
+                          "type": "ai",
+                          "prompt": "if the user said yes"
+                        }
+                      },
+                      {
+                        "to": "conversation_1752923822153",
+                        "from": "conversation_1752861003961",
+                        "condition": {
+                          "type": "ai",
+                          "prompt": "if the user said no"
+                        }
+                      },
+                      {
+                        "to": "transfer_1752923747637",
+                        "from": "conversation_1752923822153",
+                        "condition": {
+                          "type": "ai",
+                          "prompt": "user finally agrees to be transferred"
+                        }
+                      },
+                      {
+                        "to": "hangup_1752923813658",
+                        "from": "conversation_1752923822153",
+                        "condition": {
+                          "type": "ai",
+                          "prompt": "user confirms he doesn't want to talk to the director"
+                        }
+                      }
+                    ],
+                    "createdAt": "2025-07-18T17:30:09.971Z",
+                    "updatedAt": "2025-07-20T11:45:42.557Z",
+                    "globalPrompt": "",
+                    "voice": {
+                      "model": "eleven_turbo_v2_5",
+                      "speed": 0.9,
+                      "voiceId": "2BJW5coyhAzSr8STdHbE",
+                      "language": "en",
+                      "provider": "11labs"
+                    }
+                  },
+                  "steps": [],
+                  "messages": []
+                },
+                "name": "Customer support",
+                "voice": {
+                  "model": "eleven_turbo_v2_5",
+                  "speed": 0.9,
+                  "voiceId": "2BJW5coyhAzSr8STdHbE",
+                  "language": "en",
+                  "provider": "11labs"
+                },
+                "startSpeakingPlan": {
+                  "smartEndpointingPlan": {
+                    "provider": "livekit",
+                    "waitFunction": "20 + 500 * sqrt(x) + 2500 * x^3"
+                  }
+                },
+                "stopSpeakingPlan": {
+                  "numWords": 2,
+                  "backoffSeconds": 3
+                },
+                "modelOutputInMessagesEnabled": true,
+                "voicemailDetection": {
+                  "provider": "vapi",
+                  "backoffPlan": {
+                    "startAtSeconds": 7,
+                    "frequencySeconds": 3
+                  }
+                },
+                "silenceTimeoutSeconds": 90,
+                "messagePlan": {
+                  "idleTimeoutSeconds": 30,
+                  "idleMessages": [
+                    "Are you still there?",
+                    "Is there anything else I can assist with?"
+                  ]
+                },
+                "variableValues": {
+                  "account-sid": "c033b672-5b99-42ae-9ce2-b231e9a522fb",
+                  "cid": "68544213-3962001566-480732074@msc1.382COM.COM",
+                  "forwarded-for": "64.125.111.10",
+                  "originating-carrier": "382com",
+                  "voip-carrier-sid": "a5569621-84ac-49cc-a8b8-11c7fb96b905",
+                  "application-sid": "79d078c8-76b2-452a-99e0-ddd5abbf6269"
+                }
+              }
+            }
+          },
+          "webhookUrl": "https://trytribex.app.n8n.cloud/webhook-test/c0477fd0-8bb0-441d-bc9f-9d0c2f7528ab",
+          "executionMode": "test"
+        }
+      }
+    ],
+    "AI Agent2": [
+      {
+        "json": {
+          "output": "3"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent3",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent4",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Book Derma": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Book Plastic": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Book Tricho": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Book Aesthetic": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Derma": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          },
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Tricho": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          },
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Aesthetic": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          },
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Plastic": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          },
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Derma": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Tricho": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Aesthetic": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Plastic": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent2": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Get a row",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Delete a row",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a row": {
+      "main": [
+        [
+          {
+            "node": "Update a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent3": {
+      "main": [
+        [
+          {
+            "node": "Create a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a row": {
+      "main": [
+        [
+          {
+            "node": "Get a row1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a row1": {
+      "main": [
+        [
+          {
+            "node": "Update a row1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent4": {
+      "main": [
+        [
+          {
+            "node": "Update a row2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row2": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "0aa7e3d4-44ca-4791-96fc-c40a40cd50f3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "54cf3a77a2219000f551104c46c6292a39497ab842d7f00863faa9c7d94c2db4"
+  },
+  "id": "YdJPIeh6yZ31Oxh4",
+  "tags": []
+}
