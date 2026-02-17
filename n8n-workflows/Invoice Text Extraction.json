@@ -1,0 +1,946 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dd480cea-7e7e-484b-b14a-9862442a8dca",
+              "name": "File Id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "39fee06c-6e03-40ef-b77c-299f897bc05b",
+              "name": "Deliver to ",
+              "value": "={{ $('Twilio Trigger').item.json.data.to }}",
+              "type": "string"
+            },
+            {
+              "id": "8777f5b4-dfd4-4514-b9a3-a73dce201fae",
+              "name": "From",
+              "value": "={{ $('Twilio Trigger').item.json.data.from }}",
+              "type": "string"
+            },
+            {
+              "id": "06949cb3-d51f-4ebb-a7f6-c25eb6ebe414",
+              "name": "Message",
+              "value": "={{ $('Twilio Trigger').item.json.data.body }}",
+              "type": "string"
+            },
+            {
+              "id": "c3db01d1-e653-47ab-8f51-e42c5b2b30cb",
+              "name": "Sender Name",
+              "value": "={{ $('Twilio Trigger').item.json.ProfileName }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1020,
+        20
+      ],
+      "id": "3a63068c-85a3-44a9-802f-52c33ccbc386",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.cloud.eu.llamaindex.ai/api/v1/parsing/upload",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer llx-9sopTLui6vUGJZh6Cxm1hkmOGfI7tic9W9BJFefSzMq9rxLG"
+            },
+            {
+              "name": "Content-Type",
+              "value": "multipart/form-data"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1780,
+        140
+      ],
+      "id": "43a72828-686f-4429-9ecd-38652328b1b7",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.cloud.eu.llamaindex.ai/api/parsing/job/{{ $json.id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer llx-9sopTLui6vUGJZh6Cxm1hkmOGfI7tic9W9BJFefSzMq9rxLG"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2240,
+        320
+      ],
+      "id": "4637c9fa-d7cd-42de-b4b6-98082fad8fb5",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json['File Id'] }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1260,
+        20
+      ],
+      "id": "8af9a076-2ca2-43d2-a125-596a23fc677e",
+      "name": "Google Drive Download File",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "MlCbYnooMfpTOMZn",
+          "name": "Google Drive innovaclic"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }} ",
+          "mode": "id"
+        },
+        "newUpdatedFileName": "={{ $json.owners[0].displayName.trim().replace(/\\s+/g, '-').replace(/[^\\w-]/g, '') + '-' + new Date($json.createdTime).toISOString().split('T')[0] + '.pdf' }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        780,
+        20
+      ],
+      "id": "b027a829-b08e-443d-a73c-e76bdce6a609",
+      "name": "Google Drive Update file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "MlCbYnooMfpTOMZn",
+          "name": "Google Drive innovaclic"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputDataFieldName": "=data",
+        "name": "={{ $json.media_list[0].sid }}",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1Lpi2cbExExGVfi_J32HHF40iv6Sd2I3w",
+          "mode": "list",
+          "cachedResultName": "innovaclic Payroll ",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1Lpi2cbExExGVfi_J32HHF40iv6Sd2I3w"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        540,
+        20
+      ],
+      "id": "08ae2e46-25f1-4be3-b36b-78bf36220a59",
+      "name": "Google Upload File",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "MlCbYnooMfpTOMZn",
+          "name": "Google Drive innovaclic"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 20
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2060,
+        480
+      ],
+      "id": "22972c81-6a65-446b-959a-149edbf586c4",
+      "name": "Wait",
+      "webhookId": "2e49f2d3-b6d2-4aa4-83cf-eceaf3e6dd3c"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.cloud.eu.llamaindex.ai/api/v1/parsing/job/{{ $json.id }}/result/raw/markdown",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer llx-9sopTLui6vUGJZh6Cxm1hkmOGfI7tic9W9BJFefSzMq9rxLG"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "extraction_agent_id",
+              "value": "573a8856-4586-4c00-b487-354d7615ded7"
+            },
+            {
+              "name": "file_id",
+              "value": "={{ $json.id }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2840,
+        520
+      ],
+      "id": "addfd0dd-7e45-45d7-8a14-6953acc78161",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "chatgpt-4o-latest",
+          "mode": "list",
+          "cachedResultName": "CHATGPT-4O-LATEST"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are a data extraction and payroll analysis engine.\n\nYour input is OCR-parsed text extracted from a PDF or image of an Italian employee payslip. This data may be noisy, incomplete, or inconsistently formatted.\n\nYour job is to extract all available structured data reliably, and return a clean, structured JSON response. If a required field is missing or unclear, return `null` instead of an error.\n\nAlso perform basic reasoning (e.g., calculate age from date of birth), and infer values where possible (e.g., loan detection from matching keywords).\n\nReturn ONLY the following structured JSON format:\n\n{\n  \"full_name\": \"Employee’s full name, e.g., 'Francesco Carandente'\",\n  \"date_of_birth\": \"DD-MM-YYYY (e.g., '03-03-1963')\",\n  \"estimated_age\": \"Number (e.g., '61') — calculated from date_of_birth against current year\",\n  \"employment_start_date\": \"DD-MM-YYYY or null\",\n  \"employment_end_date\": \"DD-MM-YYYY or null\",\n  \"company_name\": \"Name of employer or issuing organization, e.g., 'Comune di Qualiano'\",\n  \"municipality\": \"Location of employer, e.g., 'Qualiano, NA'\",\n  \"fiscal_code\": \"Fiscal code (Codice Fiscale), e.g., 'CRNFNC63C03F799V'\",\n  \"job_title\": \"Job title, e.g., 'Istruttore Amministrativo'\",\n  \"contract_type\": \"One of: 'Full-Time', 'Part-Time', 'Temporary', 'Permanent', or null\",\n  \"spouse\": \"Yes / No / null — based on 'Coniuge' or family info\",\n  \"children\": \"Number of children or dependents declared, e.g., 1 or 0\",\n  \"iban\": \"IBAN number, e.g., 'IT93H0503440120000000004350' or null\",\n  \"monthly_salary_gross\": \"Gross monthly salary in Euros, e.g., 1502.84 — sum if necessary\",\n  \"monthly_salary_net\": \"Net pay (e.g., labeled 'NETTO IN BUSTA'), e.g., 1783.42\",\n  \"total_compensation\": \"Sum of positive line items or labeled total\",\n  \"total_deductions\": \"Sum of deductions or labeled total\",\n  \"loans_detected\": \"Yes / No — based on presence of keywords like 'prestito', 'quota', 'trattenuta'\",\n  \"line_items\": [\n    {\n      \"line_item_description\": \"e.g., 'Retribuzione Mensile'\",\n      \"amount\": \"e.g., 1691.91\"\n    },\n    {\n      \"line_item_description\": \"e.g., 'Arretrati stipendio tabellare'\",\n      \"amount\": \"e.g., 23.29\"\n    }\n    // Additional entries as needed\n  ],\n  \"additional_notes\": \"Any unusual deductions, totals, or notes found in the text\"\n}\n\nInstructions:\n- Never use dollar or euro signs. Only return numeric values.\n- Dates should be in `DD-MM-YYYY` format only.\n- If values are missing, set the field to `null`, not an empty string.\n- Never guess values without clues. If a value can’t be determined from the text, use null.\n- Translate Italian labels when needed. Example: 'Retribuzione Mensile' → 'Monthly Salary'.\n\nEXAMPLE for age:\nIf date_of_birth is \"03-03-1963\" and today's year is 2025, estimated_age should be:\n\"2025 - 1963 = 62\" → Output: `\"estimated_age\": \"62\"`\n\nPayslip Text Input: {{ $json.data }}\n\n",
+              "role": "system"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        2540,
+        340
+      ],
+      "id": "6a6b4d6c-e4ea-4707-8f6e-da40bb9c049c",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "MamfXPuWawHnWl6y",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5062c0a1-e933-4d11-896e-ff92bc93941e",
+              "name": "Name",
+              "value": "={{ $json.full_name }}",
+              "type": "string"
+            },
+            {
+              "id": "4274b19d-6c9f-4ccb-8775-99b199d46a8c",
+              "name": "Geburtsdatum",
+              "value": "={{ $json.date_of_birth }}",
+              "type": "string"
+            },
+            {
+              "id": "7fbb1c27-10c0-48c0-8cec-d67945d325fb",
+              "name": "Geschätztes Alter",
+              "value": "={{ $json.estimated_age }}",
+              "type": "string"
+            },
+            {
+              "id": "a0dc849b-16bc-454a-9cb9-685b34b9cd37",
+              "name": "Unternehmen",
+              "value": "={{ $json.company_name }}",
+              "type": "string"
+            },
+            {
+              "id": "015194ee-77ce-4983-bc5c-0e9a766ac065",
+              "name": "Berufsbezeichnung",
+              "value": "={{ $json.job_title }}",
+              "type": "string"
+            },
+            {
+              "id": "b01cba05-20d4-4c99-a624-137958bc9fd0",
+              "name": "Vertragsart",
+              "value": "={{ $json.contract_type }}",
+              "type": "string"
+            },
+            {
+              "id": "8452802c-5a76-4307-94c9-add10e959b13",
+              "name": "Bruttogehalt (monatlich)",
+              "value": "={{ $json.monthly_salary_gross }}",
+              "type": "string"
+            },
+            {
+              "id": "f9380855-1f17-47a2-b2c5-bd3fb4e37639",
+              "name": "Gesamtvergütung",
+              "value": "={{ $json.total_compensation }}",
+              "type": "string"
+            },
+            {
+              "id": "cdb8d652-4960-4816-bf26-48bd623a33ba",
+              "name": "Gesamtabzüge",
+              "value": "={{ $json.total_deductions }}",
+              "type": "string"
+            },
+            {
+              "id": "fa52f5db-7b5f-474f-8270-b6286be458a3",
+              "name": "Laufende Kredite festgestellt",
+              "value": "={{ $json.loans_detected }}",
+              "type": "string"
+            },
+            {
+              "id": "ceeec748-9310-4b15-8dc0-cd14f5875c7c",
+              "name": "Zusätzliche Hinweise",
+              "value": "={{ $json.additional_notes }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3180,
+        300
+      ],
+      "id": "98c6254d-192e-4b9c-8a70-8ac2bb1583d9",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "jsCode": "let raw = $input.first().json.message.content;\n\n// Remove triple backticks and any language label (e.g., \njson)\nraw = raw.replace(/\n(?:json)?\\n?/, '').replace(/\n$/, '');\n\n// Now safely parse\nconst payload = JSON.parse(raw);\n\nreturn [{ json: payload }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2880,
+        340
+      ],
+      "id": "e9650c09-6ffb-4977-bd99-c2b5c258d068",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "com.twilio.messaging.inbound-message.received"
+        ]
+      },
+      "type": "n8n-nodes-base.twilioTrigger",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        20
+      ],
+      "id": "1c26fb59-e5f5-4a34-ad79-f64dca7b8943",
+      "name": "Twilio Trigger",
+      "webhookId": "625f11b5-5aa2-4403-a56f-c8b0a5714efa",
+      "credentials": {
+        "twilioApi": {
+          "id": "aWsTY9aPQKY3w5zx",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "from": "=+14155238886",
+        "to": "={{ $('Twilio Trigger').item.json.data.from.replace('whatsapp:', '') }}\n",
+        "toWhatsapp": true,
+        "message": "={{ $json.Body }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        3680,
+        300
+      ],
+      "id": "98774fa0-1c3e-4c59-91e2-d1ad86c54a14",
+      "name": "Twilio",
+      "credentials": {
+        "twilioApi": {
+          "id": "aWsTY9aPQKY3w5zx",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "efdffee0-01f0-444a-8d0a-044905b1f823",
+              "name": "Body",
+              "value": "=👋 Hallo \n\nWir haben deine Gehaltsabrechnung erhalten und analysiert.\n\n📄 Wichtige Details:\n- Name: {{ $json.Name }}  \n- Geburtsdatum: {{ $json['Geburtsdatum'] }}  \n- Geschätztes Alter: {{ $json['Geschätztes Alter'] }} Jahre  \n- Unternehmen: {{ $json.Unternehmen }}  \n- Berufsbezeichnung: {{ $json.Berufsbezeichnung }}  \n- Vertragsart: {{ $json.Vertragsart }}  \n\n💰 Gehalt und Abzüge:\n- Bruttogehalt (monatlich): {{ $json['Bruttogehalt (monatlich)'] }} €  \n- Nettogehalt (monatlich): {{ $json['Nettogehalt (monatlich)'] || 'Nicht angegeben' }} €  \n- Gesamtvergütung: {{ $json['Gesamtvergütung'] }} €  \n- Gesamtabzüge: {{ $json['Gesamtabzüge'] }} €  \n- Laufende Kredite festgestellt: {{ $json['Laufende Kredite festgestellt'] }}  \n\n📝 Zusätzliche Hinweise:  \n{{ $json['Zusätzliche Hinweise'] }}\n",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3400,
+        300
+      ],
+      "id": "3a91d858-3953-44dc-87c0-d417ea90831a",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.twilio.com/2010-04-01/Accounts/{{ $json.data.accountSid }}/Messages/{{ $json.data.messageSid }}/Media.json",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "twilioApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        160,
+        20
+      ],
+      "id": "d1c1a5b7-fda5-439c-b563-2fa80e70bdc0",
+      "name": "HTTP Request5",
+      "credentials": {
+        "twilioApi": {
+          "id": "aWsTY9aPQKY3w5zx",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://api.twilio.com/2010-04-01/Accounts/{{ $json.media_list[0].account_sid }}/Messages/{{ $json.media_list[0].parent_sid }}/Media/{{ $json.media_list[0].sid }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "twilioApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        360,
+        20
+      ],
+      "id": "56203e50-5c55-40d5-bd4d-7ac27bde8264",
+      "name": "HTTP Request7",
+      "credentials": {
+        "twilioApi": {
+          "id": "aWsTY9aPQKY3w5zx",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "SUCCESS",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "b34cb361-872d-4922-bfe5-b0004cdeb179"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "fc6bd8e0-54b8-48b5-bc6a-c81ece42ced9",
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "PENDING",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        2380,
+        500
+      ],
+      "id": "925e3912-b81b-4f52-8433-5cde0b9be216",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Google Drive Update file').item.json.mimeType }}",
+                    "rightValue": "image/jpeg",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "d5bf1186-0491-4102-bd1c-62fee2b1a6d8"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "jpeg"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a51c1fe0-b1d7-45c7-8d99-89cbce453244",
+                    "leftValue": "={{ $('Google Drive Update file').item.json.mimeType }}",
+                    "rightValue": "PNG",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "PNG"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a06a467c-7343-4399-a993-5c298cfb7822",
+                    "leftValue": "={{ $('Google Drive Update file').item.json.mimeType }}",
+                    "rightValue": "application/pdf",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "PDF"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1480,
+        20
+      ],
+      "id": "4d29e35f-54fa-4d79-ad4f-94ca5424408c",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "chatgpt-4o-latest",
+          "mode": "list",
+          "cachedResultName": "CHATGPT-4O-LATEST"
+        },
+        "text": "=You are a data extraction engine. Your input is OCR text from an Italian payslip image.\n\nYour task is to return **ONLY** structured JSON like this:\n\n{\n  \"full_name\": \"Mario Rossi\",\n  \"date_of_birth\": \"01-01-1980\",\n  \"estimated_age\": 44,\n  \"company_name\": \"Comune di Roma\",\n  \"iban\": \"IT93H0503440120000000004350\",\n  \"monthly_salary_net\": 1520.40,\n  \"monthly_salary_gross\": 1700.00,\n  \"total_compensation\": 1900.00,\n  \"total_deductions\": 400.00,\n  \"employment_start_date\": null,\n  \"employment_end_date\": null,\n  \"contract_type\": \"Full-Time\",\n  \"spouse\": \"No\",\n  \"children\": 2,\n  \"loans_detected\": \"Yes\",\n  \"line_items\": [\n    {\n      \"line_item_description\": \"Retribuzione Mensile\",\n      \"amount\": 1350.00\n    }\n  ],\n  \"additional_notes\": \"Deductions indicate ongoing loan or union membership.\"\n}\n\nNo markdown (like ```json). No text before or after. JSON only.\n\nIf data is missing, return `null`.\n\nInput text:\n{{ $json.data }}\n",
+        "inputType": "base64",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        2140,
+        60
+      ],
+      "id": "b1c78a79-8d2d-494e-9e0a-289c436f0a52",
+      "name": "OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "MamfXPuWawHnWl6y",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "let raw = $input.first().json.message?.content || $input.first().json.content || '';\n\ntry {\n  const payload = JSON.parse(raw);\n  return [{ json: payload }];\n} catch (error) {\n  return [{\n    json: {\n      error: 'Failed to parse JSON from OCR result',\n      raw_input: raw,\n      error_message: error.message\n    }\n  }];\n}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2520,
+        20
+      ],
+      "id": "2c127791-0bd9-4ec0-b9c2-51b2dc477b64",
+      "name": "Code1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Google Drive Download File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive Download File": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive Update file": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Upload File": {
+      "main": [
+        [
+          {
+            "node": "Google Drive Update file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Twilio Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Twilio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request5": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request7": {
+      "main": [
+        [
+          {
+            "node": "Google Upload File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "OpenAI1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "OpenAI1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI1": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2d0f0d00-f093-4894-873a-ad3a881e4790",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "675d62368e8e06c3ae27c36cae520c258afed404c7dd0cd06e381e3e0dc14612"
+  },
+  "id": "uVN1FinloYKAdMIS",
+  "tags": []
+}
