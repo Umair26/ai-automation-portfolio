@@ -1,0 +1,483 @@
+{
+  "name": "Invoice Chaser",
+  "nodes": [
+    {
+      "parameters": {
+        "values": {
+          "number": [
+            {
+              "name": "days_past_due",
+              "value": "={{ Math.floor((new Date() - new Date(parseInt($('Xero').item.json.DueDate.match(/\\d+/)[0]))) / (1000 * 60 * 60 * 24)) }}"
+            },
+            {
+              "name": "amount_due",
+              "value": "={{ \"$\" + parseFloat($('Xero').item.json.AmountDue).toFixed(2) }}"
+            },
+            {
+              "name": "dateDue",
+              "value": "={{ new Date(parseInt($('Xero').item.json.DueDate.match(/\\d+/)[0])).toLocaleDateString() }}"
+            },
+            {
+              "name": "contactId",
+              "value": "={{ $json.ContactID }}"
+            },
+            {
+              "name": "invoiceNumber",
+              "value": "={{ $('Xero').item.json.InvoiceNumber }}"
+            }
+          ],
+          "string": [
+            {
+              "name": "customerEmail",
+              "value": "={{ $json.EmailAddress || $json.Name || \"\" }}"
+            },
+            {
+              "name": "invoiceURL",
+              "value": "={{ \"https://go.xero.com/AccountsReceivable/View.aspx?InvoiceID=\" + $('Xero').item.json.InvoiceID }}"
+            },
+            {
+              "name": "customerName",
+              "value": "={{ $json.Name || \"Customer\" }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e8065923-8727-48fe-bfeb-f4742afc3baf",
+      "name": "Set Variables",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        -1080,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ parseFloat($json.amount_due?.replace('$', '')) }}",
+              "operation": "larger"
+            }
+          ],
+          "boolean": [
+            {
+              "operation": "notEqual",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "f96b21d1-9384-44db-9150-92096c3c06c2",
+      "name": "Check if Unpaid",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -860,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "organizationId": "9df9f17e-137a-475d-b595-b4128ad648f2",
+        "limit": 3,
+        "options": {
+          "orderBy": "DueDate",
+          "statuses": [
+            "AUTHORISED"
+          ],
+          "where": "Type=\"ACCREC\" AND Status=\"AUTHORISED\" AND AmountDue>0"
+        }
+      },
+      "type": "n8n-nodes-base.xero",
+      "typeVersion": 1,
+      "position": [
+        -1520,
+        460
+      ],
+      "id": "b89fd24b-a113-4da0-a466-b4b8566566b5",
+      "name": "Xero",
+      "credentials": {
+        "xeroOAuth2Api": {
+          "id": "wAE5xYyaBqs33SLQ",
+          "name": "Xero account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "organizationId": "9df9f17e-137a-475d-b595-b4128ad648f2",
+        "invoiceId": "={{ $('Switch').item.json.invoiceNumber }}",
+        "updateFields": {
+          "reference": "=Reminder sent: Day {{ $('Switch').item.json.days_past_due }} - {{ new Date().toISOString().split('T')[0] }}"
+        }
+      },
+      "type": "n8n-nodes-base.xero",
+      "typeVersion": 1,
+      "position": [
+        -200,
+        460
+      ],
+      "id": "d607613e-65b3-49b8-9d8a-c3101d92391f",
+      "name": "Xero1",
+      "credentials": {
+        "xeroOAuth2Api": {
+          "id": "wAE5xYyaBqs33SLQ",
+          "name": "Xero account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.customerEmail }}",
+        "subject": "=Payment Notice - Invoice Invoice {{ $json.invoiceNumber }} ({{ $json.days_past_due }} days overdue)",
+        "emailType": "text",
+        "message": "=Hi {{ $json.customerName }},\n\nJust a friendly reminder that Invoice {{ $json.invoiceNumber }} for ${{ $json.amount_due }} was due today.\n\nNo worries if it just slipped through the cracks!  You can view and pay your invoice here:\n{{ $json.invoiceURL }}\n\nBest regards,\nTom @ Email Alchemy",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -420,
+        60
+      ],
+      "id": "00fd9a99-a2c0-4748-8c8c-81d2b2585f29",
+      "name": "1 day overdue email",
+      "webhookId": "290a3ddd-fac7-4559-875a-a5b6abfb9a4e",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "aQ4XmKoW3ktJ76np",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.EmailAddress }}",
+        "subject": "=Gentle Reminder - Invoice {{ $json.invoiceNumber }} ({{ $json.days_past_due }} days overdue)",
+        "emailType": "text",
+        "message": "=Hi {{ $json.customerName }},\n\nFollowing up on Invoice {{ $json.invoiceNumber }} for ${{ $json.amount_due }}.\n\nIt's been about a week since the due date. Could you let me know when I can expect payment?\n\nView and pay your invoice:\n{{ $json.invoiceURL }}\n\nBest regards,\nTom @ Email Alchemy",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -420,
+        260
+      ],
+      "id": "1ab58a26-8be0-43aa-a47f-9e8a79d5878b",
+      "name": "7 days overdue email",
+      "webhookId": "290a3ddd-fac7-4559-875a-a5b6abfb9a4e",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "aQ4XmKoW3ktJ76np",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.customer_email }}",
+        "subject": "=Second Notice - Invoice {{ $json.invoiceNumber }} ({{ $json.days_past_due }} days overdue)",
+        "emailType": "text",
+        "message": "=Hi {{ $json.customerName }},\n\nSecond notice for Invoice {{ $json.invoiceNumber }} for ${{ $json.amount_due }}.\n\nThis invoice is now 14 days overdue. Please remit payment immediately to avoid late fees.\n\nPay your invoice now:\n{{ $json.invoiceURL }}\n\nBest regards,\nTom @ Email Alchemy",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -420,
+        460
+      ],
+      "id": "6150f6c8-569d-4031-908b-fcbe9cebac0f",
+      "name": "14 days overdue email",
+      "webhookId": "290a3ddd-fac7-4559-875a-a5b6abfb9a4e",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "aQ4XmKoW3ktJ76np",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.customer_email }}",
+        "subject": "=URGENT - Invoice {{ $json.invoiceNumber }} ({{ $json.days_past_due }} days overdue)",
+        "emailType": "text",
+        "message": "=Hi {{ $json.customerName }},\n\nURGENT: Invoice {{ $json.invoiceNumber }} for ${{ $json.amount_due }}  is now 21 days overdue.\n\nImmediate payment is required to avoid further action.\n\nPay immediately:\n{{ $json.invoiceURL }}\n\nBest regards,\nTom @ Email Alchemy",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -420,
+        660
+      ],
+      "id": "28af2027-a122-4317-8e60-6fa2522befa8",
+      "name": "21 days overdue email",
+      "webhookId": "290a3ddd-fac7-4559-875a-a5b6abfb9a4e",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "aQ4XmKoW3ktJ76np",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.customer_email }}",
+        "subject": "=FINAL NOTICE - Invoice {{ $json.invoiceNumber }}",
+        "emailType": "text",
+        "message": "=FINAL NOTICE\n\nHi {{ $json.customerName }},\n\nURGENT: Invoice {{ $json.invoiceNumber }} for ${{ $json.amount_due }}  is 30+ days overdue.\n\nThis is your final opportunity to resolve this matter.\n\nPay now:\n{{ $json.invoiceURL }}\n\nEmail Alchemy\nCollections Department",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -420,
+        860
+      ],
+      "id": "33104b47-c265-4022-aa21-3a38306fd495",
+      "name": "30 days overdue email",
+      "webhookId": "290a3ddd-fac7-4559-875a-a5b6abfb9a4e",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "aQ4XmKoW3ktJ76np",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1740,
+        460
+      ],
+      "id": "809efc2e-6283-47dd-812d-565f984a8ac5",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "resource": "contact",
+        "operation": "get",
+        "organizationId": "9df9f17e-137a-475d-b595-b4128ad648f2",
+        "contactId": "={{ $json.Contact.ContactID }}"
+      },
+      "type": "n8n-nodes-base.xero",
+      "typeVersion": 1,
+      "position": [
+        -1300,
+        460
+      ],
+      "id": "6806b019-78c6-4dd2-975e-de2cf7c94bf3",
+      "name": "Xero2",
+      "credentials": {
+        "xeroOAuth2Api": {
+          "id": "wAE5xYyaBqs33SLQ",
+          "name": "Xero account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "expression",
+        "numberOutputs": 5,
+        "output": "={{ \n  (() => {\n    const days = $json.days_past_due;\n    if (days >= 1 && days <= 7) return 0;\n    if (days >= 8 && days <= 14) return 1; \n    if (days >= 15 && days <= 21) return 2;\n    if (days >= 22 && days <= 30) return 3;\n    if (days > 30) return 4;\n    return 4; // default to most severe\n  })()\n}}"
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -640,
+        420
+      ],
+      "id": "0a1231ed-30d7-48eb-b999-407480c6cb49",
+      "name": "Switch"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Set Variables": {
+      "main": [
+        [
+          {
+            "node": "Check if Unpaid",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check if Unpaid": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Xero": {
+      "main": [
+        [
+          {
+            "node": "Xero2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "1 day overdue email": {
+      "main": [
+        [
+          {
+            "node": "Xero1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "7 days overdue email": {
+      "main": [
+        [
+          {
+            "node": "Xero1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "14 days overdue email": {
+      "main": [
+        [
+          {
+            "node": "Xero1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "21 days overdue email": {
+      "main": [
+        [
+          {
+            "node": "Xero1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "30 days overdue email": {
+      "main": [
+        [
+          {
+            "node": "Xero1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Xero",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Xero2": {
+      "main": [
+        [
+          {
+            "node": "Set Variables",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "1 day overdue email",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "7 days overdue email",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "14 days overdue email",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "21 days overdue email",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "30 days overdue email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "9fe83265-da7c-446d-a1c6-a430140ffc96",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f728ac8b256bc0332b9cc850d0cf415bb9be6d8f439bde96f0fa8f4178c36ca3"
+  },
+  "id": "ztBkt1LGqmi5OaKk",
+  "tags": []
+}
