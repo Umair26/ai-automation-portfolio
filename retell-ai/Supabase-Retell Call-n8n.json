@@ -1,0 +1,397 @@
+{
+  "name": "My workflow 4",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "*/10 9-17 * * 1-5"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -384,
+        0
+      ],
+      "id": "0c46222a-0dc4-4785-8758-c5356e919329",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.retellai.com/v2/create-phone-call",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer "
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": " application/json",
+        "body": "={\n  \"agent_id\": \"agent_8662b783c125f89306c4d762e7\",\n  \"retell_llm_dynamic_variables\":{\n    \"name\": \"{{ $json.name }}\",\n    \"property\": \"{{ $json.property }}\"\n  },\n  \"from_number\": \"\",\n  \"to_number\": \"+\",\n  \"direction\": \"outbound\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        48,
+        0
+      ],
+      "id": "d8c4a8c2-a33f-429e-91da-9fc868a6d181",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "Leads",
+        "limit": 1,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "call sent",
+              "condition": "eq"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -176,
+        0
+      ],
+      "id": "4184a0f3-7e07-4cb9-baff-9b7bb6e54f68",
+      "name": "Get many rows",
+      "executeOnce": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "DiV9ojfdFCfefy1T",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "Leads",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $('Get many rows').item.json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "call Id",
+              "fieldValue": "={{ $json.call_id }}"
+            },
+            {
+              "fieldId": "call sent",
+              "fieldValue": "Call sent"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        256,
+        0
+      ],
+      "id": "a247d524-c7fc-4a75-9485-0b0d2180d86f",
+      "name": "Update a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "DiV9ojfdFCfefy1T",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "*/10 17-20 * * 1-5"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -496,
+        448
+      ],
+      "id": "54276f8a-8563-43df-928c-9ecd534fe69e",
+      "name": "Schedule Trigger1"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "No pick up",
+        "limit": 1
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -288,
+        448
+      ],
+      "id": "01ff6720-6cc9-4c5d-9104-a0d9f22ef883",
+      "name": "Get many rows1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "DiV9ojfdFCfefy1T",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "tableId": "No pick up",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "Number",
+              "condition": "eq",
+              "keyValue": "={{ $json.Number }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        432
+      ],
+      "id": "5f65c588-6f16-4eb6-9090-31834d687bfb",
+      "name": "Delete a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "DiV9ojfdFCfefy1T",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "Leads",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "property",
+              "keyValue": "={{ $json.Property }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        128,
+        432
+      ],
+      "id": "0f8c03ac-a4d5-46b3-99c5-6f3751c0c9f0",
+      "name": "Get a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "DiV9ojfdFCfefy1T",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.retellai.com/v2/create-phone-call",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": " application/json",
+        "body": "={\n  \"agent_id\": \"agent_8662b783c125f89306c4d762e7\",\n  \"retell_llm_dynamic_variables\":{\n    \"name\": \"{{ $json.name }}\",\n    \"property\": \"{{ $json.property }}\"\n  },\n  \"from_number\": \"\",\n  \"to_number\": \"\",\n  \"direction\": \"outbound\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        416,
+        400
+      ],
+      "id": "5688a880-1750-491c-a75f-e05b8f5aef57",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "Leads",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "property",
+              "condition": "eq",
+              "keyValue": "={{ $('Get a row').item.json.property }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "call Id",
+              "fieldValue": "={{ $json.call_id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        624,
+        400
+      ],
+      "id": "24276899-0a40-43f7-8c7b-c10cfccd055c",
+      "name": "Update a row1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "DiV9ojfdFCfefy1T",
+          "name": "Supabase account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get many rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many rows": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Update a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Get many rows1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many rows1": {
+      "main": [
+        [
+          {
+            "node": "Delete a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete a row": {
+      "main": [
+        [
+          {
+            "node": "Get a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a row": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Update a row1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "dc8f719a-7bd3-4474-89a9-a1fc9564162d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2564dcc948226f64907817c55750c4e2bcada9860e381b3f9e93a30fe1c48f26"
+  },
+  "id": "z8c21mJfczobaN6h",
+  "tags": []
+}
