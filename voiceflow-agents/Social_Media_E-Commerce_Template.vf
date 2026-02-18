@@ -1,0 +1,5742 @@
+{
+  "version": {
+    "name": "Initial Version",
+    "topics": [
+      {
+        "sourceID": "64dbb6696a8fab0013dba194",
+        "type": "DIAGRAM"
+      }
+    ],
+    "_version": 5,
+    "creatorID": 893814,
+    "prototype": {
+      "type": "chat",
+      "data": {
+        "name": "Inflate Instagram",
+        "locales": [
+          "en-US"
+        ]
+      },
+      "model": {
+        "intents": [],
+        "slots": []
+      },
+      "context": {
+        "stack": [
+          {
+            "diagramID": "64dbb6696a8fab0013dba194",
+            "storage": {},
+            "variables": {}
+          }
+        ],
+        "variables": {}
+      },
+      "surveyorContext": {
+        "slotsMap": {},
+        "platform": "webchat",
+        "products": {},
+        "extraSlots": [],
+        "interfaces": [],
+        "permissions": [],
+        "extraIntents": [],
+        "usedEventsSet": [],
+        "usedIntentsSet": [],
+        "goToIntentsSet": []
+      },
+      "settings": {},
+      "platform": "webchat"
+    },
+    "variables": [
+      "sessions",
+      "user_id",
+      "timestamp",
+      "platform",
+      "locale",
+      "productcount",
+      "name_print",
+      "manychatkey",
+      "price_print",
+      "image_print",
+      "airTableUrl",
+      "Number_of_responses",
+      "airtableQuery",
+      "aiOutput",
+      "formattedResponse",
+      "color_print",
+      "price_print1",
+      "name_print1",
+      "image_print1",
+      "color_print1",
+      "price_print2",
+      "name_print2",
+      "image_print2",
+      "color_print2",
+      "price_print3",
+      "name_print3",
+      "image_print3",
+      "color_print3"
+    ],
+    "components": [],
+    "manualSave": false,
+    "platformData": {
+      "slots": [],
+      "intents": [
+        {
+          "key": "VF.YES",
+          "name": "VF.YES",
+          "inputs": [],
+          "slots": []
+        },
+        {
+          "key": "VF.NO",
+          "name": "VF.NO",
+          "inputs": [],
+          "slots": []
+        },
+        {
+          "key": "None",
+          "name": "None",
+          "inputs": [],
+          "slots": []
+        }
+      ],
+      "settings": {
+        "restart": true,
+        "repeat": 100,
+        "locales": [
+          "en-US"
+        ]
+      },
+      "publishing": {
+        "avatar": "https://cdn.voiceflow.com/assets/logo.png",
+        "color": "#2E7FF1",
+        "description": "Our virtual assistant is here to help you.",
+        "feedback": false,
+        "image": "https://cdn.voiceflow.com/assets/logo.png",
+        "persistence": "localStorage",
+        "position": "right",
+        "spacing": {
+          "side": 24,
+          "bottom": 24
+        },
+        "title": "Starting Template - Webchat",
+        "watermark": true
+      },
+      "platform": "webchat"
+    },
+    "canvasTemplates": [
+      {
+        "id": "sg9zy34i0",
+        "name": "Basic Conversation Path",
+        "color": "#5b9fd7",
+        "nodeIDs": [
+          "643872d482cf9d2273b905df",
+          "643872d482cf9d2273b905e1",
+          "643872d482cf9d2273b905e3"
+        ]
+      },
+      {
+        "id": "5bgq3341p",
+        "name": "Save Information",
+        "color": "#000000",
+        "nodeIDs": [
+          "6438784f82cf9d2273b90dd4",
+          "6438784f82cf9d2273b90dd6",
+          "6438784f82cf9d2273b90dd8",
+          "6438784f82cf9d2273b90dda"
+        ]
+      },
+      {
+        "id": "byav33785",
+        "name": "API Call Example",
+        "color": null,
+        "nodeIDs": [
+          "645d718f83103cca7a3cecc1",
+          "645d718f83103cca7a3cecc3",
+          "645d718f83103cca7a3cecc5",
+          "645d718f83103cca7a3cecc7"
+        ]
+      }
+    ],
+    "autoSaveFromRestore": false,
+    "_id": "65ec32310cd125c54885d07b",
+    "updatedAt": "2024-03-09T09:56:01.668Z",
+    "domains": [
+      {
+        "id": "cla06iyr900b206pkh8d4ap8n",
+        "name": "Home",
+        "live": true,
+        "topicIDs": [
+          "64dbb6696a8fab0013dba194"
+        ],
+        "rootDiagramID": "64dbb6696a8fab0013dba194",
+        "updatedBy": 893814,
+        "updatedAt": "2024-03-09T09:56:01.667Z"
+      }
+    ],
+    "projectID": "65ec32310cd125c54885d07a",
+    "rootDiagramID": "64dbb6696a8fab0013dba194",
+    "templateDiagramID": "64dbb6696a8fab0013dba195"
+  },
+  "diagrams": {
+    "64dbb6696a8fab0013dba195": {
+      "name": "Template Diagram",
+      "type": "TEMPLATE",
+      "zoom": 100,
+      "nodes": {
+        "6438725334aead00076d562e": {
+          "type": "start",
+          "nodeID": "6438725334aead00076d562e",
+          "coords": [
+            360,
+            120
+          ],
+          "data": {
+            "name": "Start",
+            "color": "#43494E",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "id": "6438725334aead00076d562f",
+                  "type": "next",
+                  "target": null
+                }
+              },
+              "dynamic": []
+            },
+            "steps": []
+          }
+        },
+        "6438725382cf9d2273b90589": {
+          "type": "block",
+          "data": {
+            "name": "Welcome",
+            "color": "",
+            "steps": [
+              "6438725382cf9d2273b9058d",
+              "6438725382cf9d2273b90590"
+            ]
+          },
+          "nodeID": "6438725382cf9d2273b90589",
+          "coords": [
+            -501.3585020507189,
+            -658.0432780543358
+          ]
+        },
+        "6438725382cf9d2273b9058b": {
+          "type": "block",
+          "data": {
+            "name": "AI response output",
+            "color": "#56b365",
+            "steps": [
+              "6438725382cf9d2273b90594"
+            ]
+          },
+          "nodeID": "6438725382cf9d2273b9058b",
+          "coords": [
+            -501.5967776582388,
+            -377.8379726840851
+          ]
+        },
+        "6438725382cf9d2273b9058d": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "s27ac3eqh",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Ask any question",
+                        "fontWeight": "700"
+                      },
+                      {
+                        "text": ", and we'll use the response AI step to provide a contextual response."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "6438725382cf9d2273b90590",
+                  "id": "6438725382cf9d2273b9058e"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "6438725382cf9d2273b9058d"
+        },
+        "6438725382cf9d2273b90590": {
+          "type": "captureV2",
+          "data": {
+            "name": "Capture",
+            "intentScope": "GLOBAL",
+            "capture": {
+              "type": "query",
+              "variable": "last_utterance"
+            },
+            "noReply": null,
+            "noMatch": null,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "6438725382cf9d2273b9058b",
+                  "id": "6438725382cf9d2273b90591",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          -667.3584635404925,
+                          -461.54329806524055
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": true,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -691.3584635404925,
+                          -461.54329806524055
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -691.3584635404925,
+                          -401.83801893781236
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -501.59680258692276,
+                          -401.83801893781236
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -501.59680258692276,
+                          -377.83801893781236
+                        ],
+                        "toTop": true,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                },
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "6438725382cf9d2273b90592"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "6438725382cf9d2273b90590"
+        },
+        "6438725382cf9d2273b90594": {
+          "type": "generative",
+          "data": {
+            "name": "Response AI",
+            "prompt": "Based on the users response {{[last_utterance].last_utterance}}, respond to the user",
+            "system": "You are a helpful assistant",
+            "maxTokens": 100,
+            "model": "gpt-3.5-turbo",
+            "temperature": 0.7,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "6438725382cf9d2273b90595",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          -335.5969201040813,
+                          -275.58805327852497
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -295.1503869009563,
+                          -275.58805327852497
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -295.1503869009563,
+                          -631.39591460665
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -254.70385369783128,
+                          -631.39591460665
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "6438725382cf9d2273b90594"
+        },
+        "643872d482cf9d2273b905df": {
+          "type": "block",
+          "data": {
+            "name": "Option 2",
+            "color": "",
+            "steps": [
+              "643872d482cf9d2273b905e5"
+            ]
+          },
+          "nodeID": "643872d482cf9d2273b905df",
+          "coords": [
+            -432.02299332274276,
+            -334.73425308247994
+          ]
+        },
+        "643872d482cf9d2273b905e1": {
+          "type": "block",
+          "data": {
+            "name": "Start Block",
+            "color": "#5b9fd7",
+            "steps": [
+              "643872d482cf9d2273b905e8",
+              "643872d482cf9d2273b905eb"
+            ]
+          },
+          "nodeID": "643872d482cf9d2273b905e1",
+          "coords": [
+            -845.4801744371416,
+            -539.5792694267975
+          ]
+        },
+        "643872d482cf9d2273b905e3": {
+          "type": "block",
+          "data": {
+            "name": "Option 1",
+            "color": "",
+            "steps": [
+              "643872d482cf9d2273b905f0"
+            ]
+          },
+          "nodeID": "643872d482cf9d2273b905e3",
+          "coords": [
+            -430.5038187460724,
+            -569.9756266907931
+          ]
+        },
+        "643872d482cf9d2273b905e5": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "lu9tb340d",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Second Option"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "643872d482cf9d2273b905e6"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "643872d482cf9d2273b905e5"
+        },
+        "643872d482cf9d2273b905e8": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "929q734a2",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "How can I help you?"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "643872d482cf9d2273b905eb",
+                  "id": "643872d482cf9d2273b905e9"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "643872d482cf9d2273b905e8"
+        },
+        "643872d482cf9d2273b905eb": {
+          "type": "buttons",
+          "data": {
+            "name": "Buttons",
+            "noMatch": null,
+            "buttons": [
+              {
+                "id": "xr9vd34tj",
+                "name": "Path 1",
+                "actions": []
+              },
+              {
+                "id": "cl9vs34c7",
+                "name": "Path 2",
+                "actions": []
+              }
+            ],
+            "noReply": null,
+            "intentScope": "GLOBAL",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "643872d482cf9d2273b905ec"
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": "643872d482cf9d2273b905e3",
+                  "id": "643872d482cf9d2273b905ed",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          -679.4801667002234,
+                          -399.32923837159325
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -637.4918741411055,
+                          -399.32923837159325
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -637.4918741411055,
+                          -542.9755028741506
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -595.5035815819875,
+                          -542.9755028741506
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "",
+                  "target": "643872d482cf9d2273b905df",
+                  "id": "643872d482cf9d2273b905ee",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          -679.4801667002234,
+                          -344.82921901334083
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -638.2515780028617,
+                          -344.82921901334083
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -638.2515780028617,
+                          -307.73401942975823
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -597.0229893055001,
+                          -307.73401942975823
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          "nodeID": "643872d482cf9d2273b905eb"
+        },
+        "643872d482cf9d2273b905f0": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "ky9ry343w",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "First Option"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "643872d482cf9d2273b905f1"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "643872d482cf9d2273b905f0"
+        },
+        "643873be82cf9d2273b90673": {
+          "type": "block",
+          "data": {
+            "name": "If userID does not equal 1234",
+            "color": "",
+            "steps": [
+              "643873be82cf9d2273b9067b"
+            ]
+          },
+          "nodeID": "643873be82cf9d2273b90673",
+          "coords": [
+            -70.18718316214228,
+            -25.420796792411338
+          ]
+        },
+        "643873be82cf9d2273b90675": {
+          "type": "block",
+          "data": {
+            "name": "Use Logic to Route",
+            "color": "#CB627B",
+            "steps": [
+              "643873be82cf9d2273b9067e"
+            ]
+          },
+          "nodeID": "643873be82cf9d2273b90675",
+          "coords": [
+            -471.1075336325476,
+            -185.10154694620218
+          ]
+        },
+        "643873be82cf9d2273b90677": {
+          "type": "block",
+          "data": {
+            "name": "If userID equals 1234",
+            "color": "",
+            "steps": [
+              "643873be82cf9d2273b90682"
+            ]
+          },
+          "nodeID": "643873be82cf9d2273b90677",
+          "coords": [
+            -71.43718316214228,
+            -184.17079679241147
+          ]
+        },
+        "643873be82cf9d2273b90679": {
+          "type": "block",
+          "data": {
+            "name": "Capture Information",
+            "color": "",
+            "steps": [
+              "643873be82cf9d2273b90685",
+              "643873be82cf9d2273b90688"
+            ]
+          },
+          "nodeID": "643873be82cf9d2273b90679",
+          "coords": [
+            -882.7180111791258,
+            -186.51117186930696
+          ]
+        },
+        "643873be82cf9d2273b9067b": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "1jabe34gf",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Welcome to Voiceflow user "
+                      },
+                      {
+                        "id": "user_id",
+                        "name": "user_id",
+                        "isSlot": false,
+                        "type": "variable",
+                        "children": [
+                          {
+                            "text": ""
+                          }
+                        ]
+                      },
+                      {
+                        "text": " "
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "643873be82cf9d2273b9067c"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "643873be82cf9d2273b9067b"
+        },
+        "643873be82cf9d2273b9067e": {
+          "type": "ifV2",
+          "data": {
+            "name": "If",
+            "expressions": [
+              {
+                "type": null,
+                "name": "If UserID = 1234",
+                "value": [
+                  {
+                    "logicInterface": "variable",
+                    "type": "equals",
+                    "value": [
+                      {
+                        "type": "variable",
+                        "value": "user_id"
+                      },
+                      {
+                        "type": "value",
+                        "value": "1234"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "noMatch": {
+              "type": "path",
+              "pathName": "All other UserIDs"
+            },
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": "643873be82cf9d2273b90673",
+                  "id": "643873be82cf9d2273b9067f",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          -305.10758119605924,
+                          -50.851426165918596
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -270.147315082778,
+                          -50.851426165918596
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -270.147315082778,
+                          1.57917686142504
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -235.18704896949674,
+                          1.57917686142504
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": "643873be82cf9d2273b90677",
+                  "id": "643873be82cf9d2273b90680",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          -305.10758119605924,
+                          -105.35139564834047
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -270.7723150827781,
+                          -105.35139564834047
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -270.7723150827781,
+                          -157.17082313857486
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -236.43704896949686,
+                          -157.17082313857486
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ],
+                    "event": {
+                      "type": "If UserID = 1234"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "nodeID": "643873be82cf9d2273b9067e"
+        },
+        "643873be82cf9d2273b90682": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "1jabe34gf",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Welcome back user "
+                      },
+                      {
+                        "id": "user_id",
+                        "name": "user_id",
+                        "isSlot": false,
+                        "type": "variable",
+                        "children": [
+                          {
+                            "text": ""
+                          }
+                        ]
+                      },
+                      {
+                        "text": " "
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "643873be82cf9d2273b90683"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "643873be82cf9d2273b90682"
+        },
+        "643873be82cf9d2273b90685": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "s8a30349g",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "What is your userID?"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "643873be82cf9d2273b90688",
+                  "id": "643873be82cf9d2273b90686"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "643873be82cf9d2273b90685"
+        },
+        "643873be82cf9d2273b90688": {
+          "type": "captureV2",
+          "data": {
+            "name": "Capture",
+            "intentScope": "GLOBAL",
+            "capture": {
+              "type": "query",
+              "variable": "user_id"
+            },
+            "noReply": null,
+            "noMatch": null,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "643873be82cf9d2273b90675",
+                  "id": "643873be82cf9d2273b90689",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          -716.7179552552856,
+                          -35.01107937987875
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -676.4127121801628,
+                          -35.01107937987875
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -676.4127121801628,
+                          -158.10137487284737
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -636.1074691050399,
+                          -158.10137487284737
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                },
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "643873be82cf9d2273b9068a"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "643873be82cf9d2273b90688"
+        },
+        "643874b482cf9d2273b90953": {
+          "type": "block",
+          "data": {
+            "name": "Set AI",
+            "color": "#56b365",
+            "steps": [
+              "643874b482cf9d2273b9095b",
+              "643874b482cf9d2273b9095e"
+            ]
+          },
+          "nodeID": "643874b482cf9d2273b90953",
+          "coords": [
+            -321.72987951219045,
+            -63.307659112696115
+          ]
+        },
+        "643874b482cf9d2273b90955": {
+          "type": "block",
+          "data": {
+            "name": "Set AI sample",
+            "color": "",
+            "steps": [
+              "643874b482cf9d2273b90961",
+              "643874b482cf9d2273b90964",
+              "643874b482cf9d2273b90967",
+              "643874b482cf9d2273b9096a"
+            ]
+          },
+          "nodeID": "643874b482cf9d2273b90955",
+          "coords": [
+            -327.19954974607606,
+            -531.5846547683695
+          ]
+        },
+        "643874b482cf9d2273b90957": {
+          "type": "block",
+          "data": {
+            "name": "Welcome",
+            "color": "#000000",
+            "steps": [
+              "643874b482cf9d2273b9096e",
+              "643874b482cf9d2273b90971",
+              "643874b482cf9d2273b90974"
+            ]
+          },
+          "nodeID": "643874b482cf9d2273b90957",
+          "coords": [
+            -759.89470620039,
+            -534.1559019190823
+          ]
+        },
+        "643874b482cf9d2273b90959": {
+          "type": "block",
+          "data": {
+            "name": "AI response output",
+            "color": "#56b365",
+            "steps": [
+              "643874b482cf9d2273b90978"
+            ]
+          },
+          "nodeID": "643874b482cf9d2273b90959",
+          "coords": [
+            -761.5579531610629,
+            -134.2530028839701
+          ]
+        },
+        "643874b482cf9d2273b9095b": {
+          "type": "ai_set",
+          "data": {
+            "name": "AI Set",
+            "label": "Classify the users sentiment",
+            "sets": [
+              {
+                "prompt": "using the last response {{[last_response].last_response}}, classify the users sentiment as a single word",
+                "variable": "sentiment"
+              }
+            ],
+            "system": "",
+            "maxTokens": 10,
+            "model": "gpt-3.5-turbo",
+            "temperature": 0,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "643874b482cf9d2273b9095e",
+                  "id": "643874b482cf9d2273b9095c",
+                  "data": {}
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "643874b482cf9d2273b9095b"
+        },
+        "643874b482cf9d2273b9095e": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "wm8on3eh5",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Based on your input, I classified your sentiment as: "
+                      },
+                      {
+                        "id": "sentiment",
+                        "name": "sentiment",
+                        "isSlot": false,
+                        "type": "variable",
+                        "children": [
+                          {
+                            "text": ""
+                          }
+                        ]
+                      },
+                      {
+                        "text": ""
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "643874b482cf9d2273b9095f",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          -33.0240778694905,
+                          -124.93501293502982
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": true,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -57.0240778694905,
+                          -124.93501293502982
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -57.0240778694905,
+                          -50.434861800112
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          122.77381608300391,
+                          -50.434861800112
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          122.77381608300391,
+                          -6.044306016441283
+                        ],
+                        "toTop": true,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "643874b482cf9d2273b9095e"
+        },
+        "643874b482cf9d2273b90961": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "xg77r3eyi",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "The 'Set AI' step allows you to set variables from a prompt you define."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "643874b482cf9d2273b90964",
+                  "id": "643874b482cf9d2273b90962"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "643874b482cf9d2273b90961"
+        },
+        "643874b482cf9d2273b90964": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "1l9zc3eha",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "You might be thinking... \"what in the world does that mean?\". Well, lets just test an example."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "643874b482cf9d2273b90967",
+                  "id": "643874b482cf9d2273b90965"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "643874b482cf9d2273b90964"
+        },
+        "643874b482cf9d2273b90967": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "s27ac3eqh",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "say anything",
+                        "fontWeight": "700"
+                      },
+                      {
+                        "text": ", and we'll use the 'Set AI' step to classify your sentimet, and map it to a variable"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "643874b482cf9d2273b9096a",
+                  "id": "643874b482cf9d2273b90968"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "643874b482cf9d2273b90967"
+        },
+        "643874b482cf9d2273b9096a": {
+          "type": "captureV2",
+          "data": {
+            "name": "Capture",
+            "intentScope": "GLOBAL",
+            "capture": {
+              "type": "query",
+              "variable": "last_response"
+            },
+            "noReply": null,
+            "noMatch": null,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "643874b482cf9d2273b90953",
+                  "id": "643874b482cf9d2273b9096b",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          -161.1994343750199,
+                          -146.5846603522872
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -137.1994343750199,
+                          -146.5846603522872
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -137.1994343750199,
+                          -87.30750455475197
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -321.7298913547405,
+                          -87.30750455475197
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -321.7298913547405,
+                          -63.30750455475197
+                        ],
+                        "toTop": true,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                },
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "643874b482cf9d2273b9096c"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "643874b482cf9d2273b9096a"
+        },
+        "643874b482cf9d2273b9096e": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "xg77r3eyi",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "The 'Response AI' step allows you to dynamically create responses based on a prompt that you define."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "643874b482cf9d2273b90971",
+                  "id": "643874b482cf9d2273b9096f"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "643874b482cf9d2273b9096e"
+        },
+        "643874b482cf9d2273b90971": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "s27ac3eqh",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Ask any question",
+                        "fontWeight": "700"
+                      },
+                      {
+                        "text": ", and we'll use the response AI step to provide a contextual response."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "643874b482cf9d2273b90974",
+                  "id": "643874b482cf9d2273b90972"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "643874b482cf9d2273b90971"
+        },
+        "643874b482cf9d2273b90974": {
+          "type": "captureV2",
+          "data": {
+            "name": "Capture",
+            "intentScope": "GLOBAL",
+            "capture": {
+              "type": "query",
+              "variable": "last_utterance"
+            },
+            "noReply": null,
+            "noMatch": null,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "643874b482cf9d2273b90959",
+                  "id": "643874b482cf9d2273b90975",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          -925.8947036771242,
+                          -232.1558252080962
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": true,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -949.8947036771242,
+                          -232.1558252080962
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -949.8947036771242,
+                          -158.25288311712643
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -761.5580320167377,
+                          -158.25288311712643
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -761.5580320167377,
+                          -134.25288311712643
+                        ],
+                        "toTop": true,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                },
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "643874b482cf9d2273b90976"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "643874b482cf9d2273b90974"
+        },
+        "643874b482cf9d2273b90978": {
+          "type": "generative",
+          "data": {
+            "name": "Response AI",
+            "prompt": "Based on the users response {{[last_utterance].last_utterance}}, respond to the user",
+            "system": "You are a helpful assistant",
+            "maxTokens": 100,
+            "model": "gpt-3.5-turbo",
+            "temperature": 0.7,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "643874b482cf9d2273b90955",
+                  "id": "643874b482cf9d2273b90979",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          -595.5579080797152,
+                          -32.00283908686845
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -543.8787386317132,
+                          -32.00283908686845
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -543.8787386317132,
+                          -504.584540763932
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -492.19956918371133,
+                          -504.584540763932
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "643874b482cf9d2273b90978"
+        },
+        "643874d182cf9d2273b909e8": {
+          "type": "block",
+          "data": {
+            "name": "Welcome",
+            "color": "#000000",
+            "steps": [
+              "643874d182cf9d2273b909ec",
+              "643874d182cf9d2273b909ef",
+              "643874d182cf9d2273b909f2"
+            ]
+          },
+          "nodeID": "643874d182cf9d2273b909e8",
+          "coords": [
+            -372.37350578661807,
+            -483.0309031257145
+          ]
+        },
+        "643874d182cf9d2273b909ea": {
+          "type": "block",
+          "data": {
+            "name": "AI response output",
+            "color": "#56b365",
+            "steps": [
+              "643874d182cf9d2273b909f6"
+            ]
+          },
+          "nodeID": "643874d182cf9d2273b909ea",
+          "coords": [
+            -374.0367527472909,
+            -83.12800409060253
+          ]
+        },
+        "643874d182cf9d2273b909ec": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "xg77r3eyi",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "The 'Response AI' step allows you to dynamically create responses based on a prompt that you define."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "643874d182cf9d2273b909ef",
+                  "id": "643874d182cf9d2273b909ed"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "643874d182cf9d2273b909ec"
+        },
+        "643874d182cf9d2273b909ef": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "s27ac3eqh",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Ask any question",
+                        "fontWeight": "700"
+                      },
+                      {
+                        "text": ", and we'll use the response AI step to provide a contextual response."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "643874d182cf9d2273b909f2",
+                  "id": "643874d182cf9d2273b909f0"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "643874d182cf9d2273b909ef"
+        },
+        "643874d182cf9d2273b909f2": {
+          "type": "captureV2",
+          "data": {
+            "name": "Capture",
+            "intentScope": "GLOBAL",
+            "capture": {
+              "type": "query",
+              "variable": "last_utterance"
+            },
+            "noReply": null,
+            "noMatch": null,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "643874d182cf9d2273b909ea",
+                  "id": "643874d182cf9d2273b909f3",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          -538.3737632125188,
+                          -181.03060602450773
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": true,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -562.3737632125188,
+                          -181.03060602450773
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -562.3737632125188,
+                          -107.12783788023637
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -374.0367436587356,
+                          -107.12783788023637
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -374.0367436587356,
+                          -83.12783788023637
+                        ],
+                        "toTop": true,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                },
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "643874d182cf9d2273b909f4"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "643874d182cf9d2273b909f2"
+        },
+        "643874d182cf9d2273b909f6": {
+          "type": "generative",
+          "data": {
+            "name": "Response AI",
+            "prompt": "Based on the users response {{[last_utterance].last_utterance}}, respond to the user",
+            "system": "You are a helpful assistant",
+            "maxTokens": 100,
+            "model": "gpt-3.5-turbo",
+            "temperature": 0.7,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "643874d182cf9d2273b909f7",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          -203.5519554349242,
+                          -274.8466263502904
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -163.1054222317992,
+                          -274.8466263502904
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -163.1054222317992,
+                          -630.6544876784154
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -122.6588890286742,
+                          -630.6544876784154
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "643874d182cf9d2273b909f6"
+        },
+        "643874eb82cf9d2273b909fa": {
+          "type": "block",
+          "data": {
+            "name": "Set AI",
+            "color": "#56b365",
+            "steps": [
+              "643874eb82cf9d2273b909fe",
+              "643874eb82cf9d2273b90a01"
+            ]
+          },
+          "nodeID": "643874eb82cf9d2273b909fa",
+          "coords": [
+            -556.9039789499768,
+            -48.940886202522734
+          ]
+        },
+        "643874eb82cf9d2273b909fc": {
+          "type": "block",
+          "data": {
+            "name": "Set AI sample",
+            "color": "",
+            "steps": [
+              "643874eb82cf9d2273b90a04",
+              "643874eb82cf9d2273b90a07",
+              "643874eb82cf9d2273b90a0a",
+              "643874eb82cf9d2273b90a0d"
+            ]
+          },
+          "nodeID": "643874eb82cf9d2273b909fc",
+          "coords": [
+            -562.3736491838624,
+            -517.2178818581958
+          ]
+        },
+        "643874eb82cf9d2273b909fe": {
+          "type": "ai_set",
+          "data": {
+            "name": "AI Set",
+            "label": "Classify the users sentiment",
+            "sets": [
+              {
+                "prompt": "using the last response {{[last_response].last_response}}, classify the users sentiment as a single word",
+                "variable": "sentiment"
+              }
+            ],
+            "system": "",
+            "maxTokens": 10,
+            "model": "gpt-3.5-turbo",
+            "temperature": 0,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "643874eb82cf9d2273b90a01",
+                  "id": "643874eb82cf9d2273b909ff",
+                  "data": {}
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "643874eb82cf9d2273b909fe"
+        },
+        "643874eb82cf9d2273b90a01": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "wm8on3eh5",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Based on your input, I classified your sentiment as: "
+                      },
+                      {
+                        "id": "sentiment",
+                        "name": "sentiment",
+                        "isSlot": false,
+                        "type": "variable",
+                        "children": [
+                          {
+                            "text": ""
+                          }
+                        ]
+                      },
+                      {
+                        "text": ""
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "643874eb82cf9d2273b90a02",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          -261.0733205415116,
+                          -210.31623474557398
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": true,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -285.0733205415116,
+                          -210.31623474557398
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -285.0733205415116,
+                          -135.81608361065616
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -105.27542658901717,
+                          -135.81608361065616
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -105.27542658901717,
+                          -91.42552782698544
+                        ],
+                        "toTop": true,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "643874eb82cf9d2273b90a01"
+        },
+        "643874eb82cf9d2273b90a04": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "xg77r3eyi",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "The 'Set AI' step allows you to set variables from a prompt you define."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "643874eb82cf9d2273b90a07",
+                  "id": "643874eb82cf9d2273b90a05"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "643874eb82cf9d2273b90a04"
+        },
+        "643874eb82cf9d2273b90a07": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "1l9zc3eha",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "You might be thinking... \"what in the world does that mean?\". Well, lets just test an example."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "643874eb82cf9d2273b90a0a",
+                  "id": "643874eb82cf9d2273b90a08"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "643874eb82cf9d2273b90a07"
+        },
+        "643874eb82cf9d2273b90a0a": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "s27ac3eqh",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "say anything",
+                        "fontWeight": "700"
+                      },
+                      {
+                        "text": ", and we'll use the 'Set AI' step to classify your sentimet, and map it to a variable"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "643874eb82cf9d2273b90a0d",
+                  "id": "643874eb82cf9d2273b90a0b"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "643874eb82cf9d2273b90a0a"
+        },
+        "643874eb82cf9d2273b90a0d": {
+          "type": "captureV2",
+          "data": {
+            "name": "Capture",
+            "intentScope": "GLOBAL",
+            "capture": {
+              "type": "query",
+              "variable": "last_response"
+            },
+            "noReply": null,
+            "noMatch": null,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "643874eb82cf9d2273b909fa",
+                  "id": "643874eb82cf9d2273b90a0e",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          -396.3736198152747,
+                          -132.21749310519454
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -372.3736198152747,
+                          -132.21749310519454
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -372.3736198152747,
+                          -72.94085914775496
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -556.9039028482964,
+                          -72.94085914775496
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -556.9039028482964,
+                          -48.94085914775496
+                        ],
+                        "toTop": true,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                },
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "643874eb82cf9d2273b90a0f"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "643874eb82cf9d2273b90a0d"
+        },
+        "6438784f82cf9d2273b90dd4": {
+          "type": "block",
+          "data": {
+            "name": "Use Logic to Route",
+            "color": "#dc8879",
+            "steps": [
+              "6438784f82cf9d2273b90ddc"
+            ]
+          },
+          "nodeID": "6438784f82cf9d2273b90dd4",
+          "coords": [
+            -1964.4846386537488,
+            -626.9744457114995
+          ]
+        },
+        "6438784f82cf9d2273b90dd6": {
+          "type": "block",
+          "data": {
+            "name": "Capture Information",
+            "color": "#dc8879",
+            "steps": [
+              "6438784f82cf9d2273b90de0",
+              "6438784f82cf9d2273b90de3"
+            ]
+          },
+          "nodeID": "6438784f82cf9d2273b90dd6",
+          "coords": [
+            -2376.095116200327,
+            -628.3840706346044
+          ]
+        },
+        "6438784f82cf9d2273b90dd8": {
+          "type": "block",
+          "data": {
+            "name": "Other names",
+            "color": "#dc8879",
+            "steps": [
+              "6438784f82cf9d2273b90de7"
+            ]
+          },
+          "nodeID": "6438784f82cf9d2273b90dd8",
+          "coords": [
+            -1563.5642881833433,
+            -467.2936955577087
+          ]
+        },
+        "6438784f82cf9d2273b90dda": {
+          "type": "block",
+          "data": {
+            "name": "Elon Musk",
+            "color": "#dc8879",
+            "steps": [
+              "6438784f82cf9d2273b90dea"
+            ]
+          },
+          "nodeID": "6438784f82cf9d2273b90dda",
+          "coords": [
+            -1564.8142881833433,
+            -626.0436955577089
+          ]
+        },
+        "6438784f82cf9d2273b90ddc": {
+          "type": "ifV2",
+          "data": {
+            "name": "If",
+            "expressions": [
+              {
+                "type": null,
+                "name": "If name is elon musk",
+                "value": [
+                  {
+                    "logicInterface": "variable",
+                    "type": "equals",
+                    "value": [
+                      {
+                        "type": "variable",
+                        "value": "name"
+                      },
+                      {
+                        "type": "value",
+                        "value": "elon musk"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "noMatch": {
+              "type": "path",
+              "pathName": "All other names"
+            },
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": "6438784f82cf9d2273b90dd8",
+                  "id": "6438784f82cf9d2273b90ddd",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          -1798.484505972181,
+                          -492.72447921623757
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -1763.5243607307511,
+                          -492.72447921623757
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -1763.5243607307511,
+                          -440.2937029472216
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -1728.5642154893217,
+                          -440.2937029472216
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": "6438784f82cf9d2273b90dda",
+                  "id": "6438784f82cf9d2273b90dde",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          -1798.484505972181,
+                          -547.2244999131336
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -1764.1493300508728,
+                          -547.2244999131336
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -1764.1493300508728,
+                          -599.0438504799286
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -1729.814154129565,
+                          -599.0438504799286
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ],
+                    "event": {
+                      "type": "If name is elon musk"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "nodeID": "6438784f82cf9d2273b90ddc"
+        },
+        "6438784f82cf9d2273b90de0": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "s8a30349g",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "What is your name?"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "6438784f82cf9d2273b90de3",
+                  "id": "6438784f82cf9d2273b90de1"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "6438784f82cf9d2273b90de0"
+        },
+        "6438784f82cf9d2273b90de3": {
+          "type": "captureV2",
+          "data": {
+            "name": "Capture",
+            "intentScope": "GLOBAL",
+            "capture": {
+              "type": "query",
+              "variable": "name"
+            },
+            "noReply": null,
+            "noMatch": null,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "6438784f82cf9d2273b90dd4",
+                  "id": "6438784f82cf9d2273b90de4",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          -2210.0950799471193,
+                          -488.1341077200336
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -2169.789872823509,
+                          -488.1341077200336
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -2169.789872823509,
+                          -599.9743336839742
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -2129.484665699899,
+                          -599.9743336839742
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                },
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "6438784f82cf9d2273b90de5"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "6438784f82cf9d2273b90de3"
+        },
+        "6438784f82cf9d2273b90de7": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "1jabe34gf",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Hello "
+                      },
+                      {
+                        "id": "name",
+                        "name": "name",
+                        "isSlot": false,
+                        "type": "variable",
+                        "children": [
+                          {
+                            "text": ""
+                          }
+                        ]
+                      },
+                      {
+                        "text": " !"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "6438784f82cf9d2273b90de8"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "6438784f82cf9d2273b90de7"
+        },
+        "6438784f82cf9d2273b90dea": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "1jabe34gf",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Twitter is the best 🐦"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "6438784f82cf9d2273b90deb"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "6438784f82cf9d2273b90dea"
+        },
+        "645d6f1383103cca7a3ce732": {
+          "type": "block",
+          "data": {
+            "name": "Welcome",
+            "color": "#56b365",
+            "steps": [
+              "645d6f1383103cca7a3ce736",
+              "645d6f1383103cca7a3ce739",
+              "645d6f1383103cca7a3ce73c"
+            ]
+          },
+          "nodeID": "645d6f1383103cca7a3ce732",
+          "coords": [
+            -535.4719325269735,
+            -4.484361157018327
+          ]
+        },
+        "645d6f1383103cca7a3ce734": {
+          "type": "block",
+          "data": {
+            "name": "AI response output",
+            "color": "#56b365",
+            "steps": [
+              "645d6f1383103cca7a3ce740"
+            ]
+          },
+          "nodeID": "645d6f1383103cca7a3ce734",
+          "coords": [
+            -537.1351794876463,
+            395.41853787809356
+          ]
+        },
+        "645d6f1383103cca7a3ce736": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "xg77r3eyi",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "The 'Response AI' step allows you to dynamically create responses based on a prompt that you define."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "645d6f1383103cca7a3ce739",
+                  "id": "645d6f1383103cca7a3ce737"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d6f1383103cca7a3ce736"
+        },
+        "645d6f1383103cca7a3ce739": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "s27ac3eqh",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Ask any question",
+                        "fontWeight": "700"
+                      },
+                      {
+                        "text": ", and we'll use the response AI step to provide a contextual response."
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "645d6f1383103cca7a3ce73c",
+                  "id": "645d6f1383103cca7a3ce73a"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d6f1383103cca7a3ce739"
+        },
+        "645d6f1383103cca7a3ce73c": {
+          "type": "captureV2",
+          "data": {
+            "name": "Capture",
+            "intentScope": "GLOBAL",
+            "capture": {
+              "type": "query",
+              "variable": "last_utterance"
+            },
+            "noReply": null,
+            "noMatch": null,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "645d6f1383103cca7a3ce734",
+                  "id": "645d6f1383103cca7a3ce73d",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          -701.4692078069633,
+                          297.5201460803028
+                        ],
+                        "reversed": true
+                      },
+                      {
+                        "point": [
+                          -725.4692078069633,
+                          297.5201460803028
+                        ]
+                      },
+                      {
+                        "point": [
+                          -725.4692078069633,
+                          371.4201460803028
+                        ]
+                      },
+                      {
+                        "point": [
+                          -537.1392078069632,
+                          371.4201460803028
+                        ]
+                      },
+                      {
+                        "point": [
+                          -537.1392078069632,
+                          395.4201460803029
+                        ],
+                        "toTop": true,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                },
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "645d6f1383103cca7a3ce73e"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d6f1383103cca7a3ce73c"
+        },
+        "645d6f1383103cca7a3ce740": {
+          "type": "generative",
+          "data": {
+            "name": "Response AI",
+            "prompt": "Based on the users question, respond with two brief sentences.",
+            "system": "You are a helpful assistant",
+            "maxTokens": 100,
+            "model": "gpt-3.5-turbo",
+            "temperature": 0.7,
+            "mode": "memory_prompt",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "645d6f1383103cca7a3ce741",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          -366.65038217527956,
+                          203.69991561840578
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -326.20384897215456,
+                          203.69991561840578
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -326.20384897215456,
+                          -152.10794570971922
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": false
+                      },
+                      {
+                        "point": [
+                          -285.75731576902956,
+                          -152.10794570971922
+                        ],
+                        "toTop": false,
+                        "locked": false,
+                        "reversed": false,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d6f1383103cca7a3ce740"
+        },
+        "645d718f83103cca7a3cecc1": {
+          "type": "block",
+          "data": {
+            "name": "Fail",
+            "color": "#5b9fd7",
+            "steps": [
+              "645d718f83103cca7a3cecc9"
+            ]
+          },
+          "nodeID": "645d718f83103cca7a3cecc1",
+          "coords": [
+            -943.7641060825457,
+            -726.7018427371622
+          ]
+        },
+        "645d718f83103cca7a3cecc3": {
+          "type": "block",
+          "data": {
+            "name": "API Call",
+            "color": "#5b9fd7",
+            "steps": [
+              "645d718f83103cca7a3ceccc"
+            ]
+          },
+          "nodeID": "645d718f83103cca7a3cecc3",
+          "coords": [
+            -1337.282813902139,
+            -902.1537022731807
+          ]
+        },
+        "645d718f83103cca7a3cecc5": {
+          "type": "block",
+          "data": {
+            "name": "Welcome",
+            "color": "#5b9fd7",
+            "steps": [
+              "645d718f83103cca7a3cecd0",
+              "645d718f83103cca7a3cecd3"
+            ]
+          },
+          "nodeID": "645d718f83103cca7a3cecc5",
+          "coords": [
+            -1722.1832079861151,
+            -907.6478276212674
+          ]
+        },
+        "645d718f83103cca7a3cecc7": {
+          "type": "block",
+          "data": {
+            "name": "Success",
+            "color": "#5b9fd7",
+            "steps": [
+              "645d718f83103cca7a3cecd7"
+            ]
+          },
+          "nodeID": "645d718f83103cca7a3cecc7",
+          "coords": [
+            -944.844860096504,
+            -900.8660415973322
+          ]
+        },
+        "645d718f83103cca7a3cecc9": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "u08yz372g",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Error"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "645d718f83103cca7a3cecca"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d718f83103cca7a3cecc9"
+        },
+        "645d718f83103cca7a3ceccc": {
+          "type": "api",
+          "data": {
+            "name": "",
+            "url": "https://api.openai.com/v1/completions",
+            "body": [
+              {
+                "key": "",
+                "val": ""
+              }
+            ],
+            "params": [],
+            "method": "POST",
+            "headers": [
+              {
+                "key": "Content-Type",
+                "val": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "val": "Bearer <ADD API KEY HERE>"
+              }
+            ],
+            "content": "{\n  \"model\": \"text-davinci-003\",\n  \"prompt\": \"{last_utterance}\",\n  \"max_tokens\": 7,\n  \"temperature\": 0,\n  \"top_p\": 1,\n  \"n\": 1,\n  \"stream\": false,\n  \"logprobs\": null,\n  \"stop\": \"\\n\"\n}",
+            "mappings": [
+              {
+                "path": "response",
+                "var": "response"
+              }
+            ],
+            "bodyType": "rawInput",
+            "selectedAction": "Make a POST Request",
+            "selectedIntegration": "Custom API",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "645d718f83103cca7a3cecd7",
+                  "id": "645d718f83103cca7a3cecce",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          -1171.2838307947716,
+                          -748.4052156062919
+                        ]
+                      },
+                      {
+                        "point": [
+                          -1141.0638307947715,
+                          -748.4052156062919
+                        ]
+                      },
+                      {
+                        "point": [
+                          -1141.0638307947715,
+                          -821.3652156062917
+                        ]
+                      },
+                      {
+                        "point": [
+                          -1110.8438307947717,
+                          -821.3652156062917
+                        ],
+                        "allowedToTop": false
+                      }
+                    ]
+                  }
+                },
+                "fail": {
+                  "type": "fail",
+                  "target": "645d718f83103cca7a3cecc9",
+                  "id": "645d718f83103cca7a3ceccd",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          -1171.2838307947716,
+                          -693.9052156062919
+                        ]
+                      },
+                      {
+                        "point": [
+                          -1140.5238307947716,
+                          -693.9052156062919
+                        ]
+                      },
+                      {
+                        "point": [
+                          -1140.5238307947716,
+                          -647.2052156062919
+                        ]
+                      },
+                      {
+                        "point": [
+                          -1109.7638307947714,
+                          -647.2052156062919
+                        ],
+                        "allowedToTop": false
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d718f83103cca7a3ceccc"
+        },
+        "645d718f83103cca7a3cecd0": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "xg77r3eyi",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "This flow captures a users question and sends it to the OpenAI API"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "645d718f83103cca7a3cecd3",
+                  "id": "645d718f83103cca7a3cecd1"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d718f83103cca7a3cecd0"
+        },
+        "645d718f83103cca7a3cecd3": {
+          "type": "captureV2",
+          "data": {
+            "name": "Capture",
+            "intentScope": "GLOBAL",
+            "capture": {
+              "type": "query",
+              "variable": "last_utterance"
+            },
+            "noReply": null,
+            "noMatch": null,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "645d718f83103cca7a3cecc3",
+                  "id": "645d718f83103cca7a3cecd4",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          -1556.1838307947714,
+                          -733.6452156062919
+                        ]
+                      },
+                      {
+                        "point": [
+                          -1529.2338307947716,
+                          -733.6452156062919
+                        ]
+                      },
+                      {
+                        "point": [
+                          -1529.2338307947716,
+                          -875.1552156062919
+                        ]
+                      },
+                      {
+                        "point": [
+                          -1502.2838307947716,
+                          -875.1552156062919
+                        ],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                },
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "645d718f83103cca7a3cecd5"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d718f83103cca7a3cecd3"
+        },
+        "645d718f83103cca7a3cecd7": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "vh8xb37hw",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": ""
+                      },
+                      {
+                        "id": "response",
+                        "name": "response",
+                        "isSlot": false,
+                        "type": "variable",
+                        "children": [
+                          {
+                            "text": ""
+                          }
+                        ]
+                      },
+                      {
+                        "text": " "
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "645d718f83103cca7a3cecd8"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "645d718f83103cca7a3cecd7"
+        }
+      },
+      "offsetX": 272,
+      "offsetY": 204,
+      "modified": 1698278269,
+      "creatorID": 893814,
+      "variables": [],
+      "menuItems": [],
+      "_id": "65ec32310cd125c54885d07c",
+      "diagramID": "64dbb6696a8fab0013dba195",
+      "versionID": "65ec32310cd125c54885d07b"
+    },
+    "64dbb6696a8fab0013dba194": {
+      "name": "ROOT",
+      "type": "TOPIC",
+      "zoom": 100,
+      "nodes": {
+        "start00000000000000000000": {
+          "nodeID": "start00000000000000000000",
+          "type": "start",
+          "coords": [
+            3967.8162634706728,
+            -2670.4941684545524
+          ],
+          "data": {
+            "name": "Start",
+            "color": "#56b365",
+            "steps": [],
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "655e8e5a1e0f60d20df01540",
+                  "id": "6032afcf359e8c14c06c0319",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          4032.45,
+                          -2648.5
+                        ]
+                      },
+                      {
+                        "point": [
+                          4082.41,
+                          -2648.5
+                        ]
+                      },
+                      {
+                        "point": [
+                          4082.41,
+                          -2692.87
+                        ]
+                      },
+                      {
+                        "point": [
+                          4132.38,
+                          -2692.87
+                        ],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            },
+            "label": "Start"
+          }
+        },
+        "655e8e4d1e0f60d20df01369": {
+          "type": "block",
+          "data": {
+            "name": "API Call to Airtable",
+            "color": "",
+            "steps": [
+              "655e8e4d1e0f60d20df0139f"
+            ]
+          },
+          "nodeID": "655e8e4d1e0f60d20df01369",
+          "coords": [
+            3551.462874788264,
+            -3129.7233340268745
+          ]
+        },
+        "655e8e4d1e0f60d20df0136b": {
+          "type": "block",
+          "data": {
+            "name": "Airtable Logic Flow",
+            "color": "",
+            "steps": [
+              "655e8e4d1e0f60d20df013a3"
+            ]
+          },
+          "nodeID": "655e8e4d1e0f60d20df0136b",
+          "coords": [
+            3559.0942543011124,
+            -3401.957845373132
+          ]
+        },
+        "655e8e4d1e0f60d20df0136d": {
+          "type": "block",
+          "data": {
+            "name": "MAIN AIRTABLE LOGIC",
+            "color": "",
+            "steps": [
+              "655e8e4d1e0f60d20df013a7",
+              "655e8e4d1e0f60d20df013aa"
+            ]
+          },
+          "nodeID": "655e8e4d1e0f60d20df0136d",
+          "coords": [
+            3563.6516688753504,
+            -3642.9291374374748
+          ]
+        },
+        "655e8e4d1e0f60d20df0136f": {
+          "type": "block",
+          "data": {
+            "name": "Obtain query",
+            "color": "",
+            "steps": [
+              "655e8e4d1e0f60d20df013ad"
+            ]
+          },
+          "nodeID": "655e8e4d1e0f60d20df0136f",
+          "coords": [
+            3564.144095774994,
+            -3809.7509161117573
+          ]
+        },
+        "655e8e4d1e0f60d20df01371": {
+          "type": "block",
+          "data": {
+            "name": "Format",
+            "color": "#CB627B",
+            "steps": [
+              "655e8e4d1e0f60d20df013b0"
+            ]
+          },
+          "nodeID": "655e8e4d1e0f60d20df01371",
+          "coords": [
+            4633.855265964346,
+            -3691.064635404446
+          ]
+        },
+        "655e8e4d1e0f60d20df01373": {
+          "type": "block",
+          "data": {
+            "name": "New Block 73",
+            "color": "#CB627B",
+            "steps": [
+              "655e8e4d1e0f60d20df013b4",
+              "655e8e4d1e0f60d20df013b8",
+              "655e8e4d1e0f60d20df013bc",
+              "655e8e4d1e0f60d20df013c0"
+            ]
+          },
+          "nodeID": "655e8e4d1e0f60d20df01373",
+          "coords": [
+            5047.010810408989,
+            -3689.9658757984425
+          ]
+        },
+        "655e8e4d1e0f60d20df01375": {
+          "type": "block",
+          "data": {
+            "name": "If there's no valid query",
+            "color": "",
+            "steps": [
+              "655e8e4d1e0f60d20df013c4"
+            ]
+          },
+          "nodeID": "655e8e4d1e0f60d20df01375",
+          "coords": [
+            4126.176277445912,
+            -4029.0071744995976
+          ]
+        },
+        "655e8e4d1e0f60d20df01379": {
+          "type": "block",
+          "data": {
+            "name": "Query Results Logging",
+            "color": "",
+            "steps": [
+              "655e8e4d1e0f60d20df013ca"
+            ]
+          },
+          "nodeID": "655e8e4d1e0f60d20df01379",
+          "coords": [
+            4492.675257737499,
+            -4190.824893688517
+          ]
+        },
+        "655e8e4d1e0f60d20df0137b": {
+          "type": "block",
+          "data": {
+            "name": "Query Data Logging",
+            "color": "",
+            "steps": [
+              "655e8e4d1e0f60d20df013cd"
+            ]
+          },
+          "nodeID": "655e8e4d1e0f60d20df0137b",
+          "coords": [
+            4493.09282322107,
+            -4028.6119620493455
+          ]
+        },
+        "655e8e4d1e0f60d20df0139f": {
+          "type": "api",
+          "data": {
+            "name": "",
+            "url": "{{[airTableUrl].airTableUrl}}/Imported%20table?maxRecords={{[Number_of_responses].Number_of_responses}}&view=Grid%20view&filterByFormula={{[airtableQuery].airtableQuery}}",
+            "body": [],
+            "params": [],
+            "method": "GET",
+            "headers": [
+              {
+                "key": "Authorization",
+                "val": "Bearer [KEY HERE]"
+              }
+            ],
+            "content": "",
+            "mappings": [
+              {
+                "path": "response",
+                "var": "aiOutput"
+              }
+            ],
+            "bodyType": "formData",
+            "selectedAction": "Make a GET Request",
+            "selectedIntegration": "Custom API",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "655e8e4d1e0f60d20df01371",
+                  "id": "655e8e4d1e0f60d20df013a1",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          3717.46,
+                          -2962.47
+                        ]
+                      },
+                      {
+                        "point": [
+                          4093.16,
+                          -2962.47
+                        ]
+                      },
+                      {
+                        "point": [
+                          4093.16,
+                          -3664.06
+                        ]
+                      },
+                      {
+                        "point": [
+                          4468.86,
+                          -3664.06
+                        ],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                },
+                "fail": {
+                  "type": "fail",
+                  "target": "655e8e4d1e0f60d20df01371",
+                  "id": "655e8e4d1e0f60d20df013a0",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          3717.46,
+                          -2907.97
+                        ]
+                      },
+                      {
+                        "point": [
+                          4093.16,
+                          -2907.97
+                        ]
+                      },
+                      {
+                        "point": [
+                          4093.16,
+                          -3664.06
+                        ]
+                      },
+                      {
+                        "point": [
+                          4468.86,
+                          -3664.06
+                        ],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "655e8e4d1e0f60d20df0139f"
+        },
+        "655e8e4d1e0f60d20df013a3": {
+          "type": "ifV2",
+          "data": {
+            "name": "If",
+            "expressions": [
+              {
+                "type": null,
+                "name": "",
+                "value": [
+                  {
+                    "logicInterface": "variable",
+                    "type": "contains",
+                    "value": [
+                      {
+                        "type": "variable",
+                        "value": "airtableQuery"
+                      },
+                      {
+                        "type": "value",
+                        "value": "\"no valid query\""
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "noMatch": {
+              "type": "path",
+              "pathName": "Else"
+            },
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "type": "else",
+                  "target": "655e8e4d1e0f60d20df01369",
+                  "id": "655e8e4d1e0f60d20df013a4",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          3393.0900683458804,
+                          -3249.7120217186166
+                        ],
+                        "reversed": true
+                      },
+                      {
+                        "point": [
+                          3369.0900683458804,
+                          -3249.7120217186166
+                        ]
+                      },
+                      {
+                        "point": [
+                          3369.0900683458804,
+                          -3186.4620217186166
+                        ]
+                      },
+                      {
+                        "point": [
+                          3551.4600683458802,
+                          -3186.4620217186166
+                        ]
+                      },
+                      {
+                        "point": [
+                          3551.4600683458802,
+                          -3129.7220217186164
+                        ],
+                        "toTop": true,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": "655e8e4d1e0f60d20df013c4",
+                  "id": "655e8e4d1e0f60d20df013a5",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          3725.09,
+                          -3313.96
+                        ]
+                      },
+                      {
+                        "point": [
+                          3842.64,
+                          -3313.96
+                        ]
+                      },
+                      {
+                        "point": [
+                          3842.64,
+                          -3950.01
+                        ]
+                      },
+                      {
+                        "point": [
+                          3960.18,
+                          -3950.01
+                        ],
+                        "allowedToTop": false
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          "nodeID": "655e8e4d1e0f60d20df013a3"
+        },
+        "655e8e4d1e0f60d20df013a7": {
+          "type": "setV2",
+          "data": {
+            "name": "",
+            "sets": [
+              {
+                "type": "advance",
+                "variable": "Number_of_responses",
+                "expression": "4"
+              }
+            ],
+            "title": "4",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "655e8e4d1e0f60d20df013a8"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "655e8e4d1e0f60d20df013a7"
+        },
+        "655e8e4d1e0f60d20df013aa": {
+          "type": "ai_set",
+          "data": {
+            "name": "AI Set",
+            "label": "Airtable conversion",
+            "sets": [
+              {
+                "mode": "prompt",
+                "prompt": "Convert the following query to an Airtable Formula:  {aiquestion} . If there is no valid query, reply \"There is no valid query\". The query should only at max include the bag color and bag category.",
+                "variable": "airtableQuery"
+              }
+            ],
+            "system": "You are an Airtable formula generator. You convert user queries into Airtable formulas. If there are multiple queries, use the AND(cond1, cond2) operator to encapsulate it all in one formula instead of creating many.\n\nConstraints: You are only to map VALID fields into an Airtable Formula. The list of valid, case-sensitive fields and their data types are as follows:\n\ncategory: Single select\ncolor: Single select\n\nCRITICAL: Your responses are always valid responses.\n\nHere are the only colours we offer:\n1: Red\n2: Brown\n3: Black\n4: Blue\n\nHere are the bags we offer:\n1: Messenger Bag\n2: Tote Bag\n3: Slings Bag\n4: Handbag\n5: Backpack\n\nIf they ask for something that is not listed, just assign a color or bag that is close to what they want. For example, they ask for a grey bag, just assign black as the color, since black is a close color to grey. \n\nIf they ask for a yellow backpack, assign red as the color as it is similar. \n\nIf they ask for a fanny bag, assign the Sling Bag, as they are similar bag types. \n\nIf they say they want a light bag for the beach, assign the Tote Bag, as it is a typical beach bag. \n\nYou need to contextualise what they want and provide a relevant and accurate airtable query. \n\nYou are to ONLY answer with the airtable query. For example:\n\nInput: Do you sell any red backpacks?\nAssistant: AND({color} = 'Red', {category} = 'Backpack')\n\nInput: Have you got a sling bag?\nAssistant: AND({category} = 'Sling Bag')",
+            "maxTokens": 495,
+            "model": "gpt-3.5-turbo",
+            "temperature": 0.7,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "655e8e4d1e0f60d20df0136b",
+                  "id": "655e8e4d1e0f60d20df013ab",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          3397.6500683458803,
+                          -3503.1820217186164
+                        ],
+                        "reversed": true
+                      },
+                      {
+                        "point": [
+                          3373.6500683458803,
+                          -3503.1820217186164
+                        ]
+                      },
+                      {
+                        "point": [
+                          3373.6500683458803,
+                          -3439.9320217186164
+                        ]
+                      },
+                      {
+                        "point": [
+                          3559.0900683458804,
+                          -3439.9320217186164
+                        ]
+                      },
+                      {
+                        "point": [
+                          3559.0900683458804,
+                          -3401.9620217186166
+                        ],
+                        "toTop": true,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "655e8e4d1e0f60d20df013aa"
+        },
+        "655e8e4d1e0f60d20df013ad": {
+          "type": "setV2",
+          "data": {
+            "name": "",
+            "sets": [
+              {
+                "type": "advance",
+                "variable": "airTableUrl",
+                "expression": "'[AIRTABLE URL HERE]'"
+              }
+            ],
+            "title": "Set Airtable URL",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "655e8e4d1e0f60d20df0136d",
+                  "id": "655e8e4d1e0f60d20df013ae",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          3398.14,
+                          -3730.5
+                        ],
+                        "reversed": true
+                      },
+                      {
+                        "point": [
+                          3374.14,
+                          -3730.5
+                        ]
+                      },
+                      {
+                        "point": [
+                          3374.14,
+                          -3666.93
+                        ]
+                      },
+                      {
+                        "point": [
+                          3563.65,
+                          -3666.93
+                        ]
+                      },
+                      {
+                        "point": [
+                          3563.65,
+                          -3642.93
+                        ],
+                        "toTop": true,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "655e8e4d1e0f60d20df013ad"
+        },
+        "655e8e4d1e0f60d20df013b0": {
+          "type": "code",
+          "data": {
+            "name": "",
+            "code": "function summarizeProperties(data) {\n    if (!data.records || data.records.length === 0) {\n        return \"No product data available.\";\n    }\n\n    let summaries = [];\n\n    for (let i = 0; i < data.records.length; i++) {\n        const product = data.records[i].fields;\n\n        let summary = {};\n\n        product.productname ? summary.productName = product.productname : null;\n        product.category ? summary.category = product.category : null;\n        product.price ? summary.price = product.price : null;\n        product.descriptiontext ? summary.descriptionText = product.descriptiontext : null;\n        product.material ? summary.material = product.material : null;\n        product.color ? summary.color = product.color : null;\n        product.size ? summary.size = product.size : null;\n        product.weight ? summary.weight = product.weight : null;\n        product.image ? summary.image = product.image : null;\n\n        summaries.push(summary);\n    }\n\n    return summaries;\n}\n\nformattedResponse = summarizeProperties(aiOutput);\n",
+            "paths": [],
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "655e8e4d1e0f60d20df01373",
+                  "id": "655e8e4d1e0f60d20df013b2",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          4799.86,
+                          -3557.31
+                        ]
+                      },
+                      {
+                        "point": [
+                          4840.93,
+                          -3557.31
+                        ]
+                      },
+                      {
+                        "point": [
+                          4840.93,
+                          -3662.97
+                        ]
+                      },
+                      {
+                        "point": [
+                          4882.01,
+                          -3662.97
+                        ],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                },
+                "fail": {
+                  "type": "fail",
+                  "target": "655e8e4d1e0f60d20df01373",
+                  "id": "655e8e4d1e0f60d20df013b1",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          4799.86,
+                          -3502.81
+                        ]
+                      },
+                      {
+                        "point": [
+                          4840.93,
+                          -3502.81
+                        ]
+                      },
+                      {
+                        "point": [
+                          4840.93,
+                          -3662.97
+                        ]
+                      },
+                      {
+                        "point": [
+                          4882.01,
+                          -3662.97
+                        ],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "655e8e4d1e0f60d20df013b0"
+        },
+        "655e8e4d1e0f60d20df013b4": {
+          "type": "code",
+          "data": {
+            "name": "",
+            "code": "price_print = JSON.stringify(formattedResponse[0][\"price\"])\n\nname_print = (formattedResponse[0][\"productName\"])\n\nimage_print = (formattedResponse[0][\"image\"])\n\ncolor_print = (formattedResponse[0][\"color\"])\n\nproductcount = (formattedResponse.length)",
+            "paths": [],
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "655e8e4d1e0f60d20df013b6"
+                },
+                "fail": {
+                  "type": "fail",
+                  "target": null,
+                  "id": "655e8e4d1e0f60d20df013b5"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "655e8e4d1e0f60d20df013b4"
+        },
+        "655e8e4d1e0f60d20df013b8": {
+          "type": "code",
+          "data": {
+            "name": "",
+            "code": "price_print1 = JSON.stringify(formattedResponse[1][\"price\"])\n\nname_print1 = (formattedResponse[1][\"productName\"])\n\nimage_print1 = (formattedResponse[1][\"image\"])\n\ncolor_print1 = (formattedResponse[1][\"color\"])",
+            "paths": [],
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "655e8e4d1e0f60d20df013ba"
+                },
+                "fail": {
+                  "type": "fail",
+                  "target": null,
+                  "id": "655e8e4d1e0f60d20df013b9"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "655e8e4d1e0f60d20df013b8"
+        },
+        "655e8e4d1e0f60d20df013bc": {
+          "type": "code",
+          "data": {
+            "name": "",
+            "code": "price_print2 = JSON.stringify(formattedResponse[2][\"price\"])\n\nname_print2 = (formattedResponse[2][\"productName\"])\n\nimage_print2 = (formattedResponse[2][\"image\"])\n\ncolor_print2 = (formattedResponse[2][\"color\"])",
+            "paths": [],
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "655e8e4d1e0f60d20df013be"
+                },
+                "fail": {
+                  "type": "fail",
+                  "target": null,
+                  "id": "655e8e4d1e0f60d20df013bd"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "655e8e4d1e0f60d20df013bc"
+        },
+        "655e8e4d1e0f60d20df013c0": {
+          "type": "code",
+          "data": {
+            "name": "",
+            "code": "price_print3 = JSON.stringify(formattedResponse[3][\"price\"])\n\nname_print3 = (formattedResponse[3][\"productName\"])\n\nimage_print3 = (formattedResponse[3][\"image\"])\n\ncolor_print3 = (formattedResponse[3][\"color\"])",
+            "paths": [],
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "655eeb20ed9c1e6b3f149c2a",
+                  "id": "655e8e4d1e0f60d20df013c2",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          5213.01,
+                          -3374.72
+                        ]
+                      },
+                      {
+                        "point": [
+                          5306.06,
+                          -3374.72
+                        ]
+                      },
+                      {
+                        "point": [
+                          5306.06,
+                          -3685.55
+                        ]
+                      },
+                      {
+                        "point": [
+                          5399.11,
+                          -3685.55
+                        ],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                },
+                "fail": {
+                  "type": "fail",
+                  "target": "655eeb20ed9c1e6b3f149c2a",
+                  "id": "655e8e4d1e0f60d20df013c1",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          5213.01,
+                          -3320.22
+                        ]
+                      },
+                      {
+                        "point": [
+                          5306.06,
+                          -3320.22
+                        ]
+                      },
+                      {
+                        "point": [
+                          5306.06,
+                          -3685.55
+                        ]
+                      },
+                      {
+                        "point": [
+                          5399.11,
+                          -3685.55
+                        ],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "655e8e4d1e0f60d20df013c0"
+        },
+        "655e8e4d1e0f60d20df013c4": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "ih2o93odx",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Invalid Query. Please try again"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "655e8e4d1e0f60d20df013c5",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          3866.50006834588,
+                          -4296.182021718616
+                        ],
+                        "reversed": true
+                      },
+                      {
+                        "point": [
+                          3802.79006834588,
+                          -4296.182021718616
+                        ]
+                      },
+                      {
+                        "point": [
+                          3802.79006834588,
+                          -4199.412021718616
+                        ]
+                      },
+                      {
+                        "point": [
+                          3739.08006834588,
+                          -4199.412021718616
+                        ],
+                        "reversed": true,
+                        "allowedToTop": false
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "655e8e4d1e0f60d20df013c4"
+        },
+        "655e8e4d1e0f60d20df013ca": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "bneg3jgs",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Your query results are: "
+                      },
+                      {
+                        "id": "formattedResponse",
+                        "name": "formattedResponse",
+                        "isSlot": false,
+                        "type": "variable",
+                        "children": [
+                          {
+                            "text": ""
+                          }
+                        ]
+                      },
+                      {
+                        "text": " "
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "655e8e4d1e0f60d20df013cb"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "655e8e4d1e0f60d20df013ca"
+        },
+        "655e8e4d1e0f60d20df013cd": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "bneg3jgs",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Your query was: "
+                      },
+                      {
+                        "id": "airtableQuery",
+                        "name": "airtableQuery",
+                        "isSlot": false,
+                        "type": "variable",
+                        "children": [
+                          {
+                            "text": ""
+                          }
+                        ]
+                      },
+                      {
+                        "text": " "
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "655e8e4d1e0f60d20df013ce",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          4327.09006834588,
+                          -3949.6120217186162
+                        ],
+                        "reversed": true
+                      },
+                      {
+                        "point": [
+                          4025.5900683458804,
+                          -3949.6120217186162
+                        ]
+                      },
+                      {
+                        "point": [
+                          4025.5900683458804,
+                          -3374.9620217186166
+                        ]
+                      },
+                      {
+                        "point": [
+                          3724.0900683458804,
+                          -3374.9620217186166
+                        ],
+                        "reversed": true,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "655e8e4d1e0f60d20df013cd"
+        },
+        "655e8e5a1e0f60d20df01540": {
+          "type": "block",
+          "data": {
+            "name": "New Block 2",
+            "color": "",
+            "steps": [
+              "655e8e5a1e0f60d20df01544"
+            ]
+          },
+          "nodeID": "655e8e5a1e0f60d20df01540",
+          "coords": [
+            4297.379016184752,
+            -2719.871812627352
+          ]
+        },
+        "655e8e5a1e0f60d20df01542": {
+          "type": "block",
+          "data": {
+            "name": "New Block 45",
+            "color": "",
+            "steps": [
+              "655e8e5a1e0f60d20df01548",
+              "655e8e5a1e0f60d20df0154c",
+              "655e8e5a1e0f60d20df0154f",
+              "655e8e5a1e0f60d20df01552"
+            ]
+          },
+          "nodeID": "655e8e5a1e0f60d20df01542",
+          "coords": [
+            4742.300669227679,
+            -2941.821658598122
+          ]
+        },
+        "655e8e5a1e0f60d20df01544": {
+          "type": "captureV2",
+          "data": {
+            "name": "Capture",
+            "intentScope": "GLOBAL",
+            "capture": {
+              "type": "query",
+              "variable": "last_utterance"
+            },
+            "noReply": null,
+            "noMatch": null,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "655e8e5a1e0f60d20df01542",
+                  "id": "655e8e5a1e0f60d20df01545",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          4463.38,
+                          -2631.87
+                        ]
+                      },
+                      {
+                        "point": [
+                          4520.34,
+                          -2631.87
+                        ]
+                      },
+                      {
+                        "point": [
+                          4520.34,
+                          -2914.82
+                        ]
+                      },
+                      {
+                        "point": [
+                          4577.3,
+                          -2914.82
+                        ],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                },
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "655e8e5a1e0f60d20df01546"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "655e8e5a1e0f60d20df01544"
+        },
+        "655e8e5a1e0f60d20df01548": {
+          "type": "generative",
+          "data": {
+            "name": "Response AI",
+            "mode": "prompt",
+            "prompt": "{{[last_utterance].last_utterance}}",
+            "system": "",
+            "maxTokens": 128,
+            "model": "gpt-3.5-turbo",
+            "temperature": 0.7,
+            "notFoundPath": true,
+            "overrideParams": false,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "655e8e5a1e0f60d20df01549"
+                },
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "655e8e5a1e0f60d20df0154a"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "655e8e5a1e0f60d20df01548"
+        },
+        "655e8e5a1e0f60d20df0154c": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "eaee83sma",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "Please tell me what bag you would like. For example, I want a bag for the beach. "
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "655e8e5a1e0f60d20df0154d"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "655e8e5a1e0f60d20df0154c"
+        },
+        "655e8e5a1e0f60d20df0154f": {
+          "type": "text",
+          "data": {
+            "name": "Text",
+            "texts": [
+              {
+                "id": "ddlcp3sur",
+                "content": [
+                  {
+                    "children": [
+                      {
+                        "text": "What are you looking for?"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "canvasVisibility": "preview",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "655e8e5a1e0f60d20df01550"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "655e8e5a1e0f60d20df0154f"
+        },
+        "655e8e5a1e0f60d20df01552": {
+          "type": "captureV2",
+          "data": {
+            "name": "Capture",
+            "intentScope": "GLOBAL",
+            "capture": {
+              "type": "query",
+              "variable": "aiquestion"
+            },
+            "noReply": null,
+            "noMatch": null,
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "655e8e4d1e0f60d20df0136f",
+                  "id": "655e8e5a1e0f60d20df01553",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          4576.3,
+                          -2635.32
+                        ],
+                        "reversed": true
+                      },
+                      {
+                        "point": [
+                          4152.72,
+                          -2635.32
+                        ]
+                      },
+                      {
+                        "point": [
+                          4152.72,
+                          -3782.75
+                        ]
+                      },
+                      {
+                        "point": [
+                          3729.14,
+                          -3782.75
+                        ],
+                        "reversed": true,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                },
+                "else": {
+                  "type": "else",
+                  "target": null,
+                  "id": "655e8e5a1e0f60d20df01554"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "655e8e5a1e0f60d20df01552"
+        },
+        "655e8e9d1e0f60d20df0156e": {
+          "type": "api",
+          "data": {
+            "name": "",
+            "url": "[MAKE WEBHOOK HERE]",
+            "body": [
+              {
+                "key": "Product Name",
+                "val": "{{[name_print].name_print}}"
+              },
+              {
+                "key": "manychatkey",
+                "val": "{{[user_id].user_id}}"
+              },
+              {
+                "key": "Product Price",
+                "val": "{{[price_print].price_print}}"
+              },
+              {
+                "key": "Product Image",
+                "val": "{{[image_print].image_print}}"
+              },
+              {
+                "key": "Product Count",
+                "val": "{{[productcount].productcount}}"
+              },
+              {
+                "key": "Product 1 Name",
+                "val": "{{[name_print1].name_print1}}"
+              },
+              {
+                "key": "Product 1 Price",
+                "val": "{{[price_print1].price_print1}}"
+              },
+              {
+                "key": "Product 1 Image",
+                "val": "{{[image_print1].image_print1}}"
+              },
+              {
+                "key": "Product 2 Name",
+                "val": "{{[name_print2].name_print2}}"
+              },
+              {
+                "key": "Product 2 Price",
+                "val": "{{[price_print2].price_print2}}"
+              },
+              {
+                "key": "Product 2 Image",
+                "val": "{{[image_print2].image_print2}}"
+              },
+              {
+                "key": "Product 3 Name",
+                "val": "{{[name_print3].name_print3}}"
+              },
+              {
+                "key": "Product 3 Price",
+                "val": "{{[price_print3].price_print3}}"
+              },
+              {
+                "key": "Product 3 Image",
+                "val": "{{[image_print3].image_print3}}"
+              }
+            ],
+            "params": [],
+            "method": "POST",
+            "headers": [],
+            "content": "",
+            "mappings": [],
+            "bodyType": "formData",
+            "selectedAction": "Make a POST Request",
+            "selectedIntegration": "Custom API",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "655e8e9d1e0f60d20df01570",
+                  "data": {}
+                },
+                "fail": {
+                  "type": "fail",
+                  "target": null,
+                  "id": "655e8e9d1e0f60d20df0156f",
+                  "data": {}
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "655e8e9d1e0f60d20df0156e"
+        },
+        "655eea48ed9c1e6b3f149c1a": {
+          "type": "block",
+          "data": {
+            "name": "New Block 47",
+            "steps": [
+              "655e8e9d1e0f60d20df0156e"
+            ]
+          },
+          "nodeID": "655eea48ed9c1e6b3f149c1a",
+          "coords": [
+            5568.284646875123,
+            -3491.0052510758474
+          ]
+        },
+        "655eeb20ed9c1e6b3f149c27": {
+          "type": "ifV2",
+          "data": {
+            "name": "If",
+            "expressions": [
+              {
+                "type": null,
+                "name": "",
+                "value": [
+                  {
+                    "logicInterface": "variable",
+                    "type": "equals",
+                    "value": [
+                      {
+                        "type": "variable",
+                        "value": "productcount"
+                      },
+                      {
+                        "type": "value",
+                        "value": "26"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "noMatch": {
+              "type": "path",
+              "pathName": "Else"
+            },
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "else": {
+                  "id": "655eeb4aed9c1e6b3f149c3c",
+                  "type": "else",
+                  "target": "655eea48ed9c1e6b3f149c1a",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          5730.11,
+                          -3578.8
+                        ]
+                      },
+                      {
+                        "point": [
+                          5754.11,
+                          -3578.8
+                        ]
+                      },
+                      {
+                        "point": [
+                          5754.11,
+                          -3515.55
+                        ]
+                      },
+                      {
+                        "point": [
+                          5568.28,
+                          -3515.55
+                        ]
+                      },
+                      {
+                        "point": [
+                          5568.28,
+                          -3491.01
+                        ],
+                        "toTop": true,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": [
+                {
+                  "type": "",
+                  "target": "655eeb37ed9c1e6b3f149c32",
+                  "id": "655eeb20ed9c1e6b3f149c28",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          5730.11,
+                          -3633.3
+                        ]
+                      },
+                      {
+                        "point": [
+                          5801.39,
+                          -3633.3
+                        ]
+                      },
+                      {
+                        "point": [
+                          5801.39,
+                          -3540.6
+                        ]
+                      },
+                      {
+                        "point": [
+                          5872.67,
+                          -3540.6
+                        ],
+                        "allowedToTop": false
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          "nodeID": "655eeb20ed9c1e6b3f149c27"
+        },
+        "655eeb20ed9c1e6b3f149c2a": {
+          "type": "block",
+          "data": {
+            "name": "New Block 48",
+            "steps": [
+              "655eeb20ed9c1e6b3f149c27"
+            ]
+          },
+          "nodeID": "655eeb20ed9c1e6b3f149c2a",
+          "coords": [
+            5564.10656558275,
+            -3712.5547718016533
+          ]
+        },
+        "655eeb37ed9c1e6b3f149c32": {
+          "type": "setV2",
+          "data": {
+            "name": "",
+            "sets": [
+              {
+                "type": "advance",
+                "variable": "productcount",
+                "expression": "4"
+              }
+            ],
+            "title": "set to 4",
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "655eea48ed9c1e6b3f149c1a",
+                  "id": "655eeb37ed9c1e6b3f149c33",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          5872.67,
+                          -3540.35
+                        ],
+                        "reversed": true
+                      },
+                      {
+                        "point": [
+                          5802.98,
+                          -3540.35
+                        ]
+                      },
+                      {
+                        "point": [
+                          5802.98,
+                          -3464.01
+                        ]
+                      },
+                      {
+                        "point": [
+                          5733.28,
+                          -3464.01
+                        ],
+                        "reversed": true,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "655eeb37ed9c1e6b3f149c32"
+        },
+        "655eeb37ed9c1e6b3f149c34": {
+          "type": "block",
+          "data": {
+            "name": "New Block 48",
+            "steps": [
+              "655eeb37ed9c1e6b3f149c32"
+            ]
+          },
+          "nodeID": "655eeb37ed9c1e6b3f149c34",
+          "coords": [
+            6038.666314010424,
+            -3619.598796958884
+          ]
+        },
+        "656c220ffe55246806ad26ce": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 1.64689327938182,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "center",
+                "children": [
+                  {
+                    "text": "Voiceflow Social Media E-Commerce Chatbot",
+                    "color": {
+                      "r": 243,
+                      "g": 247,
+                      "b": 247,
+                      "a": 1
+                    },
+                    "underline": false
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 504.3709171589519,
+            "backgroundColor": {
+              "r": 1,
+              "g": 3,
+              "b": 4,
+              "a": 1
+            }
+          },
+          "nodeID": "656c220ffe55246806ad26ce",
+          "coords": [
+            5363.848772389876,
+            -3027.0648961914358
+          ]
+        },
+        "656c220ffe55246806ad26cf": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 2.1533923262250254,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "center",
+                "children": [
+                  {
+                    "text": "Created by Brendan Jowett",
+                    "color": {
+                      "r": 242,
+                      "g": 244,
+                      "b": 244,
+                      "a": 1
+                    }
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 328.24318169917905,
+            "backgroundColor": {
+              "r": 2,
+              "g": 7,
+              "b": 11,
+              "a": 1
+            }
+          },
+          "nodeID": "656c220ffe55246806ad26cf",
+          "coords": [
+            5387.953097567257,
+            -2910.5863650257584
+          ]
+        },
+        "656c220ffe55246806ad26d0": {
+          "type": "markup_image",
+          "data": {
+            "name": "Block",
+            "url": "https://cm4-production-assets.s3.amazonaws.com/1698371181623-screenshot-2023-10-26-164908.png",
+            "width": 104.73909436546776,
+            "height": 111.01089642328022,
+            "rotate": 0
+          },
+          "nodeID": "656c220ffe55246806ad26d0",
+          "coords": [
+            5976.059371301986,
+            -2886.303636563121
+          ]
+        },
+        "656c220ffe55246806ad26d1": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 1.64689327938182,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "center",
+                "children": [
+                  {
+                    "text": "Need a system like this for your business?",
+                    "color": {
+                      "r": 243,
+                      "g": 247,
+                      "b": 247,
+                      "a": 1
+                    },
+                    "underline": false
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 502.68022818120056,
+            "backgroundColor": {
+              "r": 1,
+              "g": 3,
+              "b": 4,
+              "a": 1
+            }
+          },
+          "nodeID": "656c220ffe55246806ad26d1",
+          "coords": [
+            5358.581219257633,
+            -2787.39907938499
+          ]
+        },
+        "656c220ffe55246806ad26d3": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 1.64689327938182,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "center",
+                "children": [
+                  {
+                    "text": "My ",
+                    "color": {
+                      "r": 241,
+                      "g": 245,
+                      "b": 247,
+                      "a": 1
+                    },
+                    "fontFamily": "Arial Black"
+                  },
+                  {
+                    "url": "https://www.youtube.com/channel/UCzIsviqoJc-VcWqF5Pp8iLw",
+                    "type": "link",
+                    "children": [
+                      {
+                        "color": {
+                          "r": 203,
+                          "g": 98,
+                          "b": 123,
+                          "a": 1
+                        },
+                        "fontFamily": "Arial Black",
+                        "text": "YouTube Channel",
+                        "underline": true
+                      }
+                    ]
+                  },
+                  {
+                    "color": {
+                      "r": 241,
+                      "g": 245,
+                      "b": 247,
+                      "a": 1
+                    },
+                    "fontFamily": "Arial Black",
+                    "text": " 👈"
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 502.68022818120056,
+            "backgroundColor": {
+              "r": 2,
+              "g": 6,
+              "b": 11,
+              "a": 1
+            }
+          },
+          "nodeID": "656c220ffe55246806ad26d3",
+          "coords": [
+            5359.579378145033,
+            -2355.568538230591
+          ]
+        },
+        "656c220ffe55246806ad26d4": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 1.64689327938182,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "center",
+                "children": [
+                  {
+                    "text": "My ",
+                    "color": {
+                      "r": 241,
+                      "g": 245,
+                      "b": 247,
+                      "a": 1
+                    },
+                    "fontFamily": "Arial Black"
+                  },
+                  {
+                    "url": "https://twitter.com/jowettbrendan",
+                    "type": "link",
+                    "children": [
+                      {
+                        "color": {
+                          "r": 93,
+                          "g": 157,
+                          "b": 245,
+                          "a": 1
+                        },
+                        "fontFamily": "Arial Black",
+                        "text": "Twitter (X)",
+                        "underline": true
+                      }
+                    ]
+                  },
+                  {
+                    "color": {
+                      "r": 241,
+                      "g": 245,
+                      "b": 247,
+                      "a": 1
+                    },
+                    "fontFamily": "Arial Black",
+                    "text": " 👈"
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 502.68022818120056,
+            "backgroundColor": {
+              "r": 2,
+              "g": 6,
+              "b": 11,
+              "a": 1
+            }
+          },
+          "nodeID": "656c220ffe55246806ad26d4",
+          "coords": [
+            5360.929253212689,
+            -2244.9419763117053
+          ]
+        },
+        "656c220ffe55246806ad26d6": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 1.6677216967592252,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "center",
+                "children": [
+                  {
+                    "text": "Want more ",
+                    "color": {
+                      "r": 246,
+                      "g": 248,
+                      "b": 249,
+                      "a": 1
+                    }
+                  },
+                  {
+                    "color": {
+                      "r": 246,
+                      "g": 248,
+                      "b": 249,
+                      "a": 1
+                    },
+                    "text": "free",
+                    "fontWeight": "700"
+                  },
+                  {
+                    "color": {
+                      "r": 246,
+                      "g": 248,
+                      "b": 249,
+                      "a": 1
+                    },
+                    "text": " templates? "
+                  }
+                ]
+              },
+              {
+                "textAlign": "center",
+                "children": [
+                  {
+                    "color": {
+                      "r": 246,
+                      "g": 248,
+                      "b": 249,
+                      "a": 1
+                    },
+                    "text": "Join the Discord community"
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 502.68022818120056,
+            "backgroundColor": {
+              "r": 1,
+              "g": 3,
+              "b": 4,
+              "a": 1
+            }
+          },
+          "nodeID": "656c220ffe55246806ad26d6",
+          "coords": [
+            5364.283119817883,
+            -1940.801281442205
+          ]
+        },
+        "656c220ffe55246806ad26d7": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 1.64689327938182,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "center",
+                "children": [
+                  {
+                    "text": ""
+                  },
+                  {
+                    "url": "https://discord.gg/HKurd4pmap",
+                    "type": "link",
+                    "children": [
+                      {
+                        "text": "Discord Server",
+                        "color": {
+                          "r": 208,
+                          "g": 129,
+                          "b": 188,
+                          "a": 1
+                        },
+                        "fontFamily": "Arial Black",
+                        "underline": true
+                      }
+                    ]
+                  },
+                  {
+                    "color": {
+                      "r": 241,
+                      "g": 245,
+                      "b": 247,
+                      "a": 1
+                    },
+                    "fontFamily": "Arial Black",
+                    "text": " 👈"
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 509.90298260168527,
+            "backgroundColor": {
+              "r": 2,
+              "g": 6,
+              "b": 11,
+              "a": 1
+            }
+          },
+          "nodeID": "656c220ffe55246806ad26d7",
+          "coords": [
+            5356.956490133298,
+            -1801.6802124874955
+          ]
+        },
+        "656c226cfe55246806ad26e2": {
+          "type": "markup_text",
+          "data": {
+            "scale": 1,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "center",
+                "children": [
+                  {
+                    "text": "Check if Airtable has the products"
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 319.57122802734386,
+            "backgroundColor": {
+              "r": 197,
+              "g": 231,
+              "b": 246,
+              "a": 1
+            },
+            "name": "Block"
+          },
+          "nodeID": "656c226cfe55246806ad26e2",
+          "coords": [
+            3406.9696383701,
+            -3914.8498198768775
+          ]
+        },
+        "656c2282fe55246806ad26e5": {
+          "type": "markup_text",
+          "data": {
+            "scale": 0.9840352475327031,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "center",
+                "children": [
+                  {
+                    "text": "Set each product detail as a variable"
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 750.2853829520092,
+            "backgroundColor": {
+              "r": 197,
+              "g": 231,
+              "b": 246,
+              "a": 1
+            },
+            "name": "Block"
+          },
+          "nodeID": "656c2282fe55246806ad26e5",
+          "coords": [
+            4460.6290809652555,
+            -3761.774701656054
+          ]
+        },
+        "656c2295fe55246806ad26e8": {
+          "type": "markup_text",
+          "data": {
+            "scale": 1,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "center",
+                "children": [
+                  {
+                    "text": "Set the variables within Manychat via Make to store all product details"
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 801.7144775390627,
+            "backgroundColor": {
+              "r": 197,
+              "g": 231,
+              "b": 246,
+              "a": 1
+            },
+            "name": "Block"
+          },
+          "nodeID": "656c2295fe55246806ad26e8",
+          "coords": [
+            5404.11249551296,
+            -3783.492572388035
+          ]
+        },
+        "656c22b1fe55246806ad26eb": {
+          "type": "markup_text",
+          "data": {
+            "scale": 1,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "center",
+                "children": [
+                  {
+                    "text": "Use these if you need to debug anything not working"
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 690.2967717097359,
+            "backgroundColor": {
+              "r": 203,
+              "g": 98,
+              "b": 123,
+              "a": 1
+            },
+            "name": "Block"
+          },
+          "nodeID": "656c22b1fe55246806ad26eb",
+          "coords": [
+            3971.9362718268426,
+            -4268.458231728698
+          ]
+        },
+        "656c22d3fe55246806ad26ee": {
+          "type": "markup_text",
+          "data": {
+            "scale": 1,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "center",
+                "children": [
+                  {
+                    "text": "Begin"
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 325.4003906250001,
+            "backgroundColor": {
+              "r": 197,
+              "g": 231,
+              "b": 246,
+              "a": 1
+            },
+            "name": "Block"
+          },
+          "nodeID": "656c22d3fe55246806ad26ee",
+          "coords": [
+            4136.560209047367,
+            -2802.353275571997
+          ]
+        },
+        "656c22ddfe55246806ad26f1": {
+          "type": "markup_text",
+          "data": {
+            "scale": 1,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "center",
+                "children": [
+                  {
+                    "text": "Answer the first message and get product message"
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 323.00039062500014,
+            "backgroundColor": {
+              "r": 197,
+              "g": 231,
+              "b": 246,
+              "a": 1
+            },
+            "name": "Block"
+          },
+          "nodeID": "656c22ddfe55246806ad26f1",
+          "coords": [
+            4580.560209047358,
+            -3046.253275571997
+          ]
+        },
+        "657131f5bddf7fcdaf5df85e": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 1.64689327938182,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "center",
+                "children": [
+                  {
+                    "text": ""
+                  },
+                  {
+                    "url": "https://calendly.com/brendan-lhk/30min",
+                    "type": "link",
+                    "children": [
+                      {
+                        "text": "Book a call 📞",
+                        "color": {
+                          "r": 93,
+                          "g": 157,
+                          "b": 245,
+                          "a": 1
+                        },
+                        "fontFamily": "Arial Black",
+                        "underline": true
+                      }
+                    ]
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 502.68022818120056,
+            "backgroundColor": {
+              "r": 2,
+              "g": 6,
+              "b": 11,
+              "a": 1
+            }
+          },
+          "nodeID": "657131f5bddf7fcdaf5df85e",
+          "coords": [
+            5355.263296950733,
+            -2630.27848302424
+          ]
+        },
+        "65850e0f4d150b45f841ec58": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 1.64689327938182,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "center",
+                "children": [
+                  {
+                    "text": "Need help with this template? ",
+                    "color": {
+                      "r": 243,
+                      "g": 247,
+                      "b": 247,
+                      "a": 1
+                    },
+                    "underline": false
+                  },
+                  {
+                    "url": "https://calendly.com/brendan-lhk",
+                    "type": "link",
+                    "children": [
+                      {
+                        "color": {
+                          "r": 93,
+                          "g": 157,
+                          "b": 245,
+                          "a": 1
+                        },
+                        "underline": true,
+                        "text": "Click here"
+                      }
+                    ]
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 502.68022818120056,
+            "backgroundColor": {
+              "r": 1,
+              "g": 3,
+              "b": 4,
+              "a": 1
+            }
+          },
+          "nodeID": "65850e0f4d150b45f841ec58",
+          "coords": [
+            5361.3249941401855,
+            -2122.927020414017
+          ]
+        },
+        "65b583a9b4eb93cfc809628f": {
+          "type": "markup_text",
+          "data": {
+            "name": "Block",
+            "scale": 1.64689327938182,
+            "rotate": 0,
+            "content": [
+              {
+                "textAlign": "center",
+                "children": [
+                  {
+                    "text": "",
+                    "color": {
+                      "r": 242,
+                      "g": 242,
+                      "b": 238,
+                      "a": 1
+                    }
+                  },
+                  {
+                    "url": "https://inflate.agency",
+                    "type": "link",
+                    "children": [
+                      {
+                        "text": "",
+                        "color": {
+                          "r": 242,
+                          "g": 242,
+                          "b": 238,
+                          "a": 1
+                        },
+                        "underline": true
+                      },
+                      {
+                        "text": "Visit ",
+                        "color": {
+                          "r": 242,
+                          "g": 242,
+                          "b": 238,
+                          "a": 1
+                        },
+                        "fontFamily": "Arial Black",
+                        "underline": true
+                      },
+                      {
+                        "text": "inflate.agency",
+                        "color": {
+                          "r": 253,
+                          "g": 253,
+                          "b": 0,
+                          "a": 1
+                        },
+                        "underline": true,
+                        "fontFamily": "Arial Black"
+                      },
+                      {
+                        "text": " ",
+                        "color": {
+                          "r": 253,
+                          "g": 253,
+                          "b": 0,
+                          "a": 1
+                        },
+                        "fontFamily": "Arial Black",
+                        "underline": true
+                      },
+                      {
+                        "color": {
+                          "r": 253,
+                          "g": 253,
+                          "b": 0,
+                          "a": 1
+                        },
+                        "fontFamily": "Arial Black",
+                        "text": "👈",
+                        "underline": true
+                      }
+                    ]
+                  },
+                  {
+                    "text": ""
+                  }
+                ]
+              }
+            ],
+            "overrideWidth": 502.68022818120056,
+            "backgroundColor": {
+              "r": 2,
+              "g": 6,
+              "b": 11,
+              "a": 1
+            }
+          },
+          "nodeID": "65b583a9b4eb93cfc809628f",
+          "coords": [
+            5354.432790910127,
+            -2489.657393431658
+          ]
+        }
+      },
+      "offsetX": -2614.2530107765383,
+      "offsetY": 2436.395334763642,
+      "modified": 1698278269,
+      "creatorID": 893814,
+      "variables": [],
+      "menuItems": [
+        {
+          "type": "NODE",
+          "sourceID": "start00000000000000000000"
+        }
+      ],
+      "menuNodeIDs": [],
+      "intentStepIDs": [],
+      "_id": "65ec32310cd125c54885d07d",
+      "diagramID": "64dbb6696a8fab0013dba194",
+      "versionID": "65ec32310cd125c54885d07b"
+    }
+  },
+  "flows": [],
+  "entities": [],
+  "entityVariants": [],
+  "intents": [
+    {
+      "id": "VF.YES",
+      "name": "VF.YES",
+      "description": null,
+      "automaticReprompt": false,
+      "entityOrder": [],
+      "createdAt": "2023-12-22T04:18:16.000Z",
+      "updatedAt": "2023-12-22T04:18:16.000Z",
+      "folderID": null,
+      "updatedByID": 169679,
+      "createdByID": 169679
+    },
+    {
+      "id": "VF.NO",
+      "name": "VF.NO",
+      "description": null,
+      "automaticReprompt": false,
+      "entityOrder": [],
+      "createdAt": "2023-12-22T04:18:16.000Z",
+      "updatedAt": "2023-12-22T04:18:16.000Z",
+      "folderID": null,
+      "updatedByID": 169679,
+      "createdByID": 169679
+    },
+    {
+      "id": "None",
+      "name": "None",
+      "description": null,
+      "automaticReprompt": false,
+      "entityOrder": [],
+      "createdAt": "2023-12-22T04:18:16.000Z",
+      "updatedAt": "2023-12-22T04:18:16.000Z",
+      "folderID": null,
+      "updatedByID": 169679,
+      "createdByID": 169679
+    }
+  ],
+  "utterances": [],
+  "requiredEntities": [],
+  "folders": [],
+  "responses": [],
+  "responseVariants": [],
+  "responseAttachments": [],
+  "responseDiscriminators": [],
+  "variables": [],
+  "attachments": [],
+  "cardButtons": [],
+  "functions": [],
+  "functionPaths": [],
+  "functionVariables": [],
+  "project": {
+    "type": "chat",
+    "name": "Social Media E-Commerce Template - INFLATE.AGENCY",
+    "image": "https://cm4-production-assets.s3.amazonaws.com/1705833448745-1696812672716.jpg",
+    "teamID": "8ekYQdr8kN",
+    "members": [],
+    "platform": "webchat",
+    "_version": 1.2,
+    "linkType": "STRAIGHT",
+    "creatorID": 169679,
+    "updatedBy": 169679,
+    "platformData": {
+      "invocationName": "template project general"
+    },
+    "customThemes": [],
+    "aiAssistSettings": {
+      "aiPlayground": true
+    },
+    "_id": "65ec32310cd125c54885d07a",
+    "updatedAt": "2024-03-09T09:56:01.645Z",
+    "knowledgeBase": {
+      "settings": {
+        "chunkStrategy": {
+          "type": "recursive_text_splitter",
+          "size": 1200,
+          "overlap": 200
+        },
+        "search": {
+          "limit": 3,
+          "metric": "IP"
+        },
+        "summarization": {
+          "prompt": "",
+          "mode": "prompt",
+          "model": "gpt-3.5-turbo",
+          "temperature": 0.7,
+          "system": "You are an FAQ AI chat assistant. Information will be provided to help answer the user's questions. Always summarize your response to be as brief as possible and be extremely concise. Your responses should be fewer than a couple of sentences.",
+          "maxTokens": 260
+        }
+      },
+      "tags": {},
+      "faqSets": {},
+      "documents": {}
+    },
+    "devVersion": "65ec32310cd125c54885d07b"
+  },
+  "_version": "1.2",
+  "variableStates": []
+}
