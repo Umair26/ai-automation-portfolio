@@ -1,0 +1,249 @@
+{
+    "name": "Calling Testimonial",
+    "flow": [
+        {
+            "id": 1,
+            "module": "airtable:TriggerWatchRecords",
+            "version": 3,
+            "parameters": {
+                "base": "appGpGOp6pdnRXxho",
+                "view": "viw75EEQp6N5HFAEH",
+                "table": "tbl70RQX13CFSIdeP",
+                "config": {
+                    "labelField": "Deal closed?",
+                    "triggerField": "Last Modified Time"
+                },
+                "formula": "",
+                "maxRecords": 1,
+                "__IMTCONN__": 2856345,
+                "useColumnId": false
+            },
+            "mapper": {},
+            "metadata": {
+                "designer": {
+                    "x": 244,
+                    "y": 5
+                },
+                "restore": {
+                    "parameters": {
+                        "base": {
+                            "label": "Testimonial Voice Agent"
+                        },
+                        "view": {
+                            "label": "Grid view"
+                        },
+                        "table": {
+                            "label": "Table 1"
+                        },
+                        "config": {
+                            "nested": {
+                                "labelField": {
+                                    "label": "Deal closed?"
+                                },
+                                "triggerField": {
+                                    "label": "Last Modified Time"
+                                }
+                            }
+                        },
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "airtable2"
+                            },
+                            "label": "My Airtable Token or Key connection"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:airtable3,airtable2",
+                        "label": "Connection",
+                        "required": true
+                    },
+                    {
+                        "name": "base",
+                        "type": "select",
+                        "label": "Base",
+                        "required": true
+                    },
+                    {
+                        "name": "useColumnId",
+                        "type": "boolean",
+                        "label": "Use Column ID",
+                        "required": true
+                    },
+                    {
+                        "name": "table",
+                        "type": "select",
+                        "label": "Table",
+                        "required": true
+                    },
+                    {
+                        "name": "config",
+                        "spec": [
+                            {
+                                "name": "triggerField",
+                                "type": "select",
+                                "label": "Trigger field",
+                                "required": true
+                            },
+                            {
+                                "name": "triggerField",
+                                "type": "hidden"
+                            },
+                            {
+                                "name": "labelField",
+                                "type": "select",
+                                "label": "Label field",
+                                "required": true
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Trigger configuration"
+                    },
+                    {
+                        "name": "maxRecords",
+                        "type": "integer",
+                        "label": "Limit",
+                        "required": true
+                    },
+                    {
+                        "name": "view",
+                        "type": "select",
+                        "label": "View"
+                    },
+                    {
+                        "name": "formula",
+                        "type": "text",
+                        "label": "Formula"
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "id",
+                        "type": "text",
+                        "label": "ID"
+                    },
+                    {
+                        "name": "createdTime",
+                        "type": "date",
+                        "label": "Created Time"
+                    },
+                    {
+                        "name": "Name",
+                        "type": "text",
+                        "label": "Name"
+                    },
+                    {
+                        "name": "Number",
+                        "type": "text",
+                        "label": "Number"
+                    },
+                    {
+                        "name": "Deal closed?",
+                        "type": "boolean",
+                        "label": "Deal closed?"
+                    },
+                    {
+                        "name": "Testimonial",
+                        "type": "text",
+                        "label": "Testimonial",
+                        "multiline": true
+                    },
+                    {
+                        "name": "Last Modified Time",
+                        "type": "date",
+                        "label": "Last Modified Time"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 9,
+            "module": "vapi:createOutboundPhoneCall",
+            "version": 1,
+            "parameters": {
+                "__IMTCONN__": 2869232
+            },
+            "mapper": {
+                "assistantId": "3f02f5dd-54c5-493f-ab36-2ab6c6f52a44",
+                "customerNumber": "{{1.Number}}",
+                "phoneNumberId": "yours"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 544,
+                    "y": 5
+                },
+                "restore": {
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "label": "My Vapi connection",
+                            "data": {
+                                "scoped": "true",
+                                "connection": "vapi"
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:vapi",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "assistantId",
+                        "type": "text",
+                        "label": "Assistant ID",
+                        "required": true
+                    },
+                    {
+                        "name": "customerNumber",
+                        "type": "text",
+                        "label": "Customer Phone Number",
+                        "required": true
+                    },
+                    {
+                        "name": "phoneNumberId",
+                        "type": "text",
+                        "label": "Phone Number ID",
+                        "required": true
+                    }
+                ]
+            }
+        }
+    ],
+    "metadata": {
+        "instant": false,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "slots": null,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": {
+            "orphans": [],
+            "notes": [
+                {
+                    "id": 2,
+                    "text": "",
+                    "filter": false
+                }
+            ]
+        },
+        "zone": "eu2.make.com",
+        "notes": []
+    }
+}

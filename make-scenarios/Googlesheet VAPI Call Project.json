@@ -1,0 +1,1613 @@
+{
+    "name": "Jiju Project",
+    "flow": [
+        {
+            "id": 2,
+            "module": "google-sheets:filterRows",
+            "version": 2,
+            "parameters": {
+                "__IMTCONN__": 473217
+            },
+            "mapper": {
+                "from": "drive",
+                "limit": "1",
+                "filter": [
+                    [
+                        {
+                            "a": "D",
+                            "o": "notexist"
+                        }
+                    ]
+                ],
+                "sheetId": "Hoja 1",
+                "sortOrder": "asc",
+                "spreadsheetId": "1jo2e9CgqxKCJTi9IWlGDWJo7iDPEkCGnmHYIIoP_gIA",
+                "tableFirstRow": "A1:CZ1",
+                "includesHeaders": true,
+                "valueRenderOption": "FORMATTED_VALUE",
+                "dateTimeRenderOption": "FORMATTED_STRING"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 0,
+                    "y": 0
+                },
+                "restore": {
+                    "expect": {
+                        "from": {
+                            "label": "Select from My Drive"
+                        },
+                        "orderBy": {
+                            "mode": "chose",
+                            "label": "Empty"
+                        },
+                        "sheetId": {
+                            "mode": "chose",
+                            "label": "Hoja 1"
+                        },
+                        "sortOrder": {
+                            "mode": "chose",
+                            "label": "Ascending"
+                        },
+                        "spreadsheetId": {
+                            "mode": "chose",
+                            "label": "Jiju Project"
+                        },
+                        "tableFirstRow": {
+                            "label": "A-CZ"
+                        },
+                        "includesHeaders": {
+                            "mode": "chose",
+                            "label": "Yes"
+                        },
+                        "valueRenderOption": {
+                            "mode": "chose",
+                            "label": "Formatted value"
+                        },
+                        "dateTimeRenderOption": {
+                            "mode": "chose",
+                            "label": "Formatted string"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "google"
+                            },
+                            "label": "My Google connection (tribexagency@gmail.com)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:google",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "from",
+                        "type": "select",
+                        "label": "Search Method",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "drive",
+                                "share"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "valueRenderOption",
+                        "type": "select",
+                        "label": "Value render option",
+                        "validate": {
+                            "enum": [
+                                "FORMATTED_VALUE",
+                                "UNFORMATTED_VALUE",
+                                "FORMULA"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "dateTimeRenderOption",
+                        "type": "select",
+                        "label": "Date and time render option",
+                        "validate": {
+                            "enum": [
+                                "SERIAL_NUMBER",
+                                "FORMATTED_STRING"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "type": "uinteger",
+                        "label": "Limit"
+                    },
+                    {
+                        "name": "spreadsheetId",
+                        "type": "select",
+                        "label": "Spreadsheet ID",
+                        "required": true
+                    },
+                    {
+                        "name": "sheetId",
+                        "type": "select",
+                        "label": "Sheet Name",
+                        "required": true
+                    },
+                    {
+                        "name": "includesHeaders",
+                        "type": "select",
+                        "label": "Table contains headers",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                true,
+                                false
+                            ]
+                        }
+                    },
+                    {
+                        "name": "tableFirstRow",
+                        "type": "select",
+                        "label": "Column range",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "A1:Z1",
+                                "A1:BZ1",
+                                "A1:CZ1",
+                                "A1:DZ1",
+                                "A1:MZ1",
+                                "A1:ZZ1",
+                                "A1:AZZ1",
+                                "A1:BZZ1",
+                                "A1:CZZ1",
+                                "A1:DZZ1",
+                                "A1:MZZ1",
+                                "A1:ZZZ1"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "filter",
+                        "type": "filter",
+                        "label": "Filter",
+                        "options": "rpc://google-sheets/2/rpcGetFilterKeys?includesHeaders=true"
+                    },
+                    {
+                        "name": "orderBy",
+                        "type": "select",
+                        "label": "Order by"
+                    },
+                    {
+                        "name": "sortOrder",
+                        "type": "select",
+                        "label": "Sort order",
+                        "validate": {
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "__IMTLENGTH__",
+                        "type": "uinteger",
+                        "label": "Total number of bundles"
+                    },
+                    {
+                        "name": "__IMTINDEX__",
+                        "type": "uinteger",
+                        "label": "Bundle order position"
+                    },
+                    {
+                        "name": "__ROW_NUMBER__",
+                        "type": "number",
+                        "label": "Row number"
+                    },
+                    {
+                        "name": "__SPREADSHEET_ID__",
+                        "type": "text",
+                        "label": "Spreadsheet ID"
+                    },
+                    {
+                        "name": "__SHEET__",
+                        "type": "text",
+                        "label": "Sheet"
+                    },
+                    {
+                        "name": "0",
+                        "type": "text",
+                        "label": "Phone Number (A)"
+                    },
+                    {
+                        "name": "1",
+                        "type": "text",
+                        "label": "Name (B)"
+                    },
+                    {
+                        "name": "2",
+                        "type": "text",
+                        "label": "Address (C)"
+                    },
+                    {
+                        "name": "3",
+                        "type": "text",
+                        "label": "Call sent? (D)"
+                    },
+                    {
+                        "name": "4",
+                        "type": "text",
+                        "label": "(E)"
+                    },
+                    {
+                        "name": "5",
+                        "type": "text",
+                        "label": "(F)"
+                    },
+                    {
+                        "name": "6",
+                        "type": "text",
+                        "label": "(G)"
+                    },
+                    {
+                        "name": "7",
+                        "type": "text",
+                        "label": "(H)"
+                    },
+                    {
+                        "name": "8",
+                        "type": "text",
+                        "label": "(I)"
+                    },
+                    {
+                        "name": "9",
+                        "type": "text",
+                        "label": "(J)"
+                    },
+                    {
+                        "name": "10",
+                        "type": "text",
+                        "label": "(K)"
+                    },
+                    {
+                        "name": "11",
+                        "type": "text",
+                        "label": "(L)"
+                    },
+                    {
+                        "name": "12",
+                        "type": "text",
+                        "label": "(M)"
+                    },
+                    {
+                        "name": "13",
+                        "type": "text",
+                        "label": "(N)"
+                    },
+                    {
+                        "name": "14",
+                        "type": "text",
+                        "label": "(O)"
+                    },
+                    {
+                        "name": "15",
+                        "type": "text",
+                        "label": "(P)"
+                    },
+                    {
+                        "name": "16",
+                        "type": "text",
+                        "label": "(Q)"
+                    },
+                    {
+                        "name": "17",
+                        "type": "text",
+                        "label": "(R)"
+                    },
+                    {
+                        "name": "18",
+                        "type": "text",
+                        "label": "(S)"
+                    },
+                    {
+                        "name": "19",
+                        "type": "text",
+                        "label": "(T)"
+                    },
+                    {
+                        "name": "20",
+                        "type": "text",
+                        "label": "(U)"
+                    },
+                    {
+                        "name": "21",
+                        "type": "text",
+                        "label": "(V)"
+                    },
+                    {
+                        "name": "22",
+                        "type": "text",
+                        "label": "(W)"
+                    },
+                    {
+                        "name": "23",
+                        "type": "text",
+                        "label": "(X)"
+                    },
+                    {
+                        "name": "24",
+                        "type": "text",
+                        "label": "(Y)"
+                    },
+                    {
+                        "name": "25",
+                        "type": "text",
+                        "label": "(Z)"
+                    },
+                    {
+                        "name": "26",
+                        "type": "text",
+                        "label": "(AA)"
+                    },
+                    {
+                        "name": "27",
+                        "type": "text",
+                        "label": "(AB)"
+                    },
+                    {
+                        "name": "28",
+                        "type": "text",
+                        "label": "(AC)"
+                    },
+                    {
+                        "name": "29",
+                        "type": "text",
+                        "label": "(AD)"
+                    },
+                    {
+                        "name": "30",
+                        "type": "text",
+                        "label": "(AE)"
+                    },
+                    {
+                        "name": "31",
+                        "type": "text",
+                        "label": "(AF)"
+                    },
+                    {
+                        "name": "32",
+                        "type": "text",
+                        "label": "(AG)"
+                    },
+                    {
+                        "name": "33",
+                        "type": "text",
+                        "label": "(AH)"
+                    },
+                    {
+                        "name": "34",
+                        "type": "text",
+                        "label": "(AI)"
+                    },
+                    {
+                        "name": "35",
+                        "type": "text",
+                        "label": "(AJ)"
+                    },
+                    {
+                        "name": "36",
+                        "type": "text",
+                        "label": "(AK)"
+                    },
+                    {
+                        "name": "37",
+                        "type": "text",
+                        "label": "(AL)"
+                    },
+                    {
+                        "name": "38",
+                        "type": "text",
+                        "label": "(AM)"
+                    },
+                    {
+                        "name": "39",
+                        "type": "text",
+                        "label": "(AN)"
+                    },
+                    {
+                        "name": "40",
+                        "type": "text",
+                        "label": "(AO)"
+                    },
+                    {
+                        "name": "41",
+                        "type": "text",
+                        "label": "(AP)"
+                    },
+                    {
+                        "name": "42",
+                        "type": "text",
+                        "label": "(AQ)"
+                    },
+                    {
+                        "name": "43",
+                        "type": "text",
+                        "label": "(AR)"
+                    },
+                    {
+                        "name": "44",
+                        "type": "text",
+                        "label": "(AS)"
+                    },
+                    {
+                        "name": "45",
+                        "type": "text",
+                        "label": "(AT)"
+                    },
+                    {
+                        "name": "46",
+                        "type": "text",
+                        "label": "(AU)"
+                    },
+                    {
+                        "name": "47",
+                        "type": "text",
+                        "label": "(AV)"
+                    },
+                    {
+                        "name": "48",
+                        "type": "text",
+                        "label": "(AW)"
+                    },
+                    {
+                        "name": "49",
+                        "type": "text",
+                        "label": "(AX)"
+                    },
+                    {
+                        "name": "50",
+                        "type": "text",
+                        "label": "(AY)"
+                    },
+                    {
+                        "name": "51",
+                        "type": "text",
+                        "label": "(AZ)"
+                    },
+                    {
+                        "name": "52",
+                        "type": "text",
+                        "label": "(BA)"
+                    },
+                    {
+                        "name": "53",
+                        "type": "text",
+                        "label": "(BB)"
+                    },
+                    {
+                        "name": "54",
+                        "type": "text",
+                        "label": "(BC)"
+                    },
+                    {
+                        "name": "55",
+                        "type": "text",
+                        "label": "(BD)"
+                    },
+                    {
+                        "name": "56",
+                        "type": "text",
+                        "label": "(BE)"
+                    },
+                    {
+                        "name": "57",
+                        "type": "text",
+                        "label": "(BF)"
+                    },
+                    {
+                        "name": "58",
+                        "type": "text",
+                        "label": "(BG)"
+                    },
+                    {
+                        "name": "59",
+                        "type": "text",
+                        "label": "(BH)"
+                    },
+                    {
+                        "name": "60",
+                        "type": "text",
+                        "label": "(BI)"
+                    },
+                    {
+                        "name": "61",
+                        "type": "text",
+                        "label": "(BJ)"
+                    },
+                    {
+                        "name": "62",
+                        "type": "text",
+                        "label": "(BK)"
+                    },
+                    {
+                        "name": "63",
+                        "type": "text",
+                        "label": "(BL)"
+                    },
+                    {
+                        "name": "64",
+                        "type": "text",
+                        "label": "(BM)"
+                    },
+                    {
+                        "name": "65",
+                        "type": "text",
+                        "label": "(BN)"
+                    },
+                    {
+                        "name": "66",
+                        "type": "text",
+                        "label": "(BO)"
+                    },
+                    {
+                        "name": "67",
+                        "type": "text",
+                        "label": "(BP)"
+                    },
+                    {
+                        "name": "68",
+                        "type": "text",
+                        "label": "(BQ)"
+                    },
+                    {
+                        "name": "69",
+                        "type": "text",
+                        "label": "(BR)"
+                    },
+                    {
+                        "name": "70",
+                        "type": "text",
+                        "label": "(BS)"
+                    },
+                    {
+                        "name": "71",
+                        "type": "text",
+                        "label": "(BT)"
+                    },
+                    {
+                        "name": "72",
+                        "type": "text",
+                        "label": "(BU)"
+                    },
+                    {
+                        "name": "73",
+                        "type": "text",
+                        "label": "(BV)"
+                    },
+                    {
+                        "name": "74",
+                        "type": "text",
+                        "label": "(BW)"
+                    },
+                    {
+                        "name": "75",
+                        "type": "text",
+                        "label": "(BX)"
+                    },
+                    {
+                        "name": "76",
+                        "type": "text",
+                        "label": "(BY)"
+                    },
+                    {
+                        "name": "77",
+                        "type": "text",
+                        "label": "(BZ)"
+                    },
+                    {
+                        "name": "78",
+                        "type": "text",
+                        "label": "(CA)"
+                    },
+                    {
+                        "name": "79",
+                        "type": "text",
+                        "label": "(CB)"
+                    },
+                    {
+                        "name": "80",
+                        "type": "text",
+                        "label": "(CC)"
+                    },
+                    {
+                        "name": "81",
+                        "type": "text",
+                        "label": "(CD)"
+                    },
+                    {
+                        "name": "82",
+                        "type": "text",
+                        "label": "(CE)"
+                    },
+                    {
+                        "name": "83",
+                        "type": "text",
+                        "label": "(CF)"
+                    },
+                    {
+                        "name": "84",
+                        "type": "text",
+                        "label": "(CG)"
+                    },
+                    {
+                        "name": "85",
+                        "type": "text",
+                        "label": "(CH)"
+                    },
+                    {
+                        "name": "86",
+                        "type": "text",
+                        "label": "(CI)"
+                    },
+                    {
+                        "name": "87",
+                        "type": "text",
+                        "label": "(CJ)"
+                    },
+                    {
+                        "name": "88",
+                        "type": "text",
+                        "label": "(CK)"
+                    },
+                    {
+                        "name": "89",
+                        "type": "text",
+                        "label": "(CL)"
+                    },
+                    {
+                        "name": "90",
+                        "type": "text",
+                        "label": "(CM)"
+                    },
+                    {
+                        "name": "91",
+                        "type": "text",
+                        "label": "(CN)"
+                    },
+                    {
+                        "name": "92",
+                        "type": "text",
+                        "label": "(CO)"
+                    },
+                    {
+                        "name": "93",
+                        "type": "text",
+                        "label": "(CP)"
+                    },
+                    {
+                        "name": "94",
+                        "type": "text",
+                        "label": "(CQ)"
+                    },
+                    {
+                        "name": "95",
+                        "type": "text",
+                        "label": "(CR)"
+                    },
+                    {
+                        "name": "96",
+                        "type": "text",
+                        "label": "(CS)"
+                    },
+                    {
+                        "name": "97",
+                        "type": "text",
+                        "label": "(CT)"
+                    },
+                    {
+                        "name": "98",
+                        "type": "text",
+                        "label": "(CU)"
+                    },
+                    {
+                        "name": "99",
+                        "type": "text",
+                        "label": "(CV)"
+                    },
+                    {
+                        "name": "100",
+                        "type": "text",
+                        "label": "(CW)"
+                    },
+                    {
+                        "name": "101",
+                        "type": "text",
+                        "label": "(CX)"
+                    },
+                    {
+                        "name": "102",
+                        "type": "text",
+                        "label": "(CY)"
+                    },
+                    {
+                        "name": "103",
+                        "type": "text",
+                        "label": "(CZ)"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 3,
+            "module": "util:SetVariable2",
+            "version": 1,
+            "parameters": {},
+            "mapper": {
+                "name": "assistant",
+                "scope": "roundtrip",
+                "value": "{\n  \"transcriber\": {\n    \"provider\": \"deepgram\",\n    \"language\": \"en\",\n    \"model\": \"nova-3\"\n  },\n  \"model\": {\n    \"provider\": \"openai\",\n    \"model\": \"gpt-4o-mini\",\n    \"maxTokens\": 1000,\n    \"temperature\": 0.2,\n    \"tools\": [\n      {\n        \"type\": \"transferCall\",\n        \"destinations\": [\n          {\n            \"type\": \"number\",\n            \"number\": \"\",\n            \"description\": \"Transfer the call when the user is a good fit for what we are looking for\",\n            \"message\": \"Transferring the call to one of our agents\"\n          }\n        ]\n      },\n      {\n        \"type\": \"function\",\n        \"function\": {\n          \"name\": \"leadAnalysis\",\n          \"description\": \"Trigger this function when the user describes you why he wants to sell to analyze if he is a good lead or not\"\n        }\n      },\n      {\n        \"type\": \"google.calendar.availability.check\"\n      },\n      {\n        \"type\": \"google.calendar.event.create\"\n      }\n    ],\n    \"messages\": [\n      {\n        \"content\": \"# Role You are Lucy, the experienced and fantastic assistant of Jitu Investment Group, and your job is to send calls to qualify the leads that Jitu already   # Task Send calls and qualify the leads for Jitu Investment Group. Follow this steps:  1. Start with the initial message of “Hello, is this {{2.`1`}}?” 2. If the user says no say something similar to sorry about the misunderstanding, have a nice day. But if the user says he is {{2.`1`}} then say “Hey {{2.`1`}}, I was reaching out from Jitu Investment Group about {{2.`2`}}, are you still looking to sell that property? 3. If the user says something similar to no, then ask him what is the final reason about not selling the property, but in a formal way of course. But if he says something similar to yes, then directly ask him “And how much are you looking to get for that property?” 4. If the seller does not want to give an asking price then explain that you do not know anything about their property besides some vague information on the internet and it makes the process smoother if they explain what they need for the property. If they still refuse, move on to the next step. If the user says the price then ask him “And what do you have going on?”     1. In this step the objective is to understand the motivation the seller has to sell his property to understand if it is a good seller, so ask around 2/3 times things like what is your motivation or questions like why is this, always depending on the conversation you are having 5. Now an AI Agent will analyze if it is a good take or not. If it is we will transfer the call to another number specifically, but if the seller is not a good one, offer him to book an appointment with one of our experts     1. If you are gonna transfer the number, remember to clarify that you are transferring him with one of our agents and that if on of our agents isn’t available right now, he will receive shortly a call from him     2. If you are gonna book an appointment just clarify it would be a single phone call of some minutes, then ask the hour he will like to receive the call         1. Collect that hour and pass it to the function of appointment  If at any point the user asks something similar to who is this just answer: I am Lucy, the assistant of Jitu Investment Group and I am reaching out to you because we saw that you were interested in selling  # Details -Remember to transfer the call to +654178439 when the user is a good fit, or I will get fired -Remember always to understand emotions and be empathetic, these calls are filled with emotions and that interaction can be crucial -Use expressions like hmmmmm or eeeeh so people think they are talking to a human and not to an AI -This task is crucial for the success of Jitu Investment Group Context ## The investment group We are a real estate solutions and investment firm that specializes in helping homeowners solve their real estate challenges. We are investors and problem solvers who can buy your house on your timeline for the best offer. No commissions, sell in as-is condition, fast cash sale, no cleaning needed, no repairs needed, private home sale… The Jitu Investment Group Team has the experience that is required to get the deal done. Whether it is a foreclosure, probate, divorce, vacant property, we have the knowledge to buy the property quickly and make life  ## The process You are part of the lead acquisition process and system of Jitu Investment Group and your job is to call leads and qualify them  # Examples ## Example 1: Assistant (you): Hello, is this {{2.`1`}}? User: Hey yeah, but who is this? Assistant (you): Hey {{2.`1`}}, I was reaching out from Jitu Investment Group about {{2.`2`}}, are you still looking to sell that property? User: sorry from where? Assistant (you): Jitu Investment Group, we are a real estate solutions and investment firm that specializes in helping homeowners solve their real estate challenges. Can you confirm you want to sell the property from {{2.`2`}}? User: Yeah I do Assistant (you): I see, and how much are you looking to get the property for? User; Let’s day around a million Assistant (you): I understand, and what do you have going on? User: I am moving to the beach because I want to enjoy my retirement Assistant (you): Why? Do you enjoy the beach or just the hot of there? User: Well, actually all of it Assistant (you): Ok so I am gonna transfer you right now to one of our agents to get you request in order!! #transferCall ## Example 2: Assistant (you): Hello, is this {{2.`1`}}? User: Yeah that’s me Assistant (you): Hey {{2.`1`}}, I was reaching out from Jitu Investment Group about {{2.`2`}}, are you still looking to sell that property? User: That is right I actually am Assistant (you): I see, and how much are you looking to get the property for? User: I am not sure, maybe let’s say a quarter of a million Assistant (you): I understand, and what do you have going on? User: What do you mean by going on? Assistant (you): Like what is the motivation you have to sell your house User: Well those are private family reasons Assistant (you): Ok so would you like to book an appointment with one of our agents so that you can have a phone call with him shortly User: Yes please go ahead Assistant (you): Ok so please give an hour that you will be free tomorrow or the next day User: So tomorrow I will be free all daytime, and the next day you guys can call me after 5 PM Assistant (you): Perfect, I will pass that to the team and one of our agents will call you back in some hours. Have a nice day ## Example 3 Assistant (you): Hello, is this {{2.`1`}}? User: No it isn’t Assistant (you): Oh sorry for the misunderstanding  ## Example 4 Assistant (you): Hello, is this {{2.`1`}}? User: Yeah that’s me Assistant (you): Hey {{2.`1`}}, I was reaching out from Jitu Investment Group about {{2.`2`}}, are you still looking to sell that property? User: Well, I am not any more Assistant (you): Why is that? Could you tell me the reason? User: Basically I have already sold it Assistant (you): Oh, I see then, thanks for your time ## Example 5 Assistant (you): Hello, is this {{2.`1`}}? User: Hey yeah, but who is this? Assistant (you): Hey {{2.`1`}}, I was reaching out from Jitu Investment Group about {{2.`2`}}, are you still looking to sell that property? User: I am not interested thank you Assistant (you): With{{2.`1`}}, remember before you go that you were the one interested in selling your home User: Yeah but I have already sold it, thanks for everything Assistant (you): Oh, I see, then thanks for your time and have a nice day -TRANSFER THE CALL WHEN IT IS SAID OR I WILL GET FIRED\",\n        \"role\": \"system\"\n      }\n    ]\n  },\n  \"voice\": {\n    \"provider\": \"11labs\",\n    \"language\": \"en\",\n    \"model\": \"eleven_turbo_v2_5\",\n    \"voiceId\": \"XfNU2rGpBa01ckF309OY\"\n  },\n  \"firstMessage\": \"Hello, is this {{2.`1`}}?\",\n  \"firstMessageMode\": \"assistant-speaks-first\",\n  \"clientMessages\": [],\n  \"serverMessages\": [\n    \"tool-calls\",\n    \"function-call\",\n    \"end-of-call-report\",\n    \"transfer-destination-request\",\n    \"transfer-update\"\n  ],\n  \"server\": {\n    \"url\": \"https://hook.eu2.make.com/5g6eih0uyv78qlkj7xjqsoobw3u8gzu0\"\n  },\n  \"name\": \"Jiju Project\",\n  \"artifactPlan\": {\n    \"transcriptPlan\": {\n      \"enabled\": true\n    }\n  }\n}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 300,
+                    "y": 0
+                },
+                "restore": {
+                    "expect": {
+                        "scope": {
+                            "label": "One cycle"
+                        }
+                    }
+                },
+                "expect": [
+                    {
+                        "name": "name",
+                        "type": "text",
+                        "label": "Variable name",
+                        "required": true
+                    },
+                    {
+                        "name": "scope",
+                        "type": "select",
+                        "label": "Variable lifetime",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "roundtrip",
+                                "execution"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "value",
+                        "type": "any",
+                        "label": "Variable value"
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "assistant",
+                        "type": "any",
+                        "label": "assistant"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 4,
+            "module": "json:ParseJSON",
+            "version": 1,
+            "parameters": {
+                "type": ""
+            },
+            "mapper": {
+                "json": "{{3.assistant}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 592,
+                    "y": -3
+                },
+                "restore": {
+                    "parameters": {
+                        "type": {
+                            "label": "Choose a data structure"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "type",
+                        "type": "udt",
+                        "label": "Data structure"
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "json",
+                        "type": "text",
+                        "label": "JSON string",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 6,
+            "module": "builtin:BasicAggregator",
+            "version": 1,
+            "parameters": {
+                "feeder": 4
+            },
+            "mapper": {
+                "name": "{{4.name}}",
+                "model": "{{4.model}}",
+                "voice": "{{4.voice}}",
+                "server": "{{4.server}}",
+                "transcriber": "{{4.transcriber}}",
+                "artifactPlan": "{{4.artifactPlan}}",
+                "firstMessage": "{{4.firstMessage}}",
+                "clientMessages": "{{4.clientMessages}}",
+                "serverMessages": "{{4.serverMessages}}",
+                "firstMessageMode": "{{4.firstMessageMode}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 900,
+                    "y": 0
+                },
+                "restore": {
+                    "extra": {
+                        "feeder": {
+                            "label": "JSON - Parse JSON [4]"
+                        },
+                        "target": {
+                            "label": "Custom"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "id": 7,
+            "module": "json:TransformToJSON",
+            "version": 1,
+            "parameters": {
+                "space": ""
+            },
+            "mapper": {
+                "object": "{{first(6.array)}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1200,
+                    "y": 0
+                },
+                "restore": {
+                    "parameters": {
+                        "space": {
+                            "label": "Empty"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "space",
+                        "type": "select",
+                        "label": "Indentation",
+                        "validate": {
+                            "enum": [
+                                "tab",
+                                "2",
+                                "4"
+                            ]
+                        }
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "object",
+                        "type": "any",
+                        "label": "Object"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 8,
+            "module": "http:ActionSendData",
+            "version": 3,
+            "parameters": {
+                "handleErrors": true,
+                "useNewZLibDeCompress": true
+            },
+            "mapper": {
+                "ca": "",
+                "qs": [],
+                "url": "https://api.vapi.ai/call",
+                "data": "{\n  \"customer\": {\n    \"number\": \"+{{2.`0`}}\",\n    \"extension\": \"\",\n    \"name\": \"{{2.`1`}}\"\n  },\n  \"assistant\": {{7.json}},\n  \"phoneNumberId\": \"\"\n}",
+                "gzip": true,
+                "method": "post",
+                "headers": [
+                    {
+                        "name": "Authorization",
+                        "value": "Bearer "
+                    },
+                    {
+                        "name": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "timeout": "",
+                "useMtls": false,
+                "authPass": "",
+                "authUser": "",
+                "bodyType": "raw",
+                "contentType": "application/json",
+                "serializeUrl": false,
+                "shareCookies": false,
+                "parseResponse": false,
+                "followRedirect": true,
+                "useQuerystring": false,
+                "followAllRedirects": false,
+                "rejectUnauthorized": true
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1500,
+                    "y": 0
+                },
+                "restore": {
+                    "expect": {
+                        "qs": {
+                            "mode": "chose"
+                        },
+                        "method": {
+                            "mode": "chose",
+                            "label": "POST"
+                        },
+                        "headers": {
+                            "mode": "chose",
+                            "items": [
+                                null,
+                                null
+                            ]
+                        },
+                        "bodyType": {
+                            "label": "Raw"
+                        },
+                        "contentType": {
+                            "label": "JSON (application/json)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "handleErrors",
+                        "type": "boolean",
+                        "label": "Evaluate all states as errors (except for 2xx and 3xx )",
+                        "required": true
+                    },
+                    {
+                        "name": "useNewZLibDeCompress",
+                        "type": "hidden"
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "url",
+                        "type": "url",
+                        "label": "URL",
+                        "required": true
+                    },
+                    {
+                        "name": "serializeUrl",
+                        "type": "boolean",
+                        "label": "Serialize URL",
+                        "required": true
+                    },
+                    {
+                        "name": "method",
+                        "type": "select",
+                        "label": "Method",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "get",
+                                "head",
+                                "post",
+                                "put",
+                                "patch",
+                                "delete",
+                                "options"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "headers",
+                        "spec": [
+                            {
+                                "name": "name",
+                                "type": "text",
+                                "label": "Name",
+                                "required": true
+                            },
+                            {
+                                "name": "value",
+                                "type": "text",
+                                "label": "Value"
+                            }
+                        ],
+                        "type": "array",
+                        "label": "Headers"
+                    },
+                    {
+                        "name": "qs",
+                        "spec": [
+                            {
+                                "name": "name",
+                                "type": "text",
+                                "label": "Name",
+                                "required": true
+                            },
+                            {
+                                "name": "value",
+                                "type": "text",
+                                "label": "Value"
+                            }
+                        ],
+                        "type": "array",
+                        "label": "Query String"
+                    },
+                    {
+                        "name": "bodyType",
+                        "type": "select",
+                        "label": "Body type",
+                        "validate": {
+                            "enum": [
+                                "raw",
+                                "x_www_form_urlencoded",
+                                "multipart_form_data"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "parseResponse",
+                        "type": "boolean",
+                        "label": "Parse response",
+                        "required": true
+                    },
+                    {
+                        "name": "authUser",
+                        "type": "text",
+                        "label": "User name"
+                    },
+                    {
+                        "name": "authPass",
+                        "type": "password",
+                        "label": "Password"
+                    },
+                    {
+                        "name": "timeout",
+                        "type": "uinteger",
+                        "label": "Timeout",
+                        "validate": {
+                            "max": 300,
+                            "min": 1
+                        }
+                    },
+                    {
+                        "name": "shareCookies",
+                        "type": "boolean",
+                        "label": "Share cookies with other HTTP modules",
+                        "required": true
+                    },
+                    {
+                        "name": "ca",
+                        "type": "cert",
+                        "label": "Self-signed certificate"
+                    },
+                    {
+                        "name": "rejectUnauthorized",
+                        "type": "boolean",
+                        "label": "Reject connections that are using unverified (self-signed) certificates",
+                        "required": true
+                    },
+                    {
+                        "name": "followRedirect",
+                        "type": "boolean",
+                        "label": "Follow redirect",
+                        "required": true
+                    },
+                    {
+                        "name": "useQuerystring",
+                        "type": "boolean",
+                        "label": "Disable serialization of multiple same query string keys as arrays",
+                        "required": true
+                    },
+                    {
+                        "name": "gzip",
+                        "type": "boolean",
+                        "label": "Request compressed content",
+                        "required": true
+                    },
+                    {
+                        "name": "useMtls",
+                        "type": "boolean",
+                        "label": "Use Mutual TLS",
+                        "required": true
+                    },
+                    {
+                        "name": "contentType",
+                        "type": "select",
+                        "label": "Content type",
+                        "validate": {
+                            "enum": [
+                                "text/plain",
+                                "application/json",
+                                "application/xml",
+                                "text/xml",
+                                "text/html",
+                                "custom"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "data",
+                        "type": "buffer",
+                        "label": "Request content"
+                    },
+                    {
+                        "name": "followAllRedirects",
+                        "type": "boolean",
+                        "label": "Follow all redirect",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 9,
+            "module": "google-sheets:updateRow",
+            "version": 2,
+            "parameters": {
+                "__IMTCONN__": 473217
+            },
+            "mapper": {
+                "from": "drive",
+                "mode": "select",
+                "values": {
+                    "3": "Call sent at {{formatDate(now; \"HH:mm MM/DD/YYYY\")}}"
+                },
+                "sheetId": "Hoja 1",
+                "rowNumber": "{{2.`__ROW_NUMBER__`}}",
+                "spreadsheetId": "/1jo2e9CgqxKCJTi9IWlGDWJo7iDPEkCGnmHYIIoP_gIA",
+                "includesHeaders": true,
+                "valueInputOption": "USER_ENTERED"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1800,
+                    "y": 0
+                },
+                "restore": {
+                    "expect": {
+                        "from": {
+                            "label": "My Drive"
+                        },
+                        "mode": {
+                            "label": "Search by path"
+                        },
+                        "sheetId": {
+                            "label": "Hoja 1"
+                        },
+                        "spreadsheetId": {
+                            "path": [
+                                "Jiju Project"
+                            ]
+                        },
+                        "includesHeaders": {
+                            "label": "Yes",
+                            "nested": [
+                                {
+                                    "name": "values",
+                                    "spec": [
+                                        {
+                                            "name": "0",
+                                            "type": "text",
+                                            "label": "Phone Number (A)"
+                                        },
+                                        {
+                                            "name": "1",
+                                            "type": "text",
+                                            "label": "Name (B)"
+                                        },
+                                        {
+                                            "name": "2",
+                                            "type": "text",
+                                            "label": "Address (C)"
+                                        },
+                                        {
+                                            "name": "3",
+                                            "type": "text",
+                                            "label": "Call sent? (D)"
+                                        },
+                                        {
+                                            "name": "4",
+                                            "type": "text",
+                                            "label": "(E)"
+                                        },
+                                        {
+                                            "name": "5",
+                                            "type": "text",
+                                            "label": "(F)"
+                                        },
+                                        {
+                                            "name": "6",
+                                            "type": "text",
+                                            "label": "(G)"
+                                        },
+                                        {
+                                            "name": "7",
+                                            "type": "text",
+                                            "label": "(H)"
+                                        },
+                                        {
+                                            "name": "8",
+                                            "type": "text",
+                                            "label": "(I)"
+                                        },
+                                        {
+                                            "name": "9",
+                                            "type": "text",
+                                            "label": "(J)"
+                                        },
+                                        {
+                                            "name": "10",
+                                            "type": "text",
+                                            "label": "(K)"
+                                        },
+                                        {
+                                            "name": "11",
+                                            "type": "text",
+                                            "label": "(L)"
+                                        },
+                                        {
+                                            "name": "12",
+                                            "type": "text",
+                                            "label": "(M)"
+                                        },
+                                        {
+                                            "name": "13",
+                                            "type": "text",
+                                            "label": "(N)"
+                                        },
+                                        {
+                                            "name": "14",
+                                            "type": "text",
+                                            "label": "(O)"
+                                        },
+                                        {
+                                            "name": "15",
+                                            "type": "text",
+                                            "label": "(P)"
+                                        },
+                                        {
+                                            "name": "16",
+                                            "type": "text",
+                                            "label": "(Q)"
+                                        },
+                                        {
+                                            "name": "17",
+                                            "type": "text",
+                                            "label": "(R)"
+                                        },
+                                        {
+                                            "name": "18",
+                                            "type": "text",
+                                            "label": "(S)"
+                                        },
+                                        {
+                                            "name": "19",
+                                            "type": "text",
+                                            "label": "(T)"
+                                        },
+                                        {
+                                            "name": "20",
+                                            "type": "text",
+                                            "label": "(U)"
+                                        },
+                                        {
+                                            "name": "21",
+                                            "type": "text",
+                                            "label": "(V)"
+                                        },
+                                        {
+                                            "name": "22",
+                                            "type": "text",
+                                            "label": "(W)"
+                                        },
+                                        {
+                                            "name": "23",
+                                            "type": "text",
+                                            "label": "(X)"
+                                        },
+                                        {
+                                            "name": "24",
+                                            "type": "text",
+                                            "label": "(Y)"
+                                        },
+                                        {
+                                            "name": "25",
+                                            "type": "text",
+                                            "label": "(Z)"
+                                        }
+                                    ],
+                                    "type": "collection",
+                                    "label": "Values"
+                                }
+                            ]
+                        },
+                        "valueInputOption": {
+                            "mode": "chose",
+                            "label": "User entered"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "google"
+                            },
+                            "label": "My Google connection (tribexagency@gmail.com)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:google",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "mode",
+                        "type": "select",
+                        "label": "Search Method",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "select",
+                                "fromAll",
+                                "map"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "valueInputOption",
+                        "type": "select",
+                        "label": "Value input option",
+                        "validate": {
+                            "enum": [
+                                "USER_ENTERED",
+                                "RAW"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "from",
+                        "type": "select",
+                        "label": "Drive",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "drive",
+                                "share",
+                                "team"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "spreadsheetId",
+                        "type": "file",
+                        "label": "Spreadsheet ID",
+                        "required": true
+                    },
+                    {
+                        "name": "sheetId",
+                        "type": "select",
+                        "label": "Sheet Name",
+                        "required": true
+                    },
+                    {
+                        "name": "rowNumber",
+                        "type": "uinteger",
+                        "label": "Row number",
+                        "required": true
+                    },
+                    {
+                        "name": "includesHeaders",
+                        "type": "select",
+                        "label": "Table contains headers",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                true,
+                                false
+                            ]
+                        }
+                    },
+                    {
+                        "name": "values",
+                        "spec": [
+                            {
+                                "name": "0",
+                                "type": "text",
+                                "label": "Phone Number (A)"
+                            },
+                            {
+                                "name": "1",
+                                "type": "text",
+                                "label": "Name (B)"
+                            },
+                            {
+                                "name": "2",
+                                "type": "text",
+                                "label": "Address (C)"
+                            },
+                            {
+                                "name": "3",
+                                "type": "text",
+                                "label": "Call sent? (D)"
+                            },
+                            {
+                                "name": "4",
+                                "type": "text",
+                                "label": "(E)"
+                            },
+                            {
+                                "name": "5",
+                                "type": "text",
+                                "label": "(F)"
+                            },
+                            {
+                                "name": "6",
+                                "type": "text",
+                                "label": "(G)"
+                            },
+                            {
+                                "name": "7",
+                                "type": "text",
+                                "label": "(H)"
+                            },
+                            {
+                                "name": "8",
+                                "type": "text",
+                                "label": "(I)"
+                            },
+                            {
+                                "name": "9",
+                                "type": "text",
+                                "label": "(J)"
+                            },
+                            {
+                                "name": "10",
+                                "type": "text",
+                                "label": "(K)"
+                            },
+                            {
+                                "name": "11",
+                                "type": "text",
+                                "label": "(L)"
+                            },
+                            {
+                                "name": "12",
+                                "type": "text",
+                                "label": "(M)"
+                            },
+                            {
+                                "name": "13",
+                                "type": "text",
+                                "label": "(N)"
+                            },
+                            {
+                                "name": "14",
+                                "type": "text",
+                                "label": "(O)"
+                            },
+                            {
+                                "name": "15",
+                                "type": "text",
+                                "label": "(P)"
+                            },
+                            {
+                                "name": "16",
+                                "type": "text",
+                                "label": "(Q)"
+                            },
+                            {
+                                "name": "17",
+                                "type": "text",
+                                "label": "(R)"
+                            },
+                            {
+                                "name": "18",
+                                "type": "text",
+                                "label": "(S)"
+                            },
+                            {
+                                "name": "19",
+                                "type": "text",
+                                "label": "(T)"
+                            },
+                            {
+                                "name": "20",
+                                "type": "text",
+                                "label": "(U)"
+                            },
+                            {
+                                "name": "21",
+                                "type": "text",
+                                "label": "(V)"
+                            },
+                            {
+                                "name": "22",
+                                "type": "text",
+                                "label": "(W)"
+                            },
+                            {
+                                "name": "23",
+                                "type": "text",
+                                "label": "(X)"
+                            },
+                            {
+                                "name": "24",
+                                "type": "text",
+                                "label": "(Y)"
+                            },
+                            {
+                                "name": "25",
+                                "type": "text",
+                                "label": "(Z)"
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Values"
+                    }
+                ]
+            }
+        }
+    ],
+    "metadata": {
+        "instant": false,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "slots": null,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": {
+            "orphans": []
+        },
+        "zone": "eu2.make.com",
+        "notes": []
+    }
+}

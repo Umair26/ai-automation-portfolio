@@ -1,0 +1,1922 @@
+{
+    "name": "Appointment booking",
+    "flow": [
+        {
+            "id": 11,
+            "module": "gateway:CustomWebHook",
+            "version": 1,
+            "parameters": {
+                "hook": 2973135,
+                "maxResults": 1
+            },
+            "mapper": {},
+            "metadata": {
+                "designer": {
+                    "x": 98,
+                    "y": 112
+                },
+                "restore": {
+                    "parameters": {
+                        "hook": {
+                            "data": {
+                                "editable": "true"
+                            },
+                            "label": "Grit solutions"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "hook",
+                        "type": "hook:gateway-webhook",
+                        "label": "Webhook",
+                        "required": true
+                    },
+                    {
+                        "name": "maxResults",
+                        "type": "number",
+                        "label": "Maximum number of results"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 4,
+            "module": "gemini-ai:createACompletionGeminiPro",
+            "version": 1,
+            "parameters": {
+                "__IMTCONN__": 6766842
+            },
+            "mapper": {
+                "model": "gemini-2.0-flash",
+                "contents": [
+                    {
+                        "role": "user",
+                        "parts": [
+                            {
+                                "text": "{{11.args.date_appointment}}\n\nOutput this date of appointment in a format of YYYY-MM-DDTHH:mm:ss\n\nExample:\n\nIf the date is wednesday at 5pm your output will be 2025-08-13T17:00:00\n\nremember the date always after right now: {{now}}",
+                                "type": "text"
+                            }
+                        ]
+                    }
+                ],
+                "generationConfig": {
+                    "thinkingConfig": {}
+                },
+                "system_instruction": {}
+            },
+            "metadata": {
+                "designer": {
+                    "x": 426,
+                    "y": 109
+                },
+                "restore": {
+                    "expect": {
+                        "model": {
+                            "mode": "chose",
+                            "label": "Gemini 2.0 Flash"
+                        },
+                        "contents": {
+                            "mode": "chose",
+                            "items": [
+                                {
+                                    "role": {
+                                        "mode": "chose",
+                                        "label": "User"
+                                    },
+                                    "parts": {
+                                        "mode": "chose",
+                                        "items": [
+                                            {
+                                                "type": {
+                                                    "mode": "chose",
+                                                    "label": "Text"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        "url_context": {
+                            "mode": "chose"
+                        },
+                        "code_execution": {
+                            "mode": "chose"
+                        },
+                        "safetySettings": {
+                            "mode": "chose"
+                        },
+                        "generationConfig": {
+                            "nested": {
+                                "stopSequences": {
+                                    "mode": "chose"
+                                },
+                                "thinkingConfig": {
+                                    "nested": {
+                                        "include_thoughts": {
+                                            "mode": "chose"
+                                        }
+                                    }
+                                },
+                                "responseMimeType": {
+                                    "mode": "chose",
+                                    "label": "Empty"
+                                },
+                                "responseModalities": {
+                                    "mode": "chose"
+                                }
+                            }
+                        },
+                        "system_instruction": {
+                            "nested": {
+                                "parts": {
+                                    "mode": "chose"
+                                }
+                            }
+                        },
+                        "google_search_context": {
+                            "mode": "chose"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "gemini-ai-q9zyjp"
+                            },
+                            "label": "My Gemini AI connection"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:gemini-ai-q9zyjp",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "model",
+                        "type": "select",
+                        "label": "AI Model",
+                        "required": true
+                    },
+                    {
+                        "name": "contents",
+                        "spec": [
+                            {
+                                "name": "role",
+                                "type": "select",
+                                "label": "Role",
+                                "options": [
+                                    {
+                                        "label": "User",
+                                        "value": "user"
+                                    },
+                                    {
+                                        "label": "Model",
+                                        "value": "model"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "parts",
+                                "spec": [
+                                    {
+                                        "name": "type",
+                                        "type": "select",
+                                        "label": "Message Type",
+                                        "options": [
+                                            {
+                                                "label": "Text",
+                                                "value": "text",
+                                                "nested": [
+                                                    {
+                                                        "name": "text",
+                                                        "type": "text",
+                                                        "label": "Text",
+                                                        "required": false
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "label": "File",
+                                                "value": "file",
+                                                "nested": [
+                                                    {
+                                                        "name": "file_data",
+                                                        "spec": [
+                                                            {
+                                                                "name": "mime_type",
+                                                                "type": "text",
+                                                                "label": "Mime Type",
+                                                                "required": false
+                                                            },
+                                                            {
+                                                                "help": "You get this from the 'Upload a File' module.",
+                                                                "name": "file_uri",
+                                                                "type": "text",
+                                                                "label": "File URI",
+                                                                "required": false
+                                                            }
+                                                        ],
+                                                        "type": "collection",
+                                                        "label": "File Data",
+                                                        "required": false
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "type": "array",
+                                "label": "Parts"
+                            }
+                        ],
+                        "type": "array",
+                        "label": "Messages",
+                        "required": true
+                    },
+                    {
+                        "name": "system_instruction",
+                        "spec": [
+                            {
+                                "name": "parts",
+                                "spec": {
+                                    "name": "value",
+                                    "spec": [
+                                        {
+                                            "name": "text",
+                                            "type": "text",
+                                            "label": "Value"
+                                        }
+                                    ],
+                                    "type": "collection",
+                                    "label": "Prompt"
+                                },
+                                "type": "array",
+                                "label": "Prompts"
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "System Instructions"
+                    },
+                    {
+                        "name": "safetySettings",
+                        "spec": [
+                            {
+                                "name": "category",
+                                "type": "select",
+                                "label": "Category",
+                                "options": [
+                                    {
+                                        "label": "Harassment content",
+                                        "value": "HARM_CATEGORY_HARASSMENT"
+                                    },
+                                    {
+                                        "label": "Hate speech and content",
+                                        "value": "HARM_CATEGORY_HATE_SPEECH"
+                                    },
+                                    {
+                                        "label": "Sexually explicit content.",
+                                        "value": "HARM_CATEGORY_SEXUALLY_EXPLICIT"
+                                    },
+                                    {
+                                        "label": "Dangerous content:",
+                                        "value": "HARM_CATEGORY_DANGEROUS_CONTENT"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "threshold",
+                                "type": "select",
+                                "label": "Threshold",
+                                "options": [
+                                    {
+                                        "label": "Block low and above.",
+                                        "value": "BLOCK_LOW_AND_ABOVE"
+                                    },
+                                    {
+                                        "label": "Block medium and above.",
+                                        "value": "BLOCK_MEDIUM_AND_ABOVE"
+                                    },
+                                    {
+                                        "label": "Block only high.",
+                                        "value": "BLOCK_ONLY_HIGH"
+                                    },
+                                    {
+                                        "label": "Block none.",
+                                        "value": "BLOCK_NONE"
+                                    }
+                                ]
+                            }
+                        ],
+                        "type": "array",
+                        "label": "Safety Settings"
+                    },
+                    {
+                        "name": "generationConfig",
+                        "spec": [
+                            {
+                                "name": "stopSequences",
+                                "spec": {
+                                    "name": "value",
+                                    "type": "text",
+                                    "label": "Stop Sequence"
+                                },
+                                "type": "array",
+                                "label": "Stop Sequences"
+                            },
+                            {
+                                "name": "responseModalities",
+                                "type": "select",
+                                "label": "Response Modalities",
+                                "multiple": true,
+                                "validate": {
+                                    "enum": [
+                                        "text",
+                                        "image"
+                                    ]
+                                }
+                            },
+                            {
+                                "name": "maxOutputTokens",
+                                "type": "number",
+                                "label": "Max Output Tokens"
+                            },
+                            {
+                                "name": "temperature",
+                                "type": "number",
+                                "label": "Temperature",
+                                "validate": {
+                                    "max": 1,
+                                    "min": 0
+                                }
+                            },
+                            {
+                                "name": "topP",
+                                "type": "number",
+                                "label": "Top P",
+                                "validate": {
+                                    "max": 1,
+                                    "min": 0
+                                }
+                            },
+                            {
+                                "name": "topK",
+                                "type": "number",
+                                "label": "Top K"
+                            },
+                            {
+                                "name": "thinkingConfig",
+                                "spec": [
+                                    {
+                                        "name": "thinkingBudget",
+                                        "type": "number",
+                                        "label": "Thinking Budget"
+                                    },
+                                    {
+                                        "name": "include_thoughts",
+                                        "type": "boolean",
+                                        "label": "Include Thoughts"
+                                    }
+                                ],
+                                "type": "collection",
+                                "label": "Thinking Config"
+                            },
+                            {
+                                "name": "responseMimeType",
+                                "type": "select",
+                                "label": "Response Mime Type"
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Generation configurations"
+                    },
+                    {
+                        "name": "tools",
+                        "type": "any",
+                        "label": "Tools"
+                    },
+                    {
+                        "name": "tool_config",
+                        "type": "any",
+                        "label": "Tool Config"
+                    },
+                    {
+                        "name": "url_context",
+                        "type": "boolean",
+                        "label": "URL Context"
+                    },
+                    {
+                        "name": "google_search_context",
+                        "type": "boolean",
+                        "label": "Google Search Grounding"
+                    },
+                    {
+                        "name": "code_execution",
+                        "type": "boolean",
+                        "label": "Code Execution"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 12,
+            "module": "http:ActionSendData",
+            "version": 3,
+            "parameters": {
+                "handleErrors": true,
+                "useNewZLibDeCompress": true
+            },
+            "mapper": {
+                "ca": "",
+                "qs": [
+                    {
+                        "name": "apiKey",
+                        "value": "cal_live_de164c0f9021602978136f1075f5088f"
+                    },
+                    {
+                        "name": "startTime",
+                        "value": "{{formatDate(setHour(4.result; 7); \"YYYY-MM-DDTHH:mm:ss\")}}+01:00"
+                    },
+                    {
+                        "name": "endTime",
+                        "value": "{{formatDate(setHour(4.result; 21); \"YYYY-MM-DDTHH:mm:ss\")}}+01:00"
+                    },
+                    {
+                        "name": "eventTypeId",
+                        "value": "3042959"
+                    },
+                    {
+                        "name": "timeZone",
+                        "value": "Europe/Lisbon"
+                    }
+                ],
+                "url": "https://api.cal.com/v1/slots",
+                "gzip": true,
+                "method": "get",
+                "headers": [],
+                "timeout": "",
+                "useMtls": false,
+                "authPass": "",
+                "authUser": "",
+                "bodyType": "",
+                "serializeUrl": false,
+                "shareCookies": false,
+                "parseResponse": true,
+                "followRedirect": true,
+                "useQuerystring": false,
+                "followAllRedirects": false,
+                "rejectUnauthorized": true
+            },
+            "metadata": {
+                "designer": {
+                    "x": 770,
+                    "y": 115,
+                    "name": "get available slots in a event for timeline"
+                },
+                "restore": {
+                    "expect": {
+                        "qs": {
+                            "mode": "chose",
+                            "items": [
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
+                            ]
+                        },
+                        "method": {
+                            "mode": "chose",
+                            "label": "GET"
+                        },
+                        "headers": {
+                            "mode": "chose"
+                        },
+                        "bodyType": {
+                            "label": "Empty"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "handleErrors",
+                        "type": "boolean",
+                        "label": "Evaluate all states as errors (except for 2xx and 3xx )",
+                        "required": true
+                    },
+                    {
+                        "name": "useNewZLibDeCompress",
+                        "type": "hidden"
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "url",
+                        "type": "url",
+                        "label": "URL",
+                        "required": true
+                    },
+                    {
+                        "name": "serializeUrl",
+                        "type": "boolean",
+                        "label": "Serialize URL",
+                        "required": true
+                    },
+                    {
+                        "name": "method",
+                        "type": "select",
+                        "label": "Method",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "get",
+                                "head",
+                                "post",
+                                "put",
+                                "patch",
+                                "delete",
+                                "options"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "headers",
+                        "spec": [
+                            {
+                                "name": "name",
+                                "type": "text",
+                                "label": "Name",
+                                "required": true
+                            },
+                            {
+                                "name": "value",
+                                "type": "text",
+                                "label": "Value"
+                            }
+                        ],
+                        "type": "array",
+                        "label": "Headers"
+                    },
+                    {
+                        "name": "qs",
+                        "spec": [
+                            {
+                                "name": "name",
+                                "type": "text",
+                                "label": "Name",
+                                "required": true
+                            },
+                            {
+                                "name": "value",
+                                "type": "text",
+                                "label": "Value"
+                            }
+                        ],
+                        "type": "array",
+                        "label": "Query String"
+                    },
+                    {
+                        "name": "bodyType",
+                        "type": "select",
+                        "label": "Body type",
+                        "validate": {
+                            "enum": [
+                                "raw",
+                                "x_www_form_urlencoded",
+                                "multipart_form_data"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "parseResponse",
+                        "type": "boolean",
+                        "label": "Parse response",
+                        "required": true
+                    },
+                    {
+                        "name": "authUser",
+                        "type": "text",
+                        "label": "User name"
+                    },
+                    {
+                        "name": "authPass",
+                        "type": "password",
+                        "label": "Password"
+                    },
+                    {
+                        "name": "timeout",
+                        "type": "uinteger",
+                        "label": "Timeout",
+                        "validate": {
+                            "max": 300,
+                            "min": 1
+                        }
+                    },
+                    {
+                        "name": "shareCookies",
+                        "type": "boolean",
+                        "label": "Share cookies with other HTTP modules",
+                        "required": true
+                    },
+                    {
+                        "name": "ca",
+                        "type": "cert",
+                        "label": "Self-signed certificate"
+                    },
+                    {
+                        "name": "rejectUnauthorized",
+                        "type": "boolean",
+                        "label": "Reject connections that are using unverified (self-signed) certificates",
+                        "required": true
+                    },
+                    {
+                        "name": "followRedirect",
+                        "type": "boolean",
+                        "label": "Follow redirect",
+                        "required": true
+                    },
+                    {
+                        "name": "useQuerystring",
+                        "type": "boolean",
+                        "label": "Disable serialization of multiple same query string keys as arrays",
+                        "required": true
+                    },
+                    {
+                        "name": "gzip",
+                        "type": "boolean",
+                        "label": "Request compressed content",
+                        "required": true
+                    },
+                    {
+                        "name": "useMtls",
+                        "type": "boolean",
+                        "label": "Use Mutual TLS",
+                        "required": true
+                    },
+                    {
+                        "name": "followAllRedirects",
+                        "type": "boolean",
+                        "label": "Follow all redirect",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 14,
+            "module": "util:SetVariable2",
+            "version": 1,
+            "parameters": {},
+            "mapper": {
+                "name": "getDate",
+                "scope": "roundtrip",
+                "value": "{{get(keys(12.data.slots); 1)}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1101,
+                    "y": 125,
+                    "name": "get the first date"
+                },
+                "restore": {
+                    "expect": {
+                        "scope": {
+                            "label": "One cycle"
+                        }
+                    }
+                },
+                "expect": [
+                    {
+                        "name": "name",
+                        "type": "text",
+                        "label": "Variable name",
+                        "required": true
+                    },
+                    {
+                        "name": "scope",
+                        "type": "select",
+                        "label": "Variable lifetime",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "roundtrip",
+                                "execution"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "value",
+                        "type": "any",
+                        "label": "Variable value"
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "getDate",
+                        "type": "any",
+                        "label": "getDate"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 21,
+            "module": "util:SetVariables",
+            "version": 1,
+            "parameters": {},
+            "mapper": {
+                "scope": "roundtrip",
+                "variables": [
+                    {
+                        "name": "time slots",
+                        "value": "{{get(12.data.slots; 14.getDate)}}"
+                    },
+                    {
+                        "name": "maintime",
+                        "value": "{{formatDate(4.result; \"YYYY-MM-DD hh:mm A\")}}"
+                    }
+                ]
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1427,
+                    "y": 132
+                },
+                "restore": {
+                    "expect": {
+                        "scope": {
+                            "label": "One cycle"
+                        },
+                        "variables": {
+                            "items": [
+                                null,
+                                null
+                            ]
+                        }
+                    }
+                },
+                "expect": [
+                    {
+                        "name": "variables",
+                        "spec": [
+                            {
+                                "name": "name",
+                                "type": "text",
+                                "label": "Variable name",
+                                "required": true
+                            },
+                            {
+                                "name": "value",
+                                "type": "any",
+                                "label": "Variable value"
+                            }
+                        ],
+                        "type": "array",
+                        "label": "Variables"
+                    },
+                    {
+                        "name": "scope",
+                        "type": "select",
+                        "label": "Variable lifetime",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "roundtrip",
+                                "execution"
+                            ]
+                        }
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "time slots",
+                        "type": "any",
+                        "label": "time slots"
+                    },
+                    {
+                        "name": "maintime",
+                        "type": "any",
+                        "label": "maintime"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 16,
+            "module": "builtin:BasicFeeder",
+            "version": 1,
+            "parameters": {},
+            "mapper": {
+                "array": "{{21.`time slots`}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1735,
+                    "y": 127
+                },
+                "restore": {
+                    "expect": {
+                        "array": {
+                            "mode": "edit"
+                        }
+                    }
+                },
+                "expect": [
+                    {
+                        "mode": "edit",
+                        "name": "array",
+                        "spec": [],
+                        "type": "array",
+                        "label": "Array"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 17,
+            "module": "util:TextAggregator",
+            "version": 1,
+            "parameters": {
+                "feeder": 16,
+                "rowSeparator": ""
+            },
+            "mapper": {
+                "value": "{{formatDate(16.time; \"YYYY-MM-DD hh:mm A\"; \"Europe/Lisbon\")}},{{newline}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 2098,
+                    "y": 133,
+                    "name": "available slots"
+                },
+                "restore": {
+                    "extra": {
+                        "feeder": {
+                            "label": "Iterator [16]"
+                        }
+                    },
+                    "parameters": {
+                        "rowSeparator": {
+                            "label": "Empty"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "rowSeparator",
+                        "type": "select",
+                        "label": "Row separator",
+                        "validate": {
+                            "enum": [
+                                "\n",
+                                "\t",
+                                "other"
+                            ]
+                        }
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "value",
+                        "type": "text",
+                        "label": "Text"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 29,
+            "module": "builtin:BasicRouter",
+            "version": 1,
+            "parameters": {
+                "else": 1
+            },
+            "mapper": null,
+            "metadata": {
+                "designer": {
+                    "x": 2427,
+                    "y": 150
+                }
+            },
+            "routes": [
+                {
+                    "flow": [
+                        {
+                            "id": 20,
+                            "module": "http:ActionSendData",
+                            "version": 3,
+                            "parameters": {
+                                "handleErrors": true,
+                                "useNewZLibDeCompress": true
+                            },
+                            "filter": {
+                                "name": "",
+                                "conditions": [
+                                    [
+                                        {
+                                            "a": "{{17.text}}",
+                                            "b": "{{21.maintime}}",
+                                            "o": "text:contain"
+                                        }
+                                    ]
+                                ]
+                            },
+                            "mapper": {
+                                "ca": "",
+                                "qs": [],
+                                "url": "https://api.cal.com/v2/bookings",
+                                "data": "{\n  \"attendee\": {\n    \"language\": \"en\",\n    \"name\": \"{{11.call.retell_llm_dynamic_variables.name}}\",\n    \"timeZone\": \"Europe/Lisbon\",\n    \"email\": \"{{11.call.retell_llm_dynamic_variables.email}}\",\n    \"phoneNumber\": \"{{11.call.to_number}}\"\n  },\n  \"eventTypeId\": 3042959,\n  \"start\": \"{{formatDate(4.result; \"YYYY-MM-DDTHH:mm:ss\")}}\",\n  \"location\": {\n    \"type\": \"integration\",\n    \"integration\": \"office365-video\"\n  },\n  \"bookingFieldsResponses\": {\n    \"description\": \"meeting test\",\n    \"title\": \"title testing\"\n  }\n}",
+                                "gzip": true,
+                                "method": "post",
+                                "headers": [
+                                    {
+                                        "name": "cal-api-version",
+                                        "value": "2024-08-13"
+                                    },
+                                    {
+                                        "name": "Authorization",
+                                        "value": "Bearer cal_live_de164c0f9021602978136f1075f5088f"
+                                    },
+                                    {
+                                        "name": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "timeout": "",
+                                "useMtls": false,
+                                "authPass": "",
+                                "authUser": "",
+                                "bodyType": "raw",
+                                "contentType": "application/json",
+                                "serializeUrl": false,
+                                "shareCookies": false,
+                                "parseResponse": false,
+                                "followRedirect": true,
+                                "useQuerystring": false,
+                                "followAllRedirects": false,
+                                "rejectUnauthorized": true
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 2941,
+                                    "y": -13
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "qs": {
+                                            "mode": "chose"
+                                        },
+                                        "method": {
+                                            "mode": "chose",
+                                            "label": "POST"
+                                        },
+                                        "headers": {
+                                            "mode": "chose",
+                                            "items": [
+                                                null,
+                                                null,
+                                                null
+                                            ]
+                                        },
+                                        "bodyType": {
+                                            "label": "Raw"
+                                        },
+                                        "contentType": {
+                                            "label": "JSON (application/json)"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "handleErrors",
+                                        "type": "boolean",
+                                        "label": "Evaluate all states as errors (except for 2xx and 3xx )",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "useNewZLibDeCompress",
+                                        "type": "hidden"
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "url",
+                                        "type": "url",
+                                        "label": "URL",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "serializeUrl",
+                                        "type": "boolean",
+                                        "label": "Serialize URL",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "method",
+                                        "type": "select",
+                                        "label": "Method",
+                                        "required": true,
+                                        "validate": {
+                                            "enum": [
+                                                "get",
+                                                "head",
+                                                "post",
+                                                "put",
+                                                "patch",
+                                                "delete",
+                                                "options"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "headers",
+                                        "spec": [
+                                            {
+                                                "name": "name",
+                                                "type": "text",
+                                                "label": "Name",
+                                                "required": true
+                                            },
+                                            {
+                                                "name": "value",
+                                                "type": "text",
+                                                "label": "Value"
+                                            }
+                                        ],
+                                        "type": "array",
+                                        "label": "Headers"
+                                    },
+                                    {
+                                        "name": "qs",
+                                        "spec": [
+                                            {
+                                                "name": "name",
+                                                "type": "text",
+                                                "label": "Name",
+                                                "required": true
+                                            },
+                                            {
+                                                "name": "value",
+                                                "type": "text",
+                                                "label": "Value"
+                                            }
+                                        ],
+                                        "type": "array",
+                                        "label": "Query String"
+                                    },
+                                    {
+                                        "name": "bodyType",
+                                        "type": "select",
+                                        "label": "Body type",
+                                        "validate": {
+                                            "enum": [
+                                                "raw",
+                                                "x_www_form_urlencoded",
+                                                "multipart_form_data"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "parseResponse",
+                                        "type": "boolean",
+                                        "label": "Parse response",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "authUser",
+                                        "type": "text",
+                                        "label": "User name"
+                                    },
+                                    {
+                                        "name": "authPass",
+                                        "type": "password",
+                                        "label": "Password"
+                                    },
+                                    {
+                                        "name": "timeout",
+                                        "type": "uinteger",
+                                        "label": "Timeout",
+                                        "validate": {
+                                            "max": 300,
+                                            "min": 1
+                                        }
+                                    },
+                                    {
+                                        "name": "shareCookies",
+                                        "type": "boolean",
+                                        "label": "Share cookies with other HTTP modules",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "ca",
+                                        "type": "cert",
+                                        "label": "Self-signed certificate"
+                                    },
+                                    {
+                                        "name": "rejectUnauthorized",
+                                        "type": "boolean",
+                                        "label": "Reject connections that are using unverified (self-signed) certificates",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "followRedirect",
+                                        "type": "boolean",
+                                        "label": "Follow redirect",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "useQuerystring",
+                                        "type": "boolean",
+                                        "label": "Disable serialization of multiple same query string keys as arrays",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "gzip",
+                                        "type": "boolean",
+                                        "label": "Request compressed content",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "useMtls",
+                                        "type": "boolean",
+                                        "label": "Use Mutual TLS",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "contentType",
+                                        "type": "select",
+                                        "label": "Content type",
+                                        "validate": {
+                                            "enum": [
+                                                "text/plain",
+                                                "application/json",
+                                                "application/xml",
+                                                "text/xml",
+                                                "text/html",
+                                                "custom"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "data",
+                                        "type": "buffer",
+                                        "label": "Request content"
+                                    },
+                                    {
+                                        "name": "followAllRedirects",
+                                        "type": "boolean",
+                                        "label": "Follow all redirect",
+                                        "required": true
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": 25,
+                            "module": "json:ParseJSON",
+                            "version": 1,
+                            "parameters": {
+                                "type": ""
+                            },
+                            "mapper": {
+                                "json": "{{20.data}}"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 3241,
+                                    "y": -13
+                                },
+                                "restore": {
+                                    "parameters": {
+                                        "type": {
+                                            "label": "Choose a data structure"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "type",
+                                        "type": "udt",
+                                        "label": "Data structure"
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "json",
+                                        "type": "text",
+                                        "label": "JSON string",
+                                        "required": true
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": 22,
+                            "module": "gateway:WebhookRespond",
+                            "version": 1,
+                            "parameters": {},
+                            "mapper": {
+                                "body": "The appointment has been booked for {{11.args.date_appointment}}, you have been sent all the details either to your phone number or to your email",
+                                "status": "200",
+                                "headers": []
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 3531,
+                                    "y": -16
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "headers": {
+                                            "mode": "chose"
+                                        }
+                                    }
+                                },
+                                "expect": [
+                                    {
+                                        "name": "status",
+                                        "type": "uinteger",
+                                        "label": "Status",
+                                        "required": true,
+                                        "validate": {
+                                            "min": 100
+                                        }
+                                    },
+                                    {
+                                        "name": "body",
+                                        "type": "any",
+                                        "label": "Body"
+                                    },
+                                    {
+                                        "name": "headers",
+                                        "spec": [
+                                            {
+                                                "name": "key",
+                                                "type": "text",
+                                                "label": "Key",
+                                                "required": true,
+                                                "validate": {
+                                                    "max": 256
+                                                }
+                                            },
+                                            {
+                                                "name": "value",
+                                                "type": "text",
+                                                "label": "Value",
+                                                "required": true,
+                                                "validate": {
+                                                    "max": 4096
+                                                }
+                                            }
+                                        ],
+                                        "type": "array",
+                                        "label": "Custom headers",
+                                        "validate": {
+                                            "maxItems": 16
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": 26,
+                            "module": "twilio:SendSMS",
+                            "version": 2,
+                            "parameters": {
+                                "__IMTCONN__": 9298632
+                            },
+                            "mapper": {
+                                "to": "+34619267734",
+                                "body": "Hey {{11.call.retell_llm_dynamic_variables.name}},\n\nhere you have the details of our meeting next {{11.args.date_appointment}}, the meeting will be helded in Zoom isnide this link: {{25.data.meetingUrl}}",
+                                "from": "+16467381503",
+                                "fromType": "phone",
+                                "messageBody": "body"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 4103,
+                                    "y": -14
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "from": {
+                                            "mode": "chose",
+                                            "label": "(646) 738-1503"
+                                        },
+                                        "fromType": {
+                                            "mode": "chose",
+                                            "label": "phone number"
+                                        },
+                                        "mediaUrl": {
+                                            "mode": "chose"
+                                        },
+                                        "messageBody": {
+                                            "mode": "chose",
+                                            "label": "Create a Body"
+                                        },
+                                        "smartEncoded": {
+                                            "mode": "chose"
+                                        },
+                                        "applicationSid": {
+                                            "mode": "chose"
+                                        },
+                                        "provideFeedback": {
+                                            "mode": "chose"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "twilio"
+                                            },
+                                            "label": "Jitu's account"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:twilio",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "fromType",
+                                        "type": "select",
+                                        "label": "Send a message from",
+                                        "required": true,
+                                        "validate": {
+                                            "enum": [
+                                                "phone",
+                                                "service",
+                                                "channel"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "to",
+                                        "type": "text",
+                                        "label": "To",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "messageBody",
+                                        "type": "select",
+                                        "label": "Message Body",
+                                        "required": true,
+                                        "validate": {
+                                            "enum": [
+                                                "body",
+                                                "template"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "mediaUrl",
+                                        "spec": {
+                                            "name": "value",
+                                            "type": "url"
+                                        },
+                                        "type": "array",
+                                        "label": "Media URL"
+                                    },
+                                    {
+                                        "name": "smartEncoded",
+                                        "type": "boolean",
+                                        "label": "Smart encoded"
+                                    },
+                                    {
+                                        "name": "validityPeriod",
+                                        "type": "uinteger",
+                                        "label": "Validity period"
+                                    },
+                                    {
+                                        "name": "statusCallback",
+                                        "type": "url",
+                                        "label": "Status callback"
+                                    },
+                                    {
+                                        "name": "applicationSid",
+                                        "type": "select",
+                                        "label": "Application"
+                                    },
+                                    {
+                                        "name": "maxPrice",
+                                        "type": "number",
+                                        "label": "Max price"
+                                    },
+                                    {
+                                        "name": "provideFeedback",
+                                        "type": "boolean",
+                                        "label": "Provide feedback"
+                                    },
+                                    {
+                                        "name": "from",
+                                        "type": "select",
+                                        "label": "Phone number",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "body",
+                                        "type": "text",
+                                        "label": "Body",
+                                        "required": true,
+                                        "validate": {
+                                            "max": 1600
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "flow": [
+                        {
+                            "id": 27,
+                            "module": "gemini-ai:createACompletionGeminiPro",
+                            "version": 1,
+                            "parameters": {
+                                "__IMTCONN__": 6766842
+                            },
+                            "mapper": {
+                                "model": "gemini-2.0-flash",
+                                "contents": [
+                                    {
+                                        "role": "user",
+                                        "parts": [
+                                            {
+                                                "text": "#Context\na user has requested a time for booking an appointment but it is not available\n\nYou are in charge of analyzing all the free slots ({{17.text}}) and giving back a message informing about the free slots with a more understandable format. Provide inside your message two or three available slots of the same day. \n\n##If there is only one available slot\noutput a message like this: \"the date you have requested is not available, but there is one available at 5 PM, does that work for you?\"\n\n##if there is more than two avialable slots\noutput a message like this: \"the date you have requested is not available, but there is availability at 11 AM and 6 PM, does that work for you?\n\n##If there are no available slots (they are blank)\notuput a message like this: \"the date you have requested is not available, and in the same day there are no available slots, is there any other day you have availability\"\n\nAvailable slots: {{17.text}}\n\nJUST OUTPUT A SMALL PHRASE LIKE THE ONES IN THE EXAMPLE",
+                                                "type": "text"
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "generationConfig": {
+                                    "thinkingConfig": {}
+                                },
+                                "system_instruction": {}
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 2953,
+                                    "y": 389
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "model": {
+                                            "mode": "chose",
+                                            "label": "Gemini 2.0 Flash"
+                                        },
+                                        "contents": {
+                                            "mode": "chose",
+                                            "items": [
+                                                {
+                                                    "role": {
+                                                        "mode": "chose",
+                                                        "label": "User"
+                                                    },
+                                                    "parts": {
+                                                        "mode": "chose",
+                                                        "items": [
+                                                            {
+                                                                "type": {
+                                                                    "mode": "chose",
+                                                                    "label": "Text"
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "url_context": {
+                                            "mode": "chose"
+                                        },
+                                        "code_execution": {
+                                            "mode": "chose"
+                                        },
+                                        "safetySettings": {
+                                            "mode": "chose"
+                                        },
+                                        "generationConfig": {
+                                            "nested": {
+                                                "stopSequences": {
+                                                    "mode": "chose"
+                                                },
+                                                "thinkingConfig": {
+                                                    "nested": {
+                                                        "include_thoughts": {
+                                                            "mode": "chose"
+                                                        }
+                                                    }
+                                                },
+                                                "responseMimeType": {
+                                                    "mode": "chose",
+                                                    "label": "Empty"
+                                                },
+                                                "responseModalities": {
+                                                    "mode": "chose"
+                                                }
+                                            }
+                                        },
+                                        "system_instruction": {
+                                            "nested": {
+                                                "parts": {
+                                                    "mode": "chose"
+                                                }
+                                            }
+                                        },
+                                        "google_search_context": {
+                                            "mode": "chose"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "gemini-ai-q9zyjp"
+                                            },
+                                            "label": "My Gemini AI connection"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:gemini-ai-q9zyjp",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "model",
+                                        "type": "select",
+                                        "label": "AI Model",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "contents",
+                                        "spec": [
+                                            {
+                                                "name": "role",
+                                                "type": "select",
+                                                "label": "Role",
+                                                "options": [
+                                                    {
+                                                        "label": "User",
+                                                        "value": "user"
+                                                    },
+                                                    {
+                                                        "label": "Model",
+                                                        "value": "model"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "name": "parts",
+                                                "spec": [
+                                                    {
+                                                        "name": "type",
+                                                        "type": "select",
+                                                        "label": "Message Type",
+                                                        "options": [
+                                                            {
+                                                                "label": "Text",
+                                                                "value": "text",
+                                                                "nested": [
+                                                                    {
+                                                                        "name": "text",
+                                                                        "type": "text",
+                                                                        "label": "Text",
+                                                                        "required": false
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                "label": "File",
+                                                                "value": "file",
+                                                                "nested": [
+                                                                    {
+                                                                        "name": "file_data",
+                                                                        "spec": [
+                                                                            {
+                                                                                "name": "mime_type",
+                                                                                "type": "text",
+                                                                                "label": "Mime Type",
+                                                                                "required": false
+                                                                            },
+                                                                            {
+                                                                                "help": "You get this from the 'Upload a File' module.",
+                                                                                "name": "file_uri",
+                                                                                "type": "text",
+                                                                                "label": "File URI",
+                                                                                "required": false
+                                                                            }
+                                                                        ],
+                                                                        "type": "collection",
+                                                                        "label": "File Data",
+                                                                        "required": false
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                ],
+                                                "type": "array",
+                                                "label": "Parts"
+                                            }
+                                        ],
+                                        "type": "array",
+                                        "label": "Messages",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "system_instruction",
+                                        "spec": [
+                                            {
+                                                "name": "parts",
+                                                "spec": {
+                                                    "name": "value",
+                                                    "spec": [
+                                                        {
+                                                            "name": "text",
+                                                            "type": "text",
+                                                            "label": "Value"
+                                                        }
+                                                    ],
+                                                    "type": "collection",
+                                                    "label": "Prompt"
+                                                },
+                                                "type": "array",
+                                                "label": "Prompts"
+                                            }
+                                        ],
+                                        "type": "collection",
+                                        "label": "System Instructions"
+                                    },
+                                    {
+                                        "name": "safetySettings",
+                                        "spec": [
+                                            {
+                                                "name": "category",
+                                                "type": "select",
+                                                "label": "Category",
+                                                "options": [
+                                                    {
+                                                        "label": "Harassment content",
+                                                        "value": "HARM_CATEGORY_HARASSMENT"
+                                                    },
+                                                    {
+                                                        "label": "Hate speech and content",
+                                                        "value": "HARM_CATEGORY_HATE_SPEECH"
+                                                    },
+                                                    {
+                                                        "label": "Sexually explicit content.",
+                                                        "value": "HARM_CATEGORY_SEXUALLY_EXPLICIT"
+                                                    },
+                                                    {
+                                                        "label": "Dangerous content:",
+                                                        "value": "HARM_CATEGORY_DANGEROUS_CONTENT"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "name": "threshold",
+                                                "type": "select",
+                                                "label": "Threshold",
+                                                "options": [
+                                                    {
+                                                        "label": "Block low and above.",
+                                                        "value": "BLOCK_LOW_AND_ABOVE"
+                                                    },
+                                                    {
+                                                        "label": "Block medium and above.",
+                                                        "value": "BLOCK_MEDIUM_AND_ABOVE"
+                                                    },
+                                                    {
+                                                        "label": "Block only high.",
+                                                        "value": "BLOCK_ONLY_HIGH"
+                                                    },
+                                                    {
+                                                        "label": "Block none.",
+                                                        "value": "BLOCK_NONE"
+                                                    }
+                                                ]
+                                            }
+                                        ],
+                                        "type": "array",
+                                        "label": "Safety Settings"
+                                    },
+                                    {
+                                        "name": "generationConfig",
+                                        "spec": [
+                                            {
+                                                "name": "stopSequences",
+                                                "spec": {
+                                                    "name": "value",
+                                                    "type": "text",
+                                                    "label": "Stop Sequence"
+                                                },
+                                                "type": "array",
+                                                "label": "Stop Sequences"
+                                            },
+                                            {
+                                                "name": "responseModalities",
+                                                "type": "select",
+                                                "label": "Response Modalities",
+                                                "multiple": true,
+                                                "validate": {
+                                                    "enum": [
+                                                        "text",
+                                                        "image"
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "name": "maxOutputTokens",
+                                                "type": "number",
+                                                "label": "Max Output Tokens"
+                                            },
+                                            {
+                                                "name": "temperature",
+                                                "type": "number",
+                                                "label": "Temperature",
+                                                "validate": {
+                                                    "max": 1,
+                                                    "min": 0
+                                                }
+                                            },
+                                            {
+                                                "name": "topP",
+                                                "type": "number",
+                                                "label": "Top P",
+                                                "validate": {
+                                                    "max": 1,
+                                                    "min": 0
+                                                }
+                                            },
+                                            {
+                                                "name": "topK",
+                                                "type": "number",
+                                                "label": "Top K"
+                                            },
+                                            {
+                                                "name": "thinkingConfig",
+                                                "spec": [
+                                                    {
+                                                        "name": "thinkingBudget",
+                                                        "type": "number",
+                                                        "label": "Thinking Budget"
+                                                    },
+                                                    {
+                                                        "name": "include_thoughts",
+                                                        "type": "boolean",
+                                                        "label": "Include Thoughts"
+                                                    }
+                                                ],
+                                                "type": "collection",
+                                                "label": "Thinking Config"
+                                            },
+                                            {
+                                                "name": "responseMimeType",
+                                                "type": "select",
+                                                "label": "Response Mime Type"
+                                            }
+                                        ],
+                                        "type": "collection",
+                                        "label": "Generation configurations"
+                                    },
+                                    {
+                                        "name": "tools",
+                                        "type": "any",
+                                        "label": "Tools"
+                                    },
+                                    {
+                                        "name": "tool_config",
+                                        "type": "any",
+                                        "label": "Tool Config"
+                                    },
+                                    {
+                                        "name": "url_context",
+                                        "type": "boolean",
+                                        "label": "URL Context"
+                                    },
+                                    {
+                                        "name": "google_search_context",
+                                        "type": "boolean",
+                                        "label": "Google Search Grounding"
+                                    },
+                                    {
+                                        "name": "code_execution",
+                                        "type": "boolean",
+                                        "label": "Code Execution"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": 28,
+                            "module": "gateway:WebhookRespond",
+                            "version": 1,
+                            "parameters": {},
+                            "mapper": {
+                                "body": "{{27.result}}",
+                                "status": "200",
+                                "headers": []
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 3253,
+                                    "y": 389
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "headers": {
+                                            "mode": "chose"
+                                        }
+                                    }
+                                },
+                                "expect": [
+                                    {
+                                        "name": "status",
+                                        "type": "uinteger",
+                                        "label": "Status",
+                                        "required": true,
+                                        "validate": {
+                                            "min": 100
+                                        }
+                                    },
+                                    {
+                                        "name": "body",
+                                        "type": "any",
+                                        "label": "Body"
+                                    },
+                                    {
+                                        "name": "headers",
+                                        "spec": [
+                                            {
+                                                "name": "key",
+                                                "type": "text",
+                                                "label": "Key",
+                                                "required": true,
+                                                "validate": {
+                                                    "max": 256
+                                                }
+                                            },
+                                            {
+                                                "name": "value",
+                                                "type": "text",
+                                                "label": "Value",
+                                                "required": true,
+                                                "validate": {
+                                                    "max": 4096
+                                                }
+                                            }
+                                        ],
+                                        "type": "array",
+                                        "label": "Custom headers",
+                                        "validate": {
+                                            "maxItems": 16
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "metadata": {
+        "instant": true,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "slots": null,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": {
+            "orphans": []
+        },
+        "zone": "eu2.make.com",
+        "notes": []
+    }
+}
