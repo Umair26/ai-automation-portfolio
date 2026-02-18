@@ -1,0 +1,2976 @@
+{
+    "name": "Asistente Peluquería",
+    "flow": [
+        {
+            "id": 1,
+            "module": "gateway:CustomWebHook",
+            "version": 1,
+            "parameters": {
+                "hook": 1657203,
+                "maxResults": 1
+            },
+            "mapper": {},
+            "metadata": {
+                "designer": {
+                    "x": -384,
+                    "y": -45
+                },
+                "restore": {
+                    "parameters": {
+                        "hook": {
+                            "data": {
+                                "editable": "true"
+                            },
+                            "label": "Asistente Peluquería"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "hook",
+                        "type": "hook:gateway-webhook",
+                        "label": "Webhook",
+                        "required": true
+                    },
+                    {
+                        "name": "maxResults",
+                        "type": "number",
+                        "label": "Maximum number of results"
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "message",
+                        "spec": [
+                            {
+                                "name": "type",
+                                "type": "text"
+                            },
+                            {
+                                "name": "toolCalls",
+                                "spec": {
+                                    "spec": [
+                                        {
+                                            "name": "id",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "name": "type",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "name": "function",
+                                            "spec": [
+                                                {
+                                                    "name": "name",
+                                                    "type": "text"
+                                                },
+                                                {
+                                                    "name": "arguments",
+                                                    "spec": [
+                                                        {
+                                                            "name": "Hora de reserva",
+                                                            "type": "text"
+                                                        },
+                                                        {
+                                                            "name": "Nombre del cliente",
+                                                            "type": "text"
+                                                        }
+                                                    ],
+                                                    "type": "collection"
+                                                }
+                                            ],
+                                            "type": "collection"
+                                        }
+                                    ],
+                                    "type": "collection"
+                                },
+                                "type": "array"
+                            },
+                            {
+                                "name": "toolCallList",
+                                "spec": {
+                                    "spec": [
+                                        {
+                                            "name": "id",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "name": "type",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "name": "function",
+                                            "spec": [
+                                                {
+                                                    "name": "name",
+                                                    "type": "text"
+                                                },
+                                                {
+                                                    "name": "arguments",
+                                                    "spec": [
+                                                        {
+                                                            "name": "Hora de reserva",
+                                                            "type": "text"
+                                                        },
+                                                        {
+                                                            "name": "Nombre del cliente",
+                                                            "type": "text"
+                                                        }
+                                                    ],
+                                                    "type": "collection"
+                                                }
+                                            ],
+                                            "type": "collection"
+                                        }
+                                    ],
+                                    "type": "collection"
+                                },
+                                "type": "array"
+                            },
+                            {
+                                "name": "toolWithToolCallList",
+                                "spec": {
+                                    "spec": [
+                                        {
+                                            "name": "type",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "name": "function",
+                                            "spec": [
+                                                {
+                                                    "name": "name",
+                                                    "type": "text"
+                                                },
+                                                {
+                                                    "name": "async",
+                                                    "type": "boolean"
+                                                },
+                                                {
+                                                    "name": "parameters",
+                                                    "spec": [
+                                                        {
+                                                            "name": "type",
+                                                            "type": "text"
+                                                        },
+                                                        {
+                                                            "name": "properties",
+                                                            "spec": [
+                                                                {
+                                                                    "name": "Hora de reserva",
+                                                                    "spec": [
+                                                                        {
+                                                                            "name": "type",
+                                                                            "type": "text"
+                                                                        },
+                                                                        {
+                                                                            "name": "description",
+                                                                            "type": "text"
+                                                                        }
+                                                                    ],
+                                                                    "type": "collection"
+                                                                },
+                                                                {
+                                                                    "name": "Nombre del cliente",
+                                                                    "spec": [
+                                                                        {
+                                                                            "name": "type",
+                                                                            "type": "text"
+                                                                        },
+                                                                        {
+                                                                            "name": "description",
+                                                                            "type": "text"
+                                                                        }
+                                                                    ],
+                                                                    "type": "collection"
+                                                                }
+                                                            ],
+                                                            "type": "collection"
+                                                        }
+                                                    ],
+                                                    "type": "collection"
+                                                },
+                                                {
+                                                    "name": "description",
+                                                    "type": "text"
+                                                }
+                                            ],
+                                            "type": "collection"
+                                        },
+                                        {
+                                            "name": "async",
+                                            "type": "boolean"
+                                        },
+                                        {
+                                            "name": "server",
+                                            "spec": [
+                                                {
+                                                    "name": "url",
+                                                    "type": "text"
+                                                }
+                                            ],
+                                            "type": "collection"
+                                        },
+                                        {
+                                            "name": "messages",
+                                            "type": "array"
+                                        },
+                                        {
+                                            "name": "toolCall",
+                                            "spec": [
+                                                {
+                                                    "name": "id",
+                                                    "type": "text"
+                                                },
+                                                {
+                                                    "name": "type",
+                                                    "type": "text"
+                                                },
+                                                {
+                                                    "name": "function",
+                                                    "spec": [
+                                                        {
+                                                            "name": "name",
+                                                            "type": "text"
+                                                        },
+                                                        {
+                                                            "name": "arguments",
+                                                            "spec": [
+                                                                {
+                                                                    "name": "Hora de reserva",
+                                                                    "type": "text"
+                                                                },
+                                                                {
+                                                                    "name": "Nombre del cliente",
+                                                                    "type": "text"
+                                                                }
+                                                            ],
+                                                            "type": "collection"
+                                                        }
+                                                    ],
+                                                    "type": "collection"
+                                                }
+                                            ],
+                                            "type": "collection"
+                                        }
+                                    ],
+                                    "type": "collection"
+                                },
+                                "type": "array"
+                            },
+                            {
+                                "name": "call",
+                                "spec": [
+                                    {
+                                        "name": "id",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "orgId",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "createdAt",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "updatedAt",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "type",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "status",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "phoneCallProvider",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "phoneCallProviderId",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "phoneCallTransport",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "phoneNumberId",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "assistantId",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "customer",
+                                        "spec": [
+                                            {
+                                                "name": "number",
+                                                "type": "text"
+                                            }
+                                        ],
+                                        "type": "collection"
+                                    }
+                                ],
+                                "type": "collection"
+                            },
+                            {
+                                "name": "phoneNumber",
+                                "spec": [
+                                    {
+                                        "name": "id",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "orgId",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "assistantId",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "number",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "createdAt",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "updatedAt",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "twilioAccountSid",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "twilioAuthToken",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "name",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "name": "provider",
+                                        "type": "text"
+                                    }
+                                ],
+                                "type": "collection"
+                            },
+                            {
+                                "name": "customer",
+                                "spec": [
+                                    {
+                                        "name": "number",
+                                        "type": "text"
+                                    }
+                                ],
+                                "type": "collection"
+                            },
+                            {
+                                "name": "artifact",
+                                "spec": [
+                                    {
+                                        "name": "messages",
+                                        "spec": {
+                                            "spec": [
+                                                {
+                                                    "name": "role",
+                                                    "type": "text"
+                                                },
+                                                {
+                                                    "name": "message",
+                                                    "type": "text"
+                                                },
+                                                {
+                                                    "name": "time",
+                                                    "type": "number"
+                                                },
+                                                {
+                                                    "name": "endTime",
+                                                    "type": "number"
+                                                },
+                                                {
+                                                    "name": "secondsFromStart",
+                                                    "type": "number"
+                                                },
+                                                {
+                                                    "name": "duration",
+                                                    "type": "number"
+                                                }
+                                            ],
+                                            "type": "collection"
+                                        },
+                                        "type": "array"
+                                    },
+                                    {
+                                        "name": "messagesOpenAIFormatted",
+                                        "spec": {
+                                            "spec": [
+                                                {
+                                                    "name": "role",
+                                                    "type": "text"
+                                                },
+                                                {
+                                                    "name": "content",
+                                                    "type": "text"
+                                                }
+                                            ],
+                                            "type": "collection"
+                                        },
+                                        "type": "array"
+                                    }
+                                ],
+                                "type": "collection"
+                            },
+                            {
+                                "name": "timestamp",
+                                "type": "text"
+                            }
+                        ],
+                        "type": "collection"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 2,
+            "module": "openai-gpt-3:CreateCompletion",
+            "version": 1,
+            "parameters": {
+                "__IMTCONN__": 2916133
+            },
+            "mapper": {
+                "model": "gpt-3.5-turbo",
+                "top_p": "1",
+                "select": "chat",
+                "messages": [
+                    {
+                        "role": "system",
+                        "content": "#Contexto\nAcabamos de preguntar al usuario cuando les gustaría cerrar una reunión. Serás dado de la fecha actual y su respuesta.\n\n#Instrucciones\nDebes devolver el tiempo de inicio y fin en formato JSON. Esto es esencial para nuestra empresa\n\n#Ejemplo de Output\n{\"startTime\": \"2024-06-28T09:00:00.00\", \n\"endTime\": \"2024-06-28T16:00:00.00\",\n\"chosenTime\": \"2024-06-28T10:00:00.00\"}\n\n#Reglas\n- El timpo de inicio debe ser siempre a las 09:00\n- El tiempo de fin debe ser siempre a las 16:00 \n- El tiempo de inicio y de fin deben ser siempre el mismo día\n- El tiempo devuelto debe ser siempre después del tiempo actual"
+                    },
+                    {
+                        "role": "user",
+                        "content": "Tiempo actual: {{now}} \n\nEsta es la fecha a la que el usuario le gustaría tener la reunión:\n{{1.message.toolCalls[].function.arguments.`Hora de reserva`}}"
+                    }
+                ],
+                "max_tokens": "250",
+                "temperature": "0.2",
+                "n_completions": "1",
+                "response_format": "text"
+            },
+            "metadata": {
+                "designer": {
+                    "x": -84,
+                    "y": -45
+                },
+                "restore": {
+                    "expect": {
+                        "stop": {
+                            "mode": "chose"
+                        },
+                        "model": {
+                            "mode": "chose",
+                            "label": "gpt-3.5-turbo"
+                        },
+                        "select": {
+                            "label": "Create a Chat Completion (GPT Models)"
+                        },
+                        "messages": {
+                            "mode": "chose",
+                            "items": [
+                                {
+                                    "role": {
+                                        "mode": "chose",
+                                        "label": "System"
+                                    }
+                                },
+                                {
+                                    "role": {
+                                        "mode": "chose",
+                                        "label": "User"
+                                    }
+                                }
+                            ]
+                        },
+                        "logit_bias": {
+                            "mode": "chose"
+                        },
+                        "response_format": {
+                            "mode": "chose",
+                            "label": "Text"
+                        },
+                        "additionalParameters": {
+                            "mode": "chose"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "openai-gpt-3"
+                            },
+                            "label": "My OpenAI connection"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:openai-gpt-3",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "select",
+                        "type": "select",
+                        "label": "Select Method",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "chat",
+                                "prompt"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "max_tokens",
+                        "type": "number",
+                        "label": "Max Tokens",
+                        "required": true
+                    },
+                    {
+                        "name": "temperature",
+                        "type": "number",
+                        "label": "Temperature",
+                        "validate": {
+                            "max": 2,
+                            "min": 0
+                        }
+                    },
+                    {
+                        "name": "top_p",
+                        "type": "number",
+                        "label": "Top P",
+                        "validate": {
+                            "max": 1,
+                            "min": 0
+                        }
+                    },
+                    {
+                        "name": "n_completions",
+                        "type": "number",
+                        "label": "Number"
+                    },
+                    {
+                        "name": "frequency_penalty",
+                        "type": "number",
+                        "label": "Frequency Penalty",
+                        "validate": {
+                            "max": 2,
+                            "min": -2
+                        }
+                    },
+                    {
+                        "name": "presence_penalty",
+                        "type": "number",
+                        "label": "Presence Penalty",
+                        "validate": {
+                            "max": 2,
+                            "min": -2
+                        }
+                    },
+                    {
+                        "name": "logit_bias",
+                        "spec": {
+                            "name": "value",
+                            "spec": [
+                                {
+                                    "name": "token",
+                                    "type": "text",
+                                    "label": "Token ID",
+                                    "required": true
+                                },
+                                {
+                                    "name": "probability",
+                                    "type": "number",
+                                    "label": "Probability",
+                                    "required": true,
+                                    "validate": {
+                                        "max": 100,
+                                        "min": -100
+                                    }
+                                }
+                            ],
+                            "type": "collection",
+                            "label": "Token Probability"
+                        },
+                        "type": "array",
+                        "label": "Token Probability"
+                    },
+                    {
+                        "name": "response_format",
+                        "type": "select",
+                        "label": "Response Format",
+                        "validate": {
+                            "enum": [
+                                "text",
+                                "json_object"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "seed",
+                        "type": "integer",
+                        "label": "Seed"
+                    },
+                    {
+                        "name": "stop",
+                        "spec": {
+                            "name": "value",
+                            "type": "text",
+                            "label": "Stop Sequence"
+                        },
+                        "type": "array",
+                        "label": "Stop Sequences",
+                        "validate": {
+                            "maxItems": 4
+                        }
+                    },
+                    {
+                        "name": "additionalParameters",
+                        "spec": {
+                            "name": "value",
+                            "spec": [
+                                {
+                                    "name": "key",
+                                    "type": "text",
+                                    "label": "Parameter Name",
+                                    "required": true
+                                },
+                                {
+                                    "name": "type",
+                                    "type": "select",
+                                    "label": "Input Type",
+                                    "options": [
+                                        {
+                                            "label": "Text",
+                                            "value": "text",
+                                            "nested": [
+                                                {
+                                                    "name": "value",
+                                                    "type": "text",
+                                                    "label": "Parameter Value"
+                                                }
+                                            ],
+                                            "default": true
+                                        },
+                                        {
+                                            "label": "Number",
+                                            "value": "number",
+                                            "nested": [
+                                                {
+                                                    "name": "value",
+                                                    "type": "number",
+                                                    "label": "Parameter Value"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "label": "Boolean",
+                                            "value": "boolean",
+                                            "nested": [
+                                                {
+                                                    "name": "value",
+                                                    "type": "boolean",
+                                                    "label": "Parameter Value"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "label": "Date",
+                                            "value": "date",
+                                            "nested": [
+                                                {
+                                                    "name": "value",
+                                                    "type": "date",
+                                                    "label": "Parameter Value"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "label": "Any",
+                                            "value": "any",
+                                            "nested": [
+                                                {
+                                                    "name": "value",
+                                                    "type": "any",
+                                                    "label": "Parameter Value"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ],
+                            "type": "collection",
+                            "label": "Input Parameter"
+                        },
+                        "type": "array",
+                        "label": "Other Input Parameters"
+                    },
+                    {
+                        "name": "model",
+                        "type": "select",
+                        "label": "Model",
+                        "required": true
+                    },
+                    {
+                        "name": "messages",
+                        "spec": {
+                            "name": "value",
+                            "spec": [
+                                {
+                                    "name": "role",
+                                    "type": "select",
+                                    "label": "Role",
+                                    "options": [
+                                        {
+                                            "label": "System",
+                                            "value": "system"
+                                        },
+                                        {
+                                            "label": "User",
+                                            "value": "user"
+                                        },
+                                        {
+                                            "label": "Assistant",
+                                            "value": "assistant"
+                                        }
+                                    ],
+                                    "required": true
+                                },
+                                {
+                                    "name": "content",
+                                    "type": "text",
+                                    "label": "Message Content"
+                                }
+                            ],
+                            "type": "collection",
+                            "label": "Message"
+                        },
+                        "type": "array",
+                        "label": "Messages",
+                        "required": true
+                    }
+                ],
+                "advanced": true
+            }
+        },
+        {
+            "id": 4,
+            "module": "json:ParseJSON",
+            "version": 1,
+            "parameters": {
+                "type": ""
+            },
+            "mapper": {
+                "json": "{{2.choices[].message.content}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 216,
+                    "y": -45
+                },
+                "restore": {
+                    "parameters": {
+                        "type": {
+                            "label": "Choose a data structure"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "type",
+                        "type": "udt",
+                        "label": "Data structure"
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "json",
+                        "type": "text",
+                        "label": "JSON string",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 5,
+            "module": "util:SetVariables",
+            "version": 1,
+            "parameters": {},
+            "mapper": {
+                "scope": "roundtrip",
+                "variables": [
+                    {
+                        "name": "horaElegida",
+                        "value": "{{formatDate(4.chosenTime; \"DD/MM/YYYY HH:mm\")}}"
+                    }
+                ]
+            },
+            "metadata": {
+                "designer": {
+                    "x": 516,
+                    "y": -45
+                },
+                "restore": {
+                    "expect": {
+                        "scope": {
+                            "label": "One cycle"
+                        },
+                        "variables": {
+                            "items": [
+                                null
+                            ]
+                        }
+                    }
+                },
+                "expect": [
+                    {
+                        "name": "variables",
+                        "spec": [
+                            {
+                                "name": "name",
+                                "type": "text",
+                                "label": "Variable name",
+                                "required": true
+                            },
+                            {
+                                "name": "value",
+                                "type": "any",
+                                "label": "Variable value"
+                            }
+                        ],
+                        "type": "array",
+                        "label": "Variables"
+                    },
+                    {
+                        "name": "scope",
+                        "type": "select",
+                        "label": "Variable lifetime",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "roundtrip",
+                                "execution"
+                            ]
+                        }
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "horaElegida",
+                        "type": "any",
+                        "label": "horaElegida"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 6,
+            "module": "google-calendar:getFreeBusyInformation",
+            "version": 5,
+            "parameters": {
+                "__IMTCONN__": 3036994
+            },
+            "mapper": {
+                "item": [
+                    {
+                        "id": "diego.sainz.balboa@gmail.com"
+                    }
+                ],
+                "timeMax": "{{4.endTime}}",
+                "timeMin": "{{4.startTime}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 816,
+                    "y": -45
+                },
+                "restore": {
+                    "expect": {
+                        "item": {
+                            "mode": "chose",
+                            "items": [
+                                {
+                                    "id": {
+                                        "mode": "chose",
+                                        "label": "diego.sainz.balboa@gmail.com (Primary Calendar)"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "google"
+                            },
+                            "label": "My Google connection (diego.sainz.balboa@gmail.com)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:google",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "timeMin",
+                        "time": true,
+                        "type": "date",
+                        "label": "Minimum Time",
+                        "required": true
+                    },
+                    {
+                        "name": "timeMax",
+                        "time": true,
+                        "type": "date",
+                        "label": "Maximum Time",
+                        "required": true
+                    },
+                    {
+                        "name": "item",
+                        "spec": [
+                            {
+                                "mode": "edit",
+                                "name": "id",
+                                "type": "select",
+                                "label": "Calendar ID",
+                                "dynamic": true,
+                                "options": [],
+                                "required": true
+                            }
+                        ],
+                        "type": "array",
+                        "label": "Calendars",
+                        "required": true
+                    },
+                    {
+                        "name": "timeMin",
+                        "time": true,
+                        "type": "date",
+                        "label": "Minimum Time",
+                        "required": true
+                    },
+                    {
+                        "name": "timeMax",
+                        "time": true,
+                        "type": "date",
+                        "label": "Maximum Time",
+                        "required": true
+                    },
+                    {
+                        "name": "item",
+                        "spec": [
+                            {
+                                "mode": "edit",
+                                "name": "id",
+                                "type": "select",
+                                "label": "Calendar ID",
+                                "dynamic": true,
+                                "options": [],
+                                "required": true
+                            }
+                        ],
+                        "type": "array",
+                        "label": "Calendars",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 8,
+            "module": "builtin:BasicRouter",
+            "version": 1,
+            "mapper": null,
+            "metadata": {
+                "designer": {
+                    "x": 1116,
+                    "y": -45
+                }
+            },
+            "routes": [
+                {
+                    "flow": [
+                        {
+                            "id": 9,
+                            "module": "google-calendar:createAnEvent",
+                            "version": 5,
+                            "parameters": {
+                                "__IMTCONN__": 3036994
+                            },
+                            "filter": {
+                                "name": "No ocupado",
+                                "conditions": [
+                                    [
+                                        {
+                                            "a": "{{6.calendars.`diego.sainz.balboa@gmail.com`.busy}}",
+                                            "b": "",
+                                            "o": "text:equal"
+                                        }
+                                    ]
+                                ]
+                            },
+                            "mapper": {
+                                "start": "{{4.chosenTime}}",
+                                "select": "detail",
+                                "summary": "Cita de {{1.message.toolCalls[].function.arguments.`Nombre del cliente`}}",
+                                "calendar": "diego.sainz.balboa@gmail.com",
+                                "duration": "00:15",
+                                "visibility": "default",
+                                "allDayEvent": false,
+                                "transparency": "opaque",
+                                "conferenceDate": false,
+                                "guestsCanModify": false
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 1416,
+                                    "y": -195
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "select": {
+                                            "label": "In Detail"
+                                        },
+                                        "colorId": {
+                                            "mode": "chose"
+                                        },
+                                        "calendar": {
+                                            "mode": "chose",
+                                            "label": "diego.sainz.balboa@gmail.com (Primary Calendar)"
+                                        },
+                                        "attendees": {
+                                            "mode": "chose"
+                                        },
+                                        "overrides": {
+                                            "mode": "chose"
+                                        },
+                                        "recurrence": {
+                                            "mode": "chose"
+                                        },
+                                        "visibility": {
+                                            "mode": "chose",
+                                            "label": "Default"
+                                        },
+                                        "allDayEvent": {
+                                            "mode": "chose"
+                                        },
+                                        "attachments": {
+                                            "mode": "chose"
+                                        },
+                                        "sendUpdates": {
+                                            "mode": "chose",
+                                            "label": "Empty"
+                                        },
+                                        "transparency": {
+                                            "mode": "chose",
+                                            "label": "Busy"
+                                        },
+                                        "conferenceDate": {
+                                            "mode": "chose"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "google"
+                                            },
+                                            "label": "My Google connection (diego.sainz.balboa@gmail.com)"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:google",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "select",
+                                        "type": "select",
+                                        "label": "Create an Event",
+                                        "required": true,
+                                        "validate": {
+                                            "enum": [
+                                                "quick",
+                                                "detail"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "calendar",
+                                        "type": "select",
+                                        "label": "Calendar ID",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "colorId",
+                                        "type": "select",
+                                        "label": "Color"
+                                    },
+                                    {
+                                        "name": "summary",
+                                        "type": "text",
+                                        "label": "Event Name",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "allDayEvent",
+                                        "type": "boolean",
+                                        "label": "All Day Event",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "start",
+                                        "time": true,
+                                        "type": "date",
+                                        "label": "Start Date",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "end",
+                                        "time": true,
+                                        "type": "date",
+                                        "label": "End Date"
+                                    },
+                                    {
+                                        "name": "duration",
+                                        "type": "time",
+                                        "label": "Duration"
+                                    },
+                                    {
+                                        "name": "description",
+                                        "type": "text",
+                                        "label": "Description"
+                                    },
+                                    {
+                                        "name": "location",
+                                        "type": "text",
+                                        "label": "Location"
+                                    },
+                                    {
+                                        "name": "useDefault",
+                                        "type": "boolean",
+                                        "label": "Use the default reminder settings for this event"
+                                    },
+                                    {
+                                        "name": "overrides",
+                                        "spec": [
+                                            {
+                                                "name": "method",
+                                                "type": "select",
+                                                "label": "Method",
+                                                "options": [
+                                                    {
+                                                        "label": "Email",
+                                                        "value": "email"
+                                                    },
+                                                    {
+                                                        "label": "Pop-up",
+                                                        "value": "popup"
+                                                    }
+                                                ],
+                                                "required": true
+                                            },
+                                            {
+                                                "name": "minutes",
+                                                "type": "uinteger",
+                                                "label": "Minutes",
+                                                "required": true,
+                                                "validate": {
+                                                    "max": 40320
+                                                }
+                                            }
+                                        ],
+                                        "type": "array",
+                                        "label": "Reminders",
+                                        "validate": {
+                                            "maxItems": 5
+                                        }
+                                    },
+                                    {
+                                        "name": "attendees",
+                                        "spec": [
+                                            {
+                                                "name": "displayName",
+                                                "type": "text",
+                                                "label": "Name"
+                                            },
+                                            {
+                                                "name": "email",
+                                                "type": "email",
+                                                "label": "Email",
+                                                "required": true
+                                            }
+                                        ],
+                                        "type": "array",
+                                        "label": "Attendees"
+                                    },
+                                    {
+                                        "name": "transparency",
+                                        "type": "select",
+                                        "label": "Show me as",
+                                        "required": true,
+                                        "validate": {
+                                            "enum": [
+                                                "opaque",
+                                                "transparent"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "visibility",
+                                        "type": "select",
+                                        "label": "Visibility",
+                                        "required": true,
+                                        "validate": {
+                                            "enum": [
+                                                "default",
+                                                "public",
+                                                "private"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "sendUpdates",
+                                        "type": "select",
+                                        "label": "Send notifications about the event creation",
+                                        "validate": {
+                                            "enum": [
+                                                "all",
+                                                "externalOnly",
+                                                "none"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "guestsCanModify",
+                                        "type": "boolean",
+                                        "label": "Guests can modify the event",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "recurrence",
+                                        "spec": {
+                                            "name": "value",
+                                            "type": "text",
+                                            "label": "Value"
+                                        },
+                                        "type": "array",
+                                        "label": "Recurrence"
+                                    },
+                                    {
+                                        "name": "conferenceDate",
+                                        "type": "boolean",
+                                        "label": "Add Google Meet Video Conferencing",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "attachments",
+                                        "spec": [
+                                            {
+                                                "name": "fileUrl",
+                                                "type": "url",
+                                                "label": "File URL",
+                                                "required": true
+                                            }
+                                        ],
+                                        "type": "array",
+                                        "label": "Attachments"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": 10,
+                            "module": "twilio:SendSMS",
+                            "version": 2,
+                            "parameters": {
+                                "__IMTCONN__": 3057849
+                            },
+                            "mapper": {
+                                "to": "{{1.message.customer.number}}",
+                                "body": "Hola {{1.message.toolCalls[].function.arguments.`Nombre del cliente`}}, gracias por reservar una cita en la Peluquería de Diego Sainz.\n\nTu cita ha sido reservada para {{5.horaElegida}}. Recuerda llegar con 5 minutos de antelación para evitar retrasos y desajustes en el día",
+                                "from": "+12063502278",
+                                "fromType": "phone",
+                                "messageBody": "body"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 1716,
+                                    "y": -195
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "from": {
+                                            "mode": "chose",
+                                            "label": "(206) 350-2278"
+                                        },
+                                        "fromType": {
+                                            "mode": "chose",
+                                            "label": "phone number"
+                                        },
+                                        "mediaUrl": {
+                                            "mode": "chose"
+                                        },
+                                        "messageBody": {
+                                            "mode": "chose",
+                                            "label": "Create a Body"
+                                        },
+                                        "smartEncoded": {
+                                            "mode": "chose"
+                                        },
+                                        "applicationSid": {
+                                            "mode": "chose",
+                                            "label": "Empty"
+                                        },
+                                        "provideFeedback": {
+                                            "mode": "chose"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "twilio"
+                                            },
+                                            "label": "My Twilio connection"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:twilio",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "fromType",
+                                        "type": "select",
+                                        "label": "Send a message from",
+                                        "required": true,
+                                        "validate": {
+                                            "enum": [
+                                                "phone",
+                                                "service",
+                                                "channel"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "to",
+                                        "type": "text",
+                                        "label": "To",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "messageBody",
+                                        "type": "select",
+                                        "label": "Message Body",
+                                        "required": true,
+                                        "validate": {
+                                            "enum": [
+                                                "body",
+                                                "template"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "mediaUrl",
+                                        "spec": {
+                                            "name": "value",
+                                            "type": "url"
+                                        },
+                                        "type": "array",
+                                        "label": "Media URL"
+                                    },
+                                    {
+                                        "name": "smartEncoded",
+                                        "type": "boolean",
+                                        "label": "Smart encoded"
+                                    },
+                                    {
+                                        "name": "validityPeriod",
+                                        "type": "uinteger",
+                                        "label": "Validity period"
+                                    },
+                                    {
+                                        "name": "statusCallback",
+                                        "type": "url",
+                                        "label": "Status callback"
+                                    },
+                                    {
+                                        "name": "applicationSid",
+                                        "type": "select",
+                                        "label": "Application"
+                                    },
+                                    {
+                                        "name": "maxPrice",
+                                        "type": "number",
+                                        "label": "Max price"
+                                    },
+                                    {
+                                        "name": "provideFeedback",
+                                        "type": "boolean",
+                                        "label": "Provide feedback"
+                                    },
+                                    {
+                                        "name": "from",
+                                        "type": "select",
+                                        "label": "Phone number",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "body",
+                                        "type": "text",
+                                        "label": "Body",
+                                        "required": true,
+                                        "validate": {
+                                            "max": 1600
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": 11,
+                            "module": "gateway:WebhookRespond",
+                            "version": 1,
+                            "parameters": {},
+                            "mapper": {
+                                "body": "La cita ha sido reservada con éxito",
+                                "status": "200",
+                                "headers": []
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 2016,
+                                    "y": -195
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "headers": {
+                                            "mode": "chose"
+                                        }
+                                    }
+                                },
+                                "expect": [
+                                    {
+                                        "name": "status",
+                                        "type": "uinteger",
+                                        "label": "Status",
+                                        "required": true,
+                                        "validate": {
+                                            "min": 100
+                                        }
+                                    },
+                                    {
+                                        "name": "body",
+                                        "type": "any",
+                                        "label": "Body"
+                                    },
+                                    {
+                                        "name": "headers",
+                                        "spec": [
+                                            {
+                                                "name": "key",
+                                                "type": "text",
+                                                "label": "Key",
+                                                "required": true,
+                                                "validate": {
+                                                    "max": 256
+                                                }
+                                            },
+                                            {
+                                                "name": "value",
+                                                "type": "text",
+                                                "label": "Value",
+                                                "required": true,
+                                                "validate": {
+                                                    "max": 4096
+                                                }
+                                            }
+                                        ],
+                                        "type": "array",
+                                        "label": "Custom headers",
+                                        "validate": {
+                                            "maxItems": 16
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "flow": [
+                        {
+                            "id": 12,
+                            "module": "json:TransformToJSON",
+                            "version": 1,
+                            "parameters": {
+                                "space": ""
+                            },
+                            "filter": {
+                                "name": "Ocupado",
+                                "conditions": [
+                                    [
+                                        {
+                                            "a": "{{6.calendars.`diego.sainz.balboa@gmail.com`.busy}}",
+                                            "b": "",
+                                            "o": "text:notequal"
+                                        }
+                                    ]
+                                ]
+                            },
+                            "mapper": {
+                                "object": "{{6.calendars.`diego.sainz.balboa@gmail.com`.busy}}"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 1416,
+                                    "y": 105
+                                },
+                                "restore": {
+                                    "parameters": {
+                                        "space": {
+                                            "label": "Empty"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "space",
+                                        "type": "select",
+                                        "label": "Indentation",
+                                        "validate": {
+                                            "enum": [
+                                                "tab",
+                                                "2",
+                                                "4"
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "object",
+                                        "type": "any",
+                                        "label": "Object"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": 13,
+                            "module": "openai-gpt-3:CreateCompletion",
+                            "version": 1,
+                            "parameters": {
+                                "__IMTCONN__": 2916133
+                            },
+                            "mapper": {
+                                "model": "gpt-3.5-turbo",
+                                "top_p": "1",
+                                "select": "chat",
+                                "messages": [
+                                    {
+                                        "role": "system",
+                                        "content": "#Slots ocupados: \n{{12.json}}\n#Slot deseado: \n{{4.chosenTime}}\n#Context: \nVas a recibir los slots que están ocupados dentro del calendario de Diego Sainz. Todos los slots ocupados empiezan con 'start' y para con 'end' \n\n#Task \nDecide si el slot deseado coincide con los slots ocupados \n\n#Ejemplo de respuesta: \nTrue or False"
+                                    }
+                                ],
+                                "max_tokens": "250",
+                                "temperature": "0.2",
+                                "n_completions": "1",
+                                "response_format": "text"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 1716,
+                                    "y": 105
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "stop": {
+                                            "mode": "chose"
+                                        },
+                                        "model": {
+                                            "mode": "chose",
+                                            "label": "gpt-3.5-turbo"
+                                        },
+                                        "select": {
+                                            "label": "Create a Chat Completion (GPT Models)"
+                                        },
+                                        "messages": {
+                                            "mode": "chose",
+                                            "items": [
+                                                {
+                                                    "role": {
+                                                        "mode": "chose",
+                                                        "label": "System"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "logit_bias": {
+                                            "mode": "chose"
+                                        },
+                                        "response_format": {
+                                            "mode": "chose",
+                                            "label": "Text"
+                                        },
+                                        "additionalParameters": {
+                                            "mode": "chose"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "openai-gpt-3"
+                                            },
+                                            "label": "My OpenAI connection"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:openai-gpt-3",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "select",
+                                        "type": "select",
+                                        "label": "Select Method",
+                                        "required": true,
+                                        "validate": {
+                                            "enum": [
+                                                "chat",
+                                                "prompt"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "max_tokens",
+                                        "type": "number",
+                                        "label": "Max Tokens",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "temperature",
+                                        "type": "number",
+                                        "label": "Temperature",
+                                        "validate": {
+                                            "max": 2,
+                                            "min": 0
+                                        }
+                                    },
+                                    {
+                                        "name": "top_p",
+                                        "type": "number",
+                                        "label": "Top P",
+                                        "validate": {
+                                            "max": 1,
+                                            "min": 0
+                                        }
+                                    },
+                                    {
+                                        "name": "n_completions",
+                                        "type": "number",
+                                        "label": "Number"
+                                    },
+                                    {
+                                        "name": "frequency_penalty",
+                                        "type": "number",
+                                        "label": "Frequency Penalty",
+                                        "validate": {
+                                            "max": 2,
+                                            "min": -2
+                                        }
+                                    },
+                                    {
+                                        "name": "presence_penalty",
+                                        "type": "number",
+                                        "label": "Presence Penalty",
+                                        "validate": {
+                                            "max": 2,
+                                            "min": -2
+                                        }
+                                    },
+                                    {
+                                        "name": "logit_bias",
+                                        "spec": {
+                                            "name": "value",
+                                            "spec": [
+                                                {
+                                                    "name": "token",
+                                                    "type": "text",
+                                                    "label": "Token ID",
+                                                    "required": true
+                                                },
+                                                {
+                                                    "name": "probability",
+                                                    "type": "number",
+                                                    "label": "Probability",
+                                                    "required": true,
+                                                    "validate": {
+                                                        "max": 100,
+                                                        "min": -100
+                                                    }
+                                                }
+                                            ],
+                                            "type": "collection",
+                                            "label": "Token Probability"
+                                        },
+                                        "type": "array",
+                                        "label": "Token Probability"
+                                    },
+                                    {
+                                        "name": "response_format",
+                                        "type": "select",
+                                        "label": "Response Format",
+                                        "validate": {
+                                            "enum": [
+                                                "text",
+                                                "json_object"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "seed",
+                                        "type": "integer",
+                                        "label": "Seed"
+                                    },
+                                    {
+                                        "name": "stop",
+                                        "spec": {
+                                            "name": "value",
+                                            "type": "text",
+                                            "label": "Stop Sequence"
+                                        },
+                                        "type": "array",
+                                        "label": "Stop Sequences",
+                                        "validate": {
+                                            "maxItems": 4
+                                        }
+                                    },
+                                    {
+                                        "name": "additionalParameters",
+                                        "spec": {
+                                            "name": "value",
+                                            "spec": [
+                                                {
+                                                    "name": "key",
+                                                    "type": "text",
+                                                    "label": "Parameter Name",
+                                                    "required": true
+                                                },
+                                                {
+                                                    "name": "type",
+                                                    "type": "select",
+                                                    "label": "Input Type",
+                                                    "options": [
+                                                        {
+                                                            "label": "Text",
+                                                            "value": "text",
+                                                            "nested": [
+                                                                {
+                                                                    "name": "value",
+                                                                    "type": "text",
+                                                                    "label": "Parameter Value"
+                                                                }
+                                                            ],
+                                                            "default": true
+                                                        },
+                                                        {
+                                                            "label": "Number",
+                                                            "value": "number",
+                                                            "nested": [
+                                                                {
+                                                                    "name": "value",
+                                                                    "type": "number",
+                                                                    "label": "Parameter Value"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "label": "Boolean",
+                                                            "value": "boolean",
+                                                            "nested": [
+                                                                {
+                                                                    "name": "value",
+                                                                    "type": "boolean",
+                                                                    "label": "Parameter Value"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "label": "Date",
+                                                            "value": "date",
+                                                            "nested": [
+                                                                {
+                                                                    "name": "value",
+                                                                    "type": "date",
+                                                                    "label": "Parameter Value"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "label": "Any",
+                                                            "value": "any",
+                                                            "nested": [
+                                                                {
+                                                                    "name": "value",
+                                                                    "type": "any",
+                                                                    "label": "Parameter Value"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ],
+                                            "type": "collection",
+                                            "label": "Input Parameter"
+                                        },
+                                        "type": "array",
+                                        "label": "Other Input Parameters"
+                                    },
+                                    {
+                                        "name": "model",
+                                        "type": "select",
+                                        "label": "Model",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "messages",
+                                        "spec": {
+                                            "name": "value",
+                                            "spec": [
+                                                {
+                                                    "name": "role",
+                                                    "type": "select",
+                                                    "label": "Role",
+                                                    "options": [
+                                                        {
+                                                            "label": "System",
+                                                            "value": "system"
+                                                        },
+                                                        {
+                                                            "label": "User",
+                                                            "value": "user"
+                                                        },
+                                                        {
+                                                            "label": "Assistant",
+                                                            "value": "assistant"
+                                                        }
+                                                    ],
+                                                    "required": true
+                                                },
+                                                {
+                                                    "name": "content",
+                                                    "type": "text",
+                                                    "label": "Message Content"
+                                                }
+                                            ],
+                                            "type": "collection",
+                                            "label": "Message"
+                                        },
+                                        "type": "array",
+                                        "label": "Messages",
+                                        "required": true
+                                    }
+                                ],
+                                "advanced": true
+                            }
+                        },
+                        {
+                            "id": 14,
+                            "module": "builtin:BasicRouter",
+                            "version": 1,
+                            "mapper": null,
+                            "metadata": {
+                                "designer": {
+                                    "x": 2016,
+                                    "y": 105
+                                }
+                            },
+                            "routes": [
+                                {
+                                    "flow": [
+                                        {
+                                            "id": 19,
+                                            "module": "builtin:BasicFeeder",
+                                            "version": 1,
+                                            "parameters": {},
+                                            "filter": {
+                                                "name": "Slot ocupado",
+                                                "conditions": [
+                                                    [
+                                                        {
+                                                            "a": "{{13.choices[].message.content}}",
+                                                            "b": "True",
+                                                            "o": "text:equal"
+                                                        }
+                                                    ]
+                                                ]
+                                            },
+                                            "mapper": {
+                                                "array": "{{6.calendars.`diego.sainz.balboa@gmail.com`.busy}}"
+                                            },
+                                            "metadata": {
+                                                "designer": {
+                                                    "x": 2335,
+                                                    "y": 315
+                                                },
+                                                "restore": {
+                                                    "expect": {
+                                                        "array": {
+                                                            "mode": "edit"
+                                                        }
+                                                    }
+                                                },
+                                                "expect": [
+                                                    {
+                                                        "mode": "edit",
+                                                        "name": "array",
+                                                        "spec": [],
+                                                        "type": "array",
+                                                        "label": "Array"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "id": 21,
+                                            "module": "util:TextAggregator",
+                                            "version": 1,
+                                            "parameters": {
+                                                "feeder": 19,
+                                                "rowSeparator": ""
+                                            },
+                                            "mapper": {
+                                                "value": "{{19.start}} a {{19.end}}"
+                                            },
+                                            "metadata": {
+                                                "designer": {
+                                                    "x": 2635,
+                                                    "y": 315
+                                                },
+                                                "restore": {
+                                                    "extra": {
+                                                        "feeder": {
+                                                            "label": "Iterator [19]"
+                                                        }
+                                                    },
+                                                    "parameters": {
+                                                        "rowSeparator": {
+                                                            "label": "Empty"
+                                                        }
+                                                    }
+                                                },
+                                                "parameters": [
+                                                    {
+                                                        "name": "rowSeparator",
+                                                        "type": "select",
+                                                        "label": "Row separator",
+                                                        "validate": {
+                                                            "enum": [
+                                                                "\n",
+                                                                "\t",
+                                                                "other"
+                                                            ]
+                                                        }
+                                                    }
+                                                ],
+                                                "expect": [
+                                                    {
+                                                        "name": "value",
+                                                        "type": "text",
+                                                        "label": "Text"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "id": 22,
+                                            "module": "openai-gpt-3:CreateCompletion",
+                                            "version": 1,
+                                            "parameters": {
+                                                "__IMTCONN__": 2916133
+                                            },
+                                            "mapper": {
+                                                "model": "gpt-3.5-turbo",
+                                                "top_p": "1",
+                                                "select": "chat",
+                                                "messages": [
+                                                    {
+                                                        "role": "system",
+                                                        "content": "#Slots ocupados\n{{21.text}}\n\n#Contexto\n-Cada slot ocupado comienza con una nueva línea numerada\n-Cada día es desde las 09:00 hasta las 16:00\n\n#Instrucciones\n\nEres un experto asistente que se encarga de comprobar slots libres dentro del calendario de la Peluquería de Diego Sainz. Debes devolver 3 franjas horarias que estén libres (recuerda que empiezan cada 15 minutos). Sólo devuelve la hora de inicio de las franjas horarias\n\n#Ejemplo de devolución\nFranjas horarias disponibles:\n09:30, 11:45 y 15:30"
+                                                    }
+                                                ],
+                                                "max_tokens": "250",
+                                                "temperature": "0.2",
+                                                "n_completions": "1",
+                                                "response_format": "text"
+                                            },
+                                            "metadata": {
+                                                "designer": {
+                                                    "x": 2935,
+                                                    "y": 315
+                                                },
+                                                "restore": {
+                                                    "expect": {
+                                                        "stop": {
+                                                            "mode": "chose"
+                                                        },
+                                                        "model": {
+                                                            "mode": "chose",
+                                                            "label": "gpt-3.5-turbo"
+                                                        },
+                                                        "select": {
+                                                            "label": "Create a Chat Completion (GPT Models)"
+                                                        },
+                                                        "messages": {
+                                                            "mode": "chose",
+                                                            "items": [
+                                                                {
+                                                                    "role": {
+                                                                        "mode": "chose",
+                                                                        "label": "System"
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        "logit_bias": {
+                                                            "mode": "chose"
+                                                        },
+                                                        "response_format": {
+                                                            "mode": "chose",
+                                                            "label": "Text"
+                                                        },
+                                                        "additionalParameters": {
+                                                            "mode": "chose"
+                                                        }
+                                                    },
+                                                    "parameters": {
+                                                        "__IMTCONN__": {
+                                                            "data": {
+                                                                "scoped": "true",
+                                                                "connection": "openai-gpt-3"
+                                                            },
+                                                            "label": "My OpenAI connection"
+                                                        }
+                                                    }
+                                                },
+                                                "parameters": [
+                                                    {
+                                                        "name": "__IMTCONN__",
+                                                        "type": "account:openai-gpt-3",
+                                                        "label": "Connection",
+                                                        "required": true
+                                                    }
+                                                ],
+                                                "expect": [
+                                                    {
+                                                        "name": "select",
+                                                        "type": "select",
+                                                        "label": "Select Method",
+                                                        "required": true,
+                                                        "validate": {
+                                                            "enum": [
+                                                                "chat",
+                                                                "prompt"
+                                                            ]
+                                                        }
+                                                    },
+                                                    {
+                                                        "name": "max_tokens",
+                                                        "type": "number",
+                                                        "label": "Max Tokens",
+                                                        "required": true
+                                                    },
+                                                    {
+                                                        "name": "temperature",
+                                                        "type": "number",
+                                                        "label": "Temperature",
+                                                        "validate": {
+                                                            "max": 2,
+                                                            "min": 0
+                                                        }
+                                                    },
+                                                    {
+                                                        "name": "top_p",
+                                                        "type": "number",
+                                                        "label": "Top P",
+                                                        "validate": {
+                                                            "max": 1,
+                                                            "min": 0
+                                                        }
+                                                    },
+                                                    {
+                                                        "name": "n_completions",
+                                                        "type": "number",
+                                                        "label": "Number"
+                                                    },
+                                                    {
+                                                        "name": "frequency_penalty",
+                                                        "type": "number",
+                                                        "label": "Frequency Penalty",
+                                                        "validate": {
+                                                            "max": 2,
+                                                            "min": -2
+                                                        }
+                                                    },
+                                                    {
+                                                        "name": "presence_penalty",
+                                                        "type": "number",
+                                                        "label": "Presence Penalty",
+                                                        "validate": {
+                                                            "max": 2,
+                                                            "min": -2
+                                                        }
+                                                    },
+                                                    {
+                                                        "name": "logit_bias",
+                                                        "spec": {
+                                                            "name": "value",
+                                                            "spec": [
+                                                                {
+                                                                    "name": "token",
+                                                                    "type": "text",
+                                                                    "label": "Token ID",
+                                                                    "required": true
+                                                                },
+                                                                {
+                                                                    "name": "probability",
+                                                                    "type": "number",
+                                                                    "label": "Probability",
+                                                                    "required": true,
+                                                                    "validate": {
+                                                                        "max": 100,
+                                                                        "min": -100
+                                                                    }
+                                                                }
+                                                            ],
+                                                            "type": "collection",
+                                                            "label": "Token Probability"
+                                                        },
+                                                        "type": "array",
+                                                        "label": "Token Probability"
+                                                    },
+                                                    {
+                                                        "name": "response_format",
+                                                        "type": "select",
+                                                        "label": "Response Format",
+                                                        "validate": {
+                                                            "enum": [
+                                                                "text",
+                                                                "json_object"
+                                                            ]
+                                                        }
+                                                    },
+                                                    {
+                                                        "name": "seed",
+                                                        "type": "integer",
+                                                        "label": "Seed"
+                                                    },
+                                                    {
+                                                        "name": "stop",
+                                                        "spec": {
+                                                            "name": "value",
+                                                            "type": "text",
+                                                            "label": "Stop Sequence"
+                                                        },
+                                                        "type": "array",
+                                                        "label": "Stop Sequences",
+                                                        "validate": {
+                                                            "maxItems": 4
+                                                        }
+                                                    },
+                                                    {
+                                                        "name": "additionalParameters",
+                                                        "spec": {
+                                                            "name": "value",
+                                                            "spec": [
+                                                                {
+                                                                    "name": "key",
+                                                                    "type": "text",
+                                                                    "label": "Parameter Name",
+                                                                    "required": true
+                                                                },
+                                                                {
+                                                                    "name": "type",
+                                                                    "type": "select",
+                                                                    "label": "Input Type",
+                                                                    "options": [
+                                                                        {
+                                                                            "label": "Text",
+                                                                            "value": "text",
+                                                                            "nested": [
+                                                                                {
+                                                                                    "name": "value",
+                                                                                    "type": "text",
+                                                                                    "label": "Parameter Value"
+                                                                                }
+                                                                            ],
+                                                                            "default": true
+                                                                        },
+                                                                        {
+                                                                            "label": "Number",
+                                                                            "value": "number",
+                                                                            "nested": [
+                                                                                {
+                                                                                    "name": "value",
+                                                                                    "type": "number",
+                                                                                    "label": "Parameter Value"
+                                                                                }
+                                                                            ]
+                                                                        },
+                                                                        {
+                                                                            "label": "Boolean",
+                                                                            "value": "boolean",
+                                                                            "nested": [
+                                                                                {
+                                                                                    "name": "value",
+                                                                                    "type": "boolean",
+                                                                                    "label": "Parameter Value"
+                                                                                }
+                                                                            ]
+                                                                        },
+                                                                        {
+                                                                            "label": "Date",
+                                                                            "value": "date",
+                                                                            "nested": [
+                                                                                {
+                                                                                    "name": "value",
+                                                                                    "type": "date",
+                                                                                    "label": "Parameter Value"
+                                                                                }
+                                                                            ]
+                                                                        },
+                                                                        {
+                                                                            "label": "Any",
+                                                                            "value": "any",
+                                                                            "nested": [
+                                                                                {
+                                                                                    "name": "value",
+                                                                                    "type": "any",
+                                                                                    "label": "Parameter Value"
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ],
+                                                            "type": "collection",
+                                                            "label": "Input Parameter"
+                                                        },
+                                                        "type": "array",
+                                                        "label": "Other Input Parameters"
+                                                    },
+                                                    {
+                                                        "name": "model",
+                                                        "type": "select",
+                                                        "label": "Model",
+                                                        "required": true
+                                                    },
+                                                    {
+                                                        "name": "messages",
+                                                        "spec": {
+                                                            "name": "value",
+                                                            "spec": [
+                                                                {
+                                                                    "name": "role",
+                                                                    "type": "select",
+                                                                    "label": "Role",
+                                                                    "options": [
+                                                                        {
+                                                                            "label": "System",
+                                                                            "value": "system"
+                                                                        },
+                                                                        {
+                                                                            "label": "User",
+                                                                            "value": "user"
+                                                                        },
+                                                                        {
+                                                                            "label": "Assistant",
+                                                                            "value": "assistant"
+                                                                        }
+                                                                    ],
+                                                                    "required": true
+                                                                },
+                                                                {
+                                                                    "name": "content",
+                                                                    "type": "text",
+                                                                    "label": "Message Content"
+                                                                }
+                                                            ],
+                                                            "type": "collection",
+                                                            "label": "Message"
+                                                        },
+                                                        "type": "array",
+                                                        "label": "Messages",
+                                                        "required": true
+                                                    }
+                                                ],
+                                                "advanced": true
+                                            }
+                                        },
+                                        {
+                                            "id": 23,
+                                            "module": "gateway:WebhookRespond",
+                                            "version": 1,
+                                            "parameters": {},
+                                            "mapper": {
+                                                "body": "La hora que has escogido ({{5.horaElegida}}) está ocupada. Sin embargo, aquí tienes otras 3 posibles franjas horarias que elegir: {{22.choices[].message.content}}",
+                                                "status": "200",
+                                                "headers": []
+                                            },
+                                            "metadata": {
+                                                "designer": {
+                                                    "x": 3235,
+                                                    "y": 315
+                                                },
+                                                "restore": {
+                                                    "expect": {
+                                                        "headers": {
+                                                            "mode": "chose"
+                                                        }
+                                                    }
+                                                },
+                                                "expect": [
+                                                    {
+                                                        "name": "status",
+                                                        "type": "uinteger",
+                                                        "label": "Status",
+                                                        "required": true,
+                                                        "validate": {
+                                                            "min": 100
+                                                        }
+                                                    },
+                                                    {
+                                                        "name": "body",
+                                                        "type": "any",
+                                                        "label": "Body"
+                                                    },
+                                                    {
+                                                        "name": "headers",
+                                                        "spec": [
+                                                            {
+                                                                "name": "key",
+                                                                "type": "text",
+                                                                "label": "Key",
+                                                                "required": true,
+                                                                "validate": {
+                                                                    "max": 256
+                                                                }
+                                                            },
+                                                            {
+                                                                "name": "value",
+                                                                "type": "text",
+                                                                "label": "Value",
+                                                                "required": true,
+                                                                "validate": {
+                                                                    "max": 4096
+                                                                }
+                                                            }
+                                                        ],
+                                                        "type": "array",
+                                                        "label": "Custom headers",
+                                                        "validate": {
+                                                            "maxItems": 16
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "flow": [
+                                        {
+                                            "id": 16,
+                                            "module": "google-calendar:createAnEvent",
+                                            "version": 5,
+                                            "parameters": {
+                                                "__IMTCONN__": 3036994
+                                            },
+                                            "filter": {
+                                                "name": "El slot está libre",
+                                                "conditions": [
+                                                    [
+                                                        {
+                                                            "a": "{{13.choices[].message.content}}",
+                                                            "b": "False",
+                                                            "o": "text:equal"
+                                                        }
+                                                    ]
+                                                ]
+                                            },
+                                            "mapper": {
+                                                "start": "{{4.chosenTime}}",
+                                                "select": "detail",
+                                                "summary": "Cita de {{1.message.toolCalls[].function.arguments.`Nombre del cliente`}}",
+                                                "calendar": "diego.sainz.balboa@gmail.com",
+                                                "duration": "00:15",
+                                                "visibility": "default",
+                                                "allDayEvent": false,
+                                                "transparency": "opaque",
+                                                "conferenceDate": false,
+                                                "guestsCanModify": false
+                                            },
+                                            "metadata": {
+                                                "designer": {
+                                                    "x": 2334,
+                                                    "y": 3
+                                                },
+                                                "restore": {
+                                                    "expect": {
+                                                        "select": {
+                                                            "label": "In Detail"
+                                                        },
+                                                        "colorId": {
+                                                            "mode": "chose"
+                                                        },
+                                                        "calendar": {
+                                                            "mode": "chose",
+                                                            "label": "diego.sainz.balboa@gmail.com (Primary Calendar)"
+                                                        },
+                                                        "attendees": {
+                                                            "mode": "chose"
+                                                        },
+                                                        "overrides": {
+                                                            "mode": "chose"
+                                                        },
+                                                        "recurrence": {
+                                                            "mode": "chose"
+                                                        },
+                                                        "visibility": {
+                                                            "mode": "chose",
+                                                            "label": "Default"
+                                                        },
+                                                        "allDayEvent": {
+                                                            "mode": "chose"
+                                                        },
+                                                        "attachments": {
+                                                            "mode": "chose"
+                                                        },
+                                                        "sendUpdates": {
+                                                            "mode": "chose",
+                                                            "label": "Empty"
+                                                        },
+                                                        "transparency": {
+                                                            "mode": "chose",
+                                                            "label": "Busy"
+                                                        },
+                                                        "conferenceDate": {
+                                                            "mode": "chose"
+                                                        }
+                                                    },
+                                                    "parameters": {
+                                                        "__IMTCONN__": {
+                                                            "data": {
+                                                                "scoped": "true",
+                                                                "connection": "google"
+                                                            },
+                                                            "label": "My Google connection (diego.sainz.balboa@gmail.com)"
+                                                        }
+                                                    }
+                                                },
+                                                "parameters": [
+                                                    {
+                                                        "name": "__IMTCONN__",
+                                                        "type": "account:google",
+                                                        "label": "Connection",
+                                                        "required": true
+                                                    }
+                                                ],
+                                                "expect": [
+                                                    {
+                                                        "name": "select",
+                                                        "type": "select",
+                                                        "label": "Create an Event",
+                                                        "required": true,
+                                                        "validate": {
+                                                            "enum": [
+                                                                "quick",
+                                                                "detail"
+                                                            ]
+                                                        }
+                                                    },
+                                                    {
+                                                        "name": "calendar",
+                                                        "type": "select",
+                                                        "label": "Calendar ID",
+                                                        "required": true
+                                                    },
+                                                    {
+                                                        "name": "colorId",
+                                                        "type": "select",
+                                                        "label": "Color"
+                                                    },
+                                                    {
+                                                        "name": "summary",
+                                                        "type": "text",
+                                                        "label": "Event Name",
+                                                        "required": true
+                                                    },
+                                                    {
+                                                        "name": "allDayEvent",
+                                                        "type": "boolean",
+                                                        "label": "All Day Event",
+                                                        "required": true
+                                                    },
+                                                    {
+                                                        "name": "start",
+                                                        "time": true,
+                                                        "type": "date",
+                                                        "label": "Start Date",
+                                                        "required": true
+                                                    },
+                                                    {
+                                                        "name": "end",
+                                                        "time": true,
+                                                        "type": "date",
+                                                        "label": "End Date"
+                                                    },
+                                                    {
+                                                        "name": "duration",
+                                                        "type": "time",
+                                                        "label": "Duration"
+                                                    },
+                                                    {
+                                                        "name": "description",
+                                                        "type": "text",
+                                                        "label": "Description"
+                                                    },
+                                                    {
+                                                        "name": "location",
+                                                        "type": "text",
+                                                        "label": "Location"
+                                                    },
+                                                    {
+                                                        "name": "useDefault",
+                                                        "type": "boolean",
+                                                        "label": "Use the default reminder settings for this event"
+                                                    },
+                                                    {
+                                                        "name": "overrides",
+                                                        "spec": [
+                                                            {
+                                                                "name": "method",
+                                                                "type": "select",
+                                                                "label": "Method",
+                                                                "options": [
+                                                                    {
+                                                                        "label": "Email",
+                                                                        "value": "email"
+                                                                    },
+                                                                    {
+                                                                        "label": "Pop-up",
+                                                                        "value": "popup"
+                                                                    }
+                                                                ],
+                                                                "required": true
+                                                            },
+                                                            {
+                                                                "name": "minutes",
+                                                                "type": "uinteger",
+                                                                "label": "Minutes",
+                                                                "required": true,
+                                                                "validate": {
+                                                                    "max": 40320
+                                                                }
+                                                            }
+                                                        ],
+                                                        "type": "array",
+                                                        "label": "Reminders",
+                                                        "validate": {
+                                                            "maxItems": 5
+                                                        }
+                                                    },
+                                                    {
+                                                        "name": "attendees",
+                                                        "spec": [
+                                                            {
+                                                                "name": "displayName",
+                                                                "type": "text",
+                                                                "label": "Name"
+                                                            },
+                                                            {
+                                                                "name": "email",
+                                                                "type": "email",
+                                                                "label": "Email",
+                                                                "required": true
+                                                            }
+                                                        ],
+                                                        "type": "array",
+                                                        "label": "Attendees"
+                                                    },
+                                                    {
+                                                        "name": "transparency",
+                                                        "type": "select",
+                                                        "label": "Show me as",
+                                                        "required": true,
+                                                        "validate": {
+                                                            "enum": [
+                                                                "opaque",
+                                                                "transparent"
+                                                            ]
+                                                        }
+                                                    },
+                                                    {
+                                                        "name": "visibility",
+                                                        "type": "select",
+                                                        "label": "Visibility",
+                                                        "required": true,
+                                                        "validate": {
+                                                            "enum": [
+                                                                "default",
+                                                                "public",
+                                                                "private"
+                                                            ]
+                                                        }
+                                                    },
+                                                    {
+                                                        "name": "sendUpdates",
+                                                        "type": "select",
+                                                        "label": "Send notifications about the event creation",
+                                                        "validate": {
+                                                            "enum": [
+                                                                "all",
+                                                                "externalOnly",
+                                                                "none"
+                                                            ]
+                                                        }
+                                                    },
+                                                    {
+                                                        "name": "guestsCanModify",
+                                                        "type": "boolean",
+                                                        "label": "Guests can modify the event",
+                                                        "required": true
+                                                    },
+                                                    {
+                                                        "name": "recurrence",
+                                                        "spec": {
+                                                            "name": "value",
+                                                            "type": "text",
+                                                            "label": "Value"
+                                                        },
+                                                        "type": "array",
+                                                        "label": "Recurrence"
+                                                    },
+                                                    {
+                                                        "name": "conferenceDate",
+                                                        "type": "boolean",
+                                                        "label": "Add Google Meet Video Conferencing",
+                                                        "required": true
+                                                    },
+                                                    {
+                                                        "name": "attachments",
+                                                        "spec": [
+                                                            {
+                                                                "name": "fileUrl",
+                                                                "type": "url",
+                                                                "label": "File URL",
+                                                                "required": true
+                                                            }
+                                                        ],
+                                                        "type": "array",
+                                                        "label": "Attachments"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "id": 17,
+                                            "module": "twilio:SendSMS",
+                                            "version": 2,
+                                            "parameters": {
+                                                "__IMTCONN__": 3057849
+                                            },
+                                            "mapper": {
+                                                "to": "{{1.message.customer.number}}",
+                                                "body": "Hola {{1.message.toolCalls[].function.arguments.`Nombre del cliente`}}, gracias por reservar una cita en la Peluquería de Diego Sainz.\n\nTu cita ha sido reservada para {{5.horaElegida}}. Recuerda llegar con 5 minutos de antelación para evitar retrasos y desajustes en el día",
+                                                "from": "+12063502278",
+                                                "fromType": "phone",
+                                                "messageBody": "body"
+                                            },
+                                            "metadata": {
+                                                "designer": {
+                                                    "x": 2634,
+                                                    "y": 3
+                                                },
+                                                "restore": {
+                                                    "expect": {
+                                                        "from": {
+                                                            "mode": "chose",
+                                                            "label": "(206) 350-2278"
+                                                        },
+                                                        "fromType": {
+                                                            "mode": "chose",
+                                                            "label": "phone number"
+                                                        },
+                                                        "mediaUrl": {
+                                                            "mode": "chose"
+                                                        },
+                                                        "messageBody": {
+                                                            "mode": "chose",
+                                                            "label": "Create a Body"
+                                                        },
+                                                        "smartEncoded": {
+                                                            "mode": "chose"
+                                                        },
+                                                        "applicationSid": {
+                                                            "mode": "chose",
+                                                            "label": "Empty"
+                                                        },
+                                                        "provideFeedback": {
+                                                            "mode": "chose"
+                                                        }
+                                                    },
+                                                    "parameters": {
+                                                        "__IMTCONN__": {
+                                                            "data": {
+                                                                "scoped": "true",
+                                                                "connection": "twilio"
+                                                            },
+                                                            "label": "My Twilio connection"
+                                                        }
+                                                    }
+                                                },
+                                                "parameters": [
+                                                    {
+                                                        "name": "__IMTCONN__",
+                                                        "type": "account:twilio",
+                                                        "label": "Connection",
+                                                        "required": true
+                                                    }
+                                                ],
+                                                "expect": [
+                                                    {
+                                                        "name": "fromType",
+                                                        "type": "select",
+                                                        "label": "Send a message from",
+                                                        "required": true,
+                                                        "validate": {
+                                                            "enum": [
+                                                                "phone",
+                                                                "service",
+                                                                "channel"
+                                                            ]
+                                                        }
+                                                    },
+                                                    {
+                                                        "name": "to",
+                                                        "type": "text",
+                                                        "label": "To",
+                                                        "required": true
+                                                    },
+                                                    {
+                                                        "name": "messageBody",
+                                                        "type": "select",
+                                                        "label": "Message Body",
+                                                        "required": true,
+                                                        "validate": {
+                                                            "enum": [
+                                                                "body",
+                                                                "template"
+                                                            ]
+                                                        }
+                                                    },
+                                                    {
+                                                        "name": "mediaUrl",
+                                                        "spec": {
+                                                            "name": "value",
+                                                            "type": "url"
+                                                        },
+                                                        "type": "array",
+                                                        "label": "Media URL"
+                                                    },
+                                                    {
+                                                        "name": "smartEncoded",
+                                                        "type": "boolean",
+                                                        "label": "Smart encoded"
+                                                    },
+                                                    {
+                                                        "name": "validityPeriod",
+                                                        "type": "uinteger",
+                                                        "label": "Validity period"
+                                                    },
+                                                    {
+                                                        "name": "statusCallback",
+                                                        "type": "url",
+                                                        "label": "Status callback"
+                                                    },
+                                                    {
+                                                        "name": "applicationSid",
+                                                        "type": "select",
+                                                        "label": "Application"
+                                                    },
+                                                    {
+                                                        "name": "maxPrice",
+                                                        "type": "number",
+                                                        "label": "Max price"
+                                                    },
+                                                    {
+                                                        "name": "provideFeedback",
+                                                        "type": "boolean",
+                                                        "label": "Provide feedback"
+                                                    },
+                                                    {
+                                                        "name": "from",
+                                                        "type": "select",
+                                                        "label": "Phone number",
+                                                        "required": true
+                                                    },
+                                                    {
+                                                        "name": "body",
+                                                        "type": "text",
+                                                        "label": "Body",
+                                                        "required": true,
+                                                        "validate": {
+                                                            "max": 1600
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "id": 18,
+                                            "module": "gateway:WebhookRespond",
+                                            "version": 1,
+                                            "parameters": {},
+                                            "mapper": {
+                                                "body": "La cita ha sido reservada con éxito",
+                                                "status": "200",
+                                                "headers": []
+                                            },
+                                            "metadata": {
+                                                "designer": {
+                                                    "x": 2934,
+                                                    "y": 3
+                                                },
+                                                "restore": {
+                                                    "expect": {
+                                                        "headers": {
+                                                            "mode": "chose"
+                                                        }
+                                                    }
+                                                },
+                                                "expect": [
+                                                    {
+                                                        "name": "status",
+                                                        "type": "uinteger",
+                                                        "label": "Status",
+                                                        "required": true,
+                                                        "validate": {
+                                                            "min": 100
+                                                        }
+                                                    },
+                                                    {
+                                                        "name": "body",
+                                                        "type": "any",
+                                                        "label": "Body"
+                                                    },
+                                                    {
+                                                        "name": "headers",
+                                                        "spec": [
+                                                            {
+                                                                "name": "key",
+                                                                "type": "text",
+                                                                "label": "Key",
+                                                                "required": true,
+                                                                "validate": {
+                                                                    "max": 256
+                                                                }
+                                                            },
+                                                            {
+                                                                "name": "value",
+                                                                "type": "text",
+                                                                "label": "Value",
+                                                                "required": true,
+                                                                "validate": {
+                                                                    "max": 4096
+                                                                }
+                                                            }
+                                                        ],
+                                                        "type": "array",
+                                                        "label": "Custom headers",
+                                                        "validate": {
+                                                            "maxItems": 16
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "metadata": {
+        "instant": true,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "slots": null,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": {
+            "orphans": []
+        },
+        "zone": "us1.make.com",
+        "notes": []
+    }
+}

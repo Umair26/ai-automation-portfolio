@@ -1,0 +1,1047 @@
+{
+    "name": "Loyalty Real Estate",
+    "flow": [
+        {
+            "id": 7,
+            "module": "airtable:TriggerWatchRecords",
+            "version": 3,
+            "parameters": {
+                "base": "app2q5p9ZXqYHWaWb",
+                "view": "viwEKspSEm4PKaZqF",
+                "table": "tblhWNr5hpCuTM2sS",
+                "config": {
+                    "labelField": "Uppdates",
+                    "triggerField": "Last Modified Time"
+                },
+                "formula": "",
+                "maxRecords": 10,
+                "__IMTCONN__": 3349581,
+                "useColumnId": false
+            },
+            "mapper": {},
+            "metadata": {
+                "designer": {
+                    "x": -633,
+                    "y": 192
+                },
+                "restore": {
+                    "parameters": {
+                        "base": {
+                            "label": "Video Demo Loyalty"
+                        },
+                        "view": {
+                            "label": "Grid view"
+                        },
+                        "table": {
+                            "label": "Updates of each month"
+                        },
+                        "config": {
+                            "nested": {
+                                "labelField": {
+                                    "label": "Uppdates"
+                                },
+                                "triggerField": {
+                                    "label": "Last Modified Time"
+                                }
+                            }
+                        },
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "airtable2"
+                            },
+                            "label": "My Airtable Token or Key connection"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:airtable3,airtable2",
+                        "label": "Connection",
+                        "required": true
+                    },
+                    {
+                        "name": "base",
+                        "type": "select",
+                        "label": "Base",
+                        "required": true
+                    },
+                    {
+                        "name": "useColumnId",
+                        "type": "boolean",
+                        "label": "Use Column ID",
+                        "required": true
+                    },
+                    {
+                        "name": "table",
+                        "type": "select",
+                        "label": "Table",
+                        "required": true
+                    },
+                    {
+                        "name": "config",
+                        "spec": [
+                            {
+                                "name": "triggerField",
+                                "type": "select",
+                                "label": "Trigger field",
+                                "required": true
+                            },
+                            {
+                                "name": "triggerField",
+                                "type": "hidden"
+                            },
+                            {
+                                "name": "labelField",
+                                "type": "select",
+                                "label": "Label field",
+                                "required": true
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Trigger configuration"
+                    },
+                    {
+                        "name": "maxRecords",
+                        "type": "integer",
+                        "label": "Limit",
+                        "required": true
+                    },
+                    {
+                        "name": "view",
+                        "type": "select",
+                        "label": "View"
+                    },
+                    {
+                        "name": "formula",
+                        "type": "text",
+                        "label": "Formula"
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "id",
+                        "type": "text",
+                        "label": "ID"
+                    },
+                    {
+                        "name": "createdTime",
+                        "type": "date",
+                        "label": "Created Time"
+                    },
+                    {
+                        "name": "Name",
+                        "type": "text",
+                        "label": "Name"
+                    },
+                    {
+                        "name": "Uppdates",
+                        "type": "text",
+                        "label": "Uppdates",
+                        "multiline": true
+                    },
+                    {
+                        "name": "Last Modified Time",
+                        "type": "date",
+                        "label": "Last Modified Time"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 8,
+            "module": "airtable:ActionSearchRecords",
+            "version": 3,
+            "parameters": {
+                "__IMTCONN__": 3349581
+            },
+            "mapper": {
+                "base": "app2q5p9ZXqYHWaWb",
+                "view": "viwrujREgaWLlUAVc",
+                "table": "tblYdDg1dCYazt90P",
+                "fields": [
+                    "Name",
+                    "Phone number"
+                ],
+                "maxRecords": "1",
+                "useColumnId": false
+            },
+            "metadata": {
+                "designer": {
+                    "x": -343,
+                    "y": -58
+                },
+                "restore": {
+                    "expect": {
+                        "base": {
+                            "mode": "chose",
+                            "label": "Video Demo Loyalty"
+                        },
+                        "sort": {
+                            "mode": "chose"
+                        },
+                        "view": {
+                            "mode": "chose",
+                            "label": "Grid view"
+                        },
+                        "table": {
+                            "mode": "chose",
+                            "label": "Clients to call"
+                        },
+                        "fields": {
+                            "mode": "chose",
+                            "label": [
+                                "Name",
+                                "Phone number"
+                            ]
+                        },
+                        "useColumnId": {
+                            "mode": "chose"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "airtable2"
+                            },
+                            "label": "My Airtable Token or Key connection"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:airtable3,airtable2",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "base",
+                        "type": "select",
+                        "label": "Base",
+                        "required": true
+                    },
+                    {
+                        "name": "useColumnId",
+                        "type": "boolean",
+                        "label": "Use Column ID",
+                        "required": true
+                    },
+                    {
+                        "name": "table",
+                        "type": "select",
+                        "label": "Table",
+                        "required": true
+                    },
+                    {
+                        "name": "formula",
+                        "type": "text",
+                        "label": "Formula"
+                    },
+                    {
+                        "name": "maxRecords",
+                        "type": "integer",
+                        "label": "Limit"
+                    },
+                    {
+                        "name": "sort",
+                        "spec": [
+                            {
+                                "name": "field",
+                                "type": "select",
+                                "label": "Field",
+                                "dynamic": true,
+                                "options": []
+                            },
+                            {
+                                "name": "direction",
+                                "type": "select",
+                                "label": "Direction",
+                                "options": [
+                                    {
+                                        "label": "Descending",
+                                        "value": "desc"
+                                    },
+                                    {
+                                        "label": "Ascending",
+                                        "value": "asc"
+                                    }
+                                ]
+                            }
+                        ],
+                        "type": "array",
+                        "label": "Sort"
+                    },
+                    {
+                        "name": "view",
+                        "type": "select",
+                        "label": "View"
+                    },
+                    {
+                        "name": "fields",
+                        "type": "select",
+                        "label": "Output Fields",
+                        "multiple": true
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "__IMTLENGTH__",
+                        "type": "uinteger",
+                        "label": "Total number of bundles"
+                    },
+                    {
+                        "name": "__IMTINDEX__",
+                        "type": "uinteger",
+                        "label": "Bundle order position"
+                    },
+                    {
+                        "name": "id",
+                        "type": "text",
+                        "label": "ID"
+                    },
+                    {
+                        "name": "createdTime",
+                        "type": "date",
+                        "label": "Created Time"
+                    },
+                    {
+                        "name": "Name",
+                        "type": "text",
+                        "label": "Name"
+                    },
+                    {
+                        "name": "Phone number",
+                        "type": "text",
+                        "label": "Phone number"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 22,
+            "module": "util:SetVariable2",
+            "version": 1,
+            "parameters": {},
+            "mapper": {
+                "name": "Assistant",
+                "scope": "roundtrip",
+                "value": "{\n  \"transcriber\": {\n    \"provider\": \"deepgram\",\n    \"language\": \"en\",\n    \"model\": \"nova-2\",\n    \"smartFormat\": false\n  },\n  \"model\": {\n    \"provider\": \"openai\",\n    \"model\": \"gpt-4o-mini\",\n    \"maxTokens\": 1000,\n    \"temperature\": 0.2,\n    \"tools\": [\n      {\n        \"type\": \"transferCall\",\n        \"destinations\": [\n          {\n            \"type\": \"number\",\n            \"number\": \"+34619267734\",\n            \"description\": \"Transfer the call to +34619267734 when the caller says he wants to discuss the details more in depth with James Williams\",\n            \"message\": \"Transferring the call to James Williams for that\"\n          }\n        ]\n      }\n    ],\n    \"messages\": [\n      {\n        \"role\": \"system\",\n        \"content\": \"#Role You are Max the experienced and fantastic assistant of the real estate agent James Williams and your job is to inform his clients about the updates of the month in James’s catalogue  # Task Inform the client of James about the updates of the month in his catalogue, following this steps: 1. Say the first message: 'Hey there, is this {{8.Name}}' 2. If he answers yes, continue and explain him that you are Max, the assistant of the Real Estate Agent James Williams and that you were calling him to tell him the updates of the month. Finally ask if he is OK with listening them? 3. If he answer yes, just inform about this updates of the month: {{7.Uppdates}}. Then ask if he is interested in discussing more in depth any of these aspects with James 4. If he says no, then say thanks and goodbye, but if he says yes, then transfer the call to +34619267734 5.  # Details -This task is crucial for the success of the Real Estate Agent James Williams -You need to perform this action perfectly or if not James Williams will be losing clients -Remember to explain clearly the updates of the month -Remember to transfer the call to +34619267734 when the client says he wants to discuss the details more in depth with James Williams  # transferCall This function will be triggered when the client says yes to discussing more in depth the details of the updates  of the month, transferring the call to +34619267734  # Context ##The Real Estate Agent James Williams is a real estate agent who manages and sells properties in New York. He owns a big range of properties inside this city and he is world known for the great properties he sells and manages  ## Our system You are part of the system of client treatment of James Williams, in which your job is to try to maintain loyal and update clients of the new updates he has in his catalogue this month, transferring the call to +34619267734 when the user says yes to discussing more in depth about those updates with the Real Estate Agent  # Examples ## Example 1 Assistant (you): Hey there, is this {{8.Name}} User: Yeah, it is me Assistant (you): Perfect {{8.Name}}, so I am the assistant of the Real Estate Agent James Williams and I was calling you to tell you the updates of the month in his catalogue. Do you have 2 free minutes to hear them? User: Yes of course Assistant (you): Ok so for this month the updates are: {{7.Uppdates}} With this said, would you be interested in talking more in depth about this with James? User: Yes please. Why not? Assistant (you): Perfect, so I will forward you to him # transferCall  ## Example 2 Assistant (you): Hey there, is this {{8.Name}} User: Yeah, it is me Assistant (you): Perfect {{8.Name}}, so I am the assistant of the Real Estate Agent James Williams and I was calling you to tell you the updates of the month in his catalogue. Do you have 2 free minutes to hear them? User: Yes of course Assistant (you): Ok so for this month the updates are: {{7.Uppdates}}. With this said, would you be interested in talking more in depth about this with James? User: Nah, no thanks  Assistant (you): Perfect, thanks for your time, bye\"\n      }\n    ]\n  },\n  \"firstMessageMode\": \"assistant-speaks-first\",\n  \"voice\": {\n    \"provider\": \"11labs\",\n    \"voiceId\": \"paul\",\n    \"language\": \"en\",\n    \"model\": \"eleven_turbo_v2_5\"\n  },\n  \"clientMessages\": [],\n  \"serverMessages\": [\n    \"end-of-call-report\",\n    \"transfer-destination-request\",\n    \"transfer-update\"\n  ],\n  \"backgroundSound\": \"off\",\n  \"name\": \"Video Demo Loyalty Real Estate\",\n  \"firstMessage\": \"Hey there, is this {{8.Name}}\"\n}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": -72,
+                    "y": 221
+                },
+                "restore": {
+                    "expect": {
+                        "scope": {
+                            "label": "One cycle"
+                        }
+                    }
+                },
+                "expect": [
+                    {
+                        "name": "name",
+                        "type": "text",
+                        "label": "Variable name",
+                        "required": true
+                    },
+                    {
+                        "name": "scope",
+                        "type": "select",
+                        "label": "Variable lifetime",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "roundtrip",
+                                "execution"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "value",
+                        "type": "any",
+                        "label": "Variable value"
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "Assistant",
+                        "type": "any",
+                        "label": "Assistant"
+                    }
+                ],
+                "advanced": true
+            }
+        },
+        {
+            "id": 9,
+            "module": "util:SetVariable2",
+            "version": 1,
+            "parameters": {},
+            "mapper": {
+                "name": "assistant",
+                "scope": "roundtrip",
+                "value": "{{22.Assistant}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 196,
+                    "y": -80
+                },
+                "restore": {
+                    "expect": {
+                        "scope": {
+                            "label": "One cycle"
+                        }
+                    }
+                },
+                "expect": [
+                    {
+                        "name": "name",
+                        "type": "text",
+                        "label": "Variable name",
+                        "required": true
+                    },
+                    {
+                        "name": "scope",
+                        "type": "select",
+                        "label": "Variable lifetime",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "roundtrip",
+                                "execution"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "value",
+                        "type": "any",
+                        "label": "Variable value"
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "assistant",
+                        "type": "any",
+                        "label": "assistant"
+                    }
+                ],
+                "advanced": true
+            }
+        },
+        {
+            "id": 10,
+            "module": "json:ParseJSON",
+            "version": 1,
+            "parameters": {
+                "type": ""
+            },
+            "mapper": {
+                "json": "[{{9.assistant}}]"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 464,
+                    "y": 238
+                },
+                "restore": {
+                    "parameters": {
+                        "type": {
+                            "label": "Choose a data structure"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "type",
+                        "type": "udt",
+                        "label": "Data structure"
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "json",
+                        "type": "text",
+                        "label": "JSON string",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 14,
+            "module": "builtin:BasicAggregator",
+            "version": 1,
+            "parameters": {
+                "feeder": 10
+            },
+            "mapper": {
+                "name": "{{10.name}}",
+                "model": "{{10.model}}",
+                "voice": "{{10.voice}}",
+                "transcriber": "{{10.transcriber}}",
+                "firstMessage": "{{10.firstMessage}}",
+                "clientMessages": "{{10.clientMessages}}",
+                "serverMessages": "{{10.serverMessages}}",
+                "backgroundSound": "{{10.backgroundSound}}",
+                "firstMessageMode": "{{10.firstMessageMode}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 670,
+                    "y": -105
+                },
+                "restore": {
+                    "extra": {
+                        "feeder": {
+                            "label": "JSON - Parse JSON [10]"
+                        },
+                        "target": {
+                            "label": "Custom"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "id": 15,
+            "module": "json:TransformToJSON",
+            "version": 1,
+            "parameters": {
+                "space": ""
+            },
+            "mapper": {
+                "object": "{{first(14.array)}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 890,
+                    "y": 251
+                },
+                "restore": {
+                    "parameters": {
+                        "space": {
+                            "label": "Empty"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "space",
+                        "type": "select",
+                        "label": "Indentation",
+                        "validate": {
+                            "enum": [
+                                "tab",
+                                "2",
+                                "4"
+                            ]
+                        }
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "object",
+                        "type": "any",
+                        "label": "Object"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 16,
+            "module": "http:ActionSendData",
+            "version": 3,
+            "parameters": {
+                "handleErrors": true,
+                "useNewZLibDeCompress": true
+            },
+            "mapper": {
+                "ca": "",
+                "qs": [],
+                "url": "https://api.vapi.ai/call",
+                "data": "{\n  \"customer\": {\n    \"number\": \"{{8.`Phone number`}}\",\n    \"name\": \"{{8.Name}}\",\n    \"extension\": \"\"\n  },\n  \"phoneNumberId\": \"e0bf288a-21e9-4512-8217-0484d115de3a\",\n  \"assistant\": {{15.json}}\n}",
+                "gzip": true,
+                "method": "post",
+                "headers": [
+                    {
+                        "name": "Authorization",
+                        "value": "Bearer 79f2090c-3b3a-4e2d-93df-ad8e34b86d32"
+                    },
+                    {
+                        "name": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "timeout": "",
+                "useMtls": false,
+                "authPass": "",
+                "authUser": "",
+                "bodyType": "raw",
+                "contentType": "application/json",
+                "serializeUrl": false,
+                "shareCookies": false,
+                "parseResponse": false,
+                "followRedirect": true,
+                "useQuerystring": false,
+                "followAllRedirects": false,
+                "rejectUnauthorized": true
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1136,
+                    "y": -55
+                },
+                "restore": {
+                    "expect": {
+                        "qs": {
+                            "mode": "chose"
+                        },
+                        "method": {
+                            "mode": "chose",
+                            "label": "POST"
+                        },
+                        "headers": {
+                            "mode": "chose",
+                            "items": [
+                                {
+                                    "name": {
+                                        "collapsed": true
+                                    }
+                                },
+                                {
+                                    "name": {
+                                        "collapsed": true
+                                    }
+                                }
+                            ]
+                        },
+                        "bodyType": {
+                            "label": "Raw"
+                        },
+                        "contentType": {
+                            "label": "JSON (application/json)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "handleErrors",
+                        "type": "boolean",
+                        "label": "Evaluate all states as errors (except for 2xx and 3xx )",
+                        "required": true
+                    },
+                    {
+                        "name": "useNewZLibDeCompress",
+                        "type": "hidden"
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "url",
+                        "type": "url",
+                        "label": "URL",
+                        "required": true
+                    },
+                    {
+                        "name": "serializeUrl",
+                        "type": "boolean",
+                        "label": "Serialize URL",
+                        "required": true
+                    },
+                    {
+                        "name": "method",
+                        "type": "select",
+                        "label": "Method",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "get",
+                                "head",
+                                "post",
+                                "put",
+                                "patch",
+                                "delete",
+                                "options"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "headers",
+                        "spec": [
+                            {
+                                "name": "name",
+                                "type": "text",
+                                "label": "Name",
+                                "required": true
+                            },
+                            {
+                                "name": "value",
+                                "type": "text",
+                                "label": "Value"
+                            }
+                        ],
+                        "type": "array",
+                        "label": "Headers"
+                    },
+                    {
+                        "name": "qs",
+                        "spec": [
+                            {
+                                "name": "name",
+                                "type": "text",
+                                "label": "Name",
+                                "required": true
+                            },
+                            {
+                                "name": "value",
+                                "type": "text",
+                                "label": "Value"
+                            }
+                        ],
+                        "type": "array",
+                        "label": "Query String"
+                    },
+                    {
+                        "name": "bodyType",
+                        "type": "select",
+                        "label": "Body type",
+                        "validate": {
+                            "enum": [
+                                "raw",
+                                "x_www_form_urlencoded",
+                                "multipart_form_data"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "parseResponse",
+                        "type": "boolean",
+                        "label": "Parse response",
+                        "required": true
+                    },
+                    {
+                        "name": "authUser",
+                        "type": "text",
+                        "label": "User name"
+                    },
+                    {
+                        "name": "authPass",
+                        "type": "password",
+                        "label": "Password"
+                    },
+                    {
+                        "name": "timeout",
+                        "type": "uinteger",
+                        "label": "Timeout",
+                        "validate": {
+                            "max": 300,
+                            "min": 1
+                        }
+                    },
+                    {
+                        "name": "shareCookies",
+                        "type": "boolean",
+                        "label": "Share cookies with other HTTP modules",
+                        "required": true
+                    },
+                    {
+                        "name": "ca",
+                        "type": "cert",
+                        "label": "Self-signed certificate"
+                    },
+                    {
+                        "name": "rejectUnauthorized",
+                        "type": "boolean",
+                        "label": "Reject connections that are using unverified (self-signed) certificates",
+                        "required": true
+                    },
+                    {
+                        "name": "followRedirect",
+                        "type": "boolean",
+                        "label": "Follow redirect",
+                        "required": true
+                    },
+                    {
+                        "name": "useQuerystring",
+                        "type": "boolean",
+                        "label": "Disable serialization of multiple same query string keys as arrays",
+                        "required": true
+                    },
+                    {
+                        "name": "gzip",
+                        "type": "boolean",
+                        "label": "Request compressed content",
+                        "required": true
+                    },
+                    {
+                        "name": "useMtls",
+                        "type": "boolean",
+                        "label": "Use Mutual TLS",
+                        "required": true
+                    },
+                    {
+                        "name": "contentType",
+                        "type": "select",
+                        "label": "Content type",
+                        "validate": {
+                            "enum": [
+                                "text/plain",
+                                "application/json",
+                                "application/xml",
+                                "text/xml",
+                                "text/html",
+                                "custom"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "data",
+                        "type": "buffer",
+                        "label": "Request content"
+                    },
+                    {
+                        "name": "followAllRedirects",
+                        "type": "boolean",
+                        "label": "Follow all redirect",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 17,
+            "module": "util:SetVariable2",
+            "version": 1,
+            "parameters": {},
+            "mapper": {
+                "name": "Date sent",
+                "scope": "roundtrip",
+                "value": "{{formatDate(now; \"DD/MM/YY\")}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1427,
+                    "y": 280
+                },
+                "restore": {
+                    "expect": {
+                        "scope": {
+                            "label": "One cycle"
+                        }
+                    }
+                },
+                "expect": [
+                    {
+                        "name": "name",
+                        "type": "text",
+                        "label": "Variable name",
+                        "required": true
+                    },
+                    {
+                        "name": "scope",
+                        "type": "select",
+                        "label": "Variable lifetime",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "roundtrip",
+                                "execution"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "value",
+                        "type": "any",
+                        "label": "Variable value"
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "Date sent",
+                        "type": "any",
+                        "label": "Date sent"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 18,
+            "module": "airtable:ActionUpdateRecords",
+            "version": 3,
+            "parameters": {
+                "__IMTCONN__": 3349581
+            },
+            "mapper": {
+                "id": "{{8.id}}",
+                "base": "app2q5p9ZXqYHWaWb",
+                "table": "tblYdDg1dCYazt90P",
+                "record": {
+                    "fldk1iQ7HFxjPF6qk": "Call sent in {{17.`Date sent`}}"
+                },
+                "typecast": false,
+                "useColumnId": false
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1652,
+                    "y": -13
+                },
+                "restore": {
+                    "expect": {
+                        "base": {
+                            "label": "Video Demo Loyalty"
+                        },
+                        "table": {
+                            "label": "Clients to call"
+                        },
+                        "typecast": {
+                            "mode": "chose"
+                        },
+                        "useColumnId": {
+                            "mode": "chose"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "airtable2"
+                            },
+                            "label": "My Airtable Token or Key connection"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:airtable3,airtable2",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "base",
+                        "type": "select",
+                        "label": "Base",
+                        "required": true
+                    },
+                    {
+                        "name": "typecast",
+                        "type": "boolean",
+                        "label": "Smart links",
+                        "required": true
+                    },
+                    {
+                        "name": "useColumnId",
+                        "type": "boolean",
+                        "label": "Use Column ID",
+                        "required": true
+                    },
+                    {
+                        "name": "table",
+                        "type": "select",
+                        "label": "Table",
+                        "required": true
+                    },
+                    {
+                        "name": "id",
+                        "type": "text",
+                        "label": "Record ID",
+                        "required": true
+                    },
+                    {
+                        "name": "record",
+                        "spec": [
+                            {
+                                "name": "flda8aLxhP23rYN6s",
+                                "type": "text",
+                                "label": "Name"
+                            },
+                            {
+                                "name": "fldh5XOyFrhoVUf2z",
+                                "type": "text",
+                                "label": "Phone number"
+                            },
+                            {
+                                "name": "fldk1iQ7HFxjPF6qk",
+                                "type": "text",
+                                "label": "Call sent?"
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Record"
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "id",
+                        "type": "text",
+                        "label": "ID"
+                    },
+                    {
+                        "name": "createdTime",
+                        "type": "date",
+                        "label": "Created Time"
+                    },
+                    {
+                        "name": "Name",
+                        "type": "text",
+                        "label": "Name"
+                    },
+                    {
+                        "name": "Phone number",
+                        "type": "text",
+                        "label": "Phone number"
+                    },
+                    {
+                        "name": "Call sent?",
+                        "type": "text",
+                        "label": "Call sent?"
+                    }
+                ]
+            }
+        }
+    ],
+    "metadata": {
+        "instant": false,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "slots": null,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": {
+            "orphans": [],
+            "notes": [
+                {
+                    "id": 13,
+                    "text": "",
+                    "filter": false
+                },
+                {
+                    "id": 2,
+                    "text": "",
+                    "filter": true
+                }
+            ]
+        },
+        "zone": "us1.make.com",
+        "notes": []
+    }
+}
