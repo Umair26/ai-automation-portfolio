@@ -1,0 +1,390 @@
+{
+  "name": "Reminder system",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "4a140f08-dc38-4759-9a94-8848a052f0d9",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "addToDate",
+        "magnitude": "={{ $json.timestamp }}",
+        "timeUnit": "hours",
+        "duration": 13,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "cdffcc15-0b78-4540-a9c9-d3b344cc6661",
+      "name": "Date & Time"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "Buy"
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        500,
+        -220
+      ],
+      "id": "bce4676a-06ee-4853-abc2-314399f0a852",
+      "name": "Get many rows",
+      "credentials": {
+        "supabaseApi": {
+          "id": "rnqhIoonRIlEgkxZ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "Sell"
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        480,
+        140
+      ],
+      "id": "82ae1b0a-a208-40b3-8137-578722f5f3ab",
+      "name": "Get many rows1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "rnqhIoonRIlEgkxZ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8b8f4815-85b5-4cd1-9d23-8371f6a07546",
+              "leftValue": "={{ $json['Date of appointment'] }}",
+              "rightValue": "={{ $('Date & Time').item.json.newDate }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "before"
+              }
+            },
+            {
+              "id": "7aabe61c-9895-4d2f-9093-e1e8912248b8",
+              "leftValue": "={{ $json['Reminder sent'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        720,
+        -220
+      ],
+      "id": "78fca2cf-b71e-447b-85c3-cc4bea3f3541",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "72e406c7-0eb9-41c8-bfe0-3cadf60d29b9",
+              "leftValue": "={{ $json['Date of appointment'] }}",
+              "rightValue": "={{ $('Date & Time').item.json.newDate }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "before"
+              }
+            },
+            {
+              "id": "ca7c0f87-3eb1-4265-b7b1-3f7d4cf60cea",
+              "leftValue": "={{ $json['Reminder sent'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        700,
+        140
+      ],
+      "id": "7b3f9852-87a6-461f-92c8-7b56249c6726",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "to": "={{ $('Get many rows').item.json.Number }}",
+        "message": "=Hey {{ $('Get many rows').item.json.Name }}, we have today an appointment, here is the full date: {{ $('Get many rows').item.json['Date of appointment'] }}\n\nPlease remember to be there",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        1160,
+        -380
+      ],
+      "id": "23ca893d-d61c-49b9-b595-5c30173dafae",
+      "name": "Send an SMS/MMS/WhatsApp message",
+      "credentials": {
+        "twilioApi": {
+          "id": "uLW2qe1Cjqw22Hl4",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "Buy",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $('Get many rows').item.json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Reminder sent",
+              "fieldValue": "true"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        940,
+        -380
+      ],
+      "id": "8ddadf61-8357-4d60-b683-7e039ddeff04",
+      "name": "Update a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "rnqhIoonRIlEgkxZ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "Sell",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $('Get many rows1').item.json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Reminder sent",
+              "fieldValue": "true"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        960,
+        -20
+      ],
+      "id": "345f0297-159c-41c4-ac6e-e335a8137b87",
+      "name": "Update a row1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "rnqhIoonRIlEgkxZ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "to": "={{ $('Get many rows').item.json.Number }}",
+        "message": "=Hey {{ $('Get many rows').item.json.Name }}, we have today an appointment, here is the full date: {{ $('Get many rows').item.json['Date of appointment'] }}\n\nPlease remember to be there",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        -100
+      ],
+      "id": "e17d0733-d76c-4018-8aa6-417f394de396",
+      "name": "Send an SMS/MMS/WhatsApp message1",
+      "credentials": {
+        "twilioApi": {
+          "id": "uLW2qe1Cjqw22Hl4",
+          "name": "Twilio account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Date & Time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time": {
+      "main": [
+        [
+          {
+            "node": "Get many rows",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get many rows1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many rows": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many rows1": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Update a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row": {
+      "main": [
+        [
+          {
+            "node": "Send an SMS/MMS/WhatsApp message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Update a row1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row1": {
+      "main": [
+        [
+          {
+            "node": "Send an SMS/MMS/WhatsApp message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "cd7bd079-0971-45e5-821a-83fa7d1b5cd2",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "01dceba1b5be9525f97fc3b73e04912f166459611082cec07e031a6098faed79"
+  },
+  "id": "k3BYsXmGN74DFM6m",
+  "tags": []
+}

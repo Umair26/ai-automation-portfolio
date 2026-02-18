@@ -1,0 +1,1164 @@
+{
+  "agent_id": "",
+  "channel": "voice",
+  "last_modification_timestamp": 1752664125042,
+  "agent_name": "Dashboard agent",
+  "response_engine": {
+    "type": "conversation-flow",
+    "version": 0,
+    "conversation_flow_id": "conversation_flow_b8100477c6ca"
+  },
+  "language": "en-US",
+  "opt_out_sensitive_data_storage": false,
+  "data_storage_setting": "everything",
+  "opt_in_signed_url": false,
+  "end_call_after_silence_ms": 177000,
+  "version": 0,
+  "is_published": false,
+  "post_call_analysis_model": "gpt-4o-mini",
+  "voice_id": "11labs-James",
+  "voice_model": "eleven_turbo_v2_5",
+  "voice_temperature": 0.82,
+  "voice_speed": 0.96,
+  "volume": 1.4,
+  "enable_backchannel": true,
+  "backchannel_words": [
+    "yeah",
+    "huh-huh",
+    "one moment",
+    "hhhhhmmm"
+  ],
+  "max_call_duration_ms": 1242000,
+  "interruption_sensitivity": 0.9,
+  "ambient_sound": "summer-outdoor",
+  "responsiveness": 0.97,
+  "begin_message_delay_ms": 400,
+  "voicemail_option": {
+    "action": {
+      "type": "hangup"
+    }
+  },
+  "allow_user_dtmf": false,
+  "user_dtmf_options": {},
+  "retellLlmData": null,
+  "conversationFlow": {
+    "conversation_flow_id": "conversation_flow_b8100477c6ca",
+    "version": 0,
+    "global_prompt": "#Role\nYou are Jake, the fantastic and experienced assistant of the Real Estate Investment Group Sainz Real Estate and your objective is to call the leads that just filled up the form of the website and to book them an appointment\n\n#Task\n1.  Start with initial message of “Hello is this {{name}}?”\n2. If the user says no then ask him if the filled up the form and if not end the call, but if yes continue the normal steps of the call. If the user says that he is {{name}} then confirm he just filled up the form\n3. Once you have confirmed you will do two different things depending on if he wanted to buy or sell\n        1. If he wanted to buy you are going to ask for his budget and the time in which he can buy. \n        2. If he wanted to sell you are going to ask him for the price he is looking for, the address of the property and the time-frame in which he wants to sell\n4. Once you have collected that ask him if he would like to book an appointment, and if yes ask first for his email to then ask him the date and time in which he would like to have the appointment. Once he tells you use the function #check_availability_cal to check availability and the function #book_appointment  to book the appointment\n\n#Details\n-Remember to use human expressions like hmmm, or eeeehhh so that you don't look like a machine\n-This task is crucial for the success of Sainz Real Estate\n-If the users ask any questions between steps answer them with the knowledge I have provided you\n\n#Context\n##The Real Estate Investment Group\nSainz Real EState is a Real Estate Investment Group that operates mainly in the state of New York and New Jersey and it is famous for the expensive and luxurious properties they sell\n## The system\nYou are part of the outreach and client acquisition system of Sainz Real Estate in which your job is to call the leads that just filled up a form\n\n#Example\n##Example 1",
+    "nodes": [
+      {
+        "instruction": {
+          "type": "static_text",
+          "text": "Hello, am I talking to {{name}}?"
+        },
+        "name": "Welcome Node",
+        "edges": [
+          {
+            "destination_node_id": "node-1751621920370",
+            "id": "edge-1",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says yes"
+            }
+          },
+          {
+            "destination_node_id": "node-1751651758406",
+            "id": "edge-2",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says no"
+            }
+          }
+        ],
+        "start_speaker": "agent",
+        "id": "start-node-1751621850443",
+        "type": "conversation",
+        "display_position": {
+          "x": 342,
+          "y": 433
+        }
+      },
+      {
+        "name": "Conversation",
+        "edges": [
+          {
+            "destination_node_id": "node-1751622136480",
+            "id": "edge-1751621920370",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says yes"
+            }
+          },
+          {
+            "destination_node_id": "node-1751651703209",
+            "id": "edge-1751622048922",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says no"
+            }
+          }
+        ],
+        "id": "node-1751621920370",
+        "type": "conversation",
+        "display_position": {
+          "x": 676.2392109421611,
+          "y": 5.018080183590257
+        },
+        "instruction": {
+          "type": "static_text",
+          "text": "Ok, so I am the assistant of Sainz Real Estate and was calling you because you just filled up our form on our website. Is that correct?"
+        }
+      },
+      {
+        "name": "Logic Split Node",
+        "edges": [
+          {
+            "destination_node_id": "node-1751646848008",
+            "id": "edge-1751622153859",
+            "transition_condition": {
+              "type": "equation",
+              "equations": [
+                {
+                  "left": "{{type}}",
+                  "operator": "==",
+                  "right": "Buy"
+                }
+              ],
+              "operator": "||"
+            }
+          },
+          {
+            "destination_node_id": "node-1751646912826",
+            "id": "edge-1751622156766",
+            "transition_condition": {
+              "type": "equation",
+              "equations": [
+                {
+                  "left": "{{type}}",
+                  "operator": "==",
+                  "right": "Sell"
+                }
+              ],
+              "operator": "||"
+            }
+          }
+        ],
+        "id": "node-1751622136480",
+        "else_edge": {
+          "id": "edge-1751622136480",
+          "transition_condition": {
+            "type": "prompt",
+            "prompt": "Else"
+          }
+        },
+        "type": "branch",
+        "display_position": {
+          "x": 1150.5782579487181,
+          "y": -47.10608798155768
+        }
+      },
+      {
+        "name": "Conversation",
+        "edges": [
+          {
+            "destination_node_id": "node-1751646969332",
+            "id": "edge-1751646848008",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says yes"
+            }
+          },
+          {
+            "destination_node_id": "node-1751646981613",
+            "id": "edge-1751646899515",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says no"
+            }
+          }
+        ],
+        "id": "node-1751646848008",
+        "type": "conversation",
+        "display_position": {
+          "x": 1634.94266441869,
+          "y": -736.9427747902528
+        },
+        "instruction": {
+          "type": "static_text",
+          "text": "Ok, and you also filled it up to buy, is that correct?"
+        }
+      },
+      {
+        "name": "Conversation",
+        "edges": [
+          {
+            "destination_node_id": "node-1751651190146",
+            "id": "edge-1751646912826",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says yes\n"
+            }
+          },
+          {
+            "destination_node_id": "node-1751651145797",
+            "id": "edge-1751646929090",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says no"
+            }
+          }
+        ],
+        "id": "node-1751646912826",
+        "type": "conversation",
+        "display_position": {
+          "x": 1752.0317964280566,
+          "y": 4.261723740216329
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "Ok, and you also filled it up to sell, is that correct?"
+        }
+      },
+      {
+        "name": "Conversation",
+        "edges": [
+          {
+            "destination_node_id": "node-1751647169916",
+            "id": "edge-1751646969332",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says his budget and when he wants to buy"
+            }
+          }
+        ],
+        "id": "node-1751646969332",
+        "type": "conversation",
+        "display_position": {
+          "x": 2073.7215783645356,
+          "y": -902.3440912870194
+        },
+        "instruction": {
+          "type": "static_text",
+          "text": "Thanks then, I will need to collect your budget for buying a property and the time you want to buy a property, like a month, a year or 6 months"
+        }
+      },
+      {
+        "name": "Conversation",
+        "edges": [
+          {
+            "destination_node_id": "node-1751651190146",
+            "id": "edge-1751646981613",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says he wants to sell (yes)"
+            }
+          },
+          {
+            "destination_node_id": "node-1751646969332",
+            "id": "edge-1751646993686",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says he wants buy"
+            }
+          }
+        ],
+        "id": "node-1751646981613",
+        "type": "conversation",
+        "display_position": {
+          "x": 960.7429908153854,
+          "y": -492.93376938372603
+        },
+        "instruction": {
+          "type": "static_text",
+          "text": "So you actually want to sell?"
+        }
+      },
+      {
+        "name": "Extract Variables",
+        "edges": [
+          {
+            "destination_node_id": "node-1751647328237",
+            "id": "edge-1751647169916",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "Tool result successful"
+            }
+          },
+          {
+            "destination_node_id": "node-1751647268281",
+            "id": "edge-1751647243343",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "Tool result unsuccessful"
+            }
+          }
+        ],
+        "variables": [
+          {
+            "name": "budget",
+            "description": "The budget of the user in order to buy a property\n\nIf he answers I don't know respond 0",
+            "type": "number",
+            "choices": []
+          },
+          {
+            "name": "date_buy",
+            "description": "The date and time in which the user wants to buy a property",
+            "type": "string",
+            "choices": []
+          }
+        ],
+        "id": "node-1751647169916",
+        "type": "extract_dynamic_variables",
+        "display_position": {
+          "x": 2599.153540691785,
+          "y": -1010.0936753602156
+        }
+      },
+      {
+        "name": "Conversation",
+        "edges": [
+          {
+            "destination_node_id": "node-1751647169916",
+            "id": "edge-1751647268281",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User repeats the budget and the date/time"
+            }
+          }
+        ],
+        "id": "node-1751647268281",
+        "type": "conversation",
+        "display_position": {
+          "x": 2520.333037938835,
+          "y": -1391.9804240599965
+        },
+        "instruction": {
+          "type": "static_text",
+          "text": "Can you please repeat it for me, I wasn't able to catch it"
+        }
+      },
+      {
+        "name": "Conversation",
+        "edges": [
+          {
+            "destination_node_id": "node-1751647390857",
+            "id": "edge-1751647328237",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says yes"
+            }
+          },
+          {
+            "destination_node_id": "node-1751651025004",
+            "id": "edge-1751647366357",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says no"
+            }
+          }
+        ],
+        "id": "node-1751647328237",
+        "type": "conversation",
+        "display_position": {
+          "x": 3115.549548551653,
+          "y": -1405.9284189478042
+        },
+        "instruction": {
+          "type": "static_text",
+          "text": "That sounds great, would you like to book an appointment with our Real EState Agent to discuss further details?"
+        }
+      },
+      {
+        "name": "Conversation",
+        "edges": [
+          {
+            "destination_node_id": "node-1751647415575",
+            "id": "edge-1751647390857",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says his email"
+            }
+          }
+        ],
+        "id": "node-1751647390857",
+        "type": "conversation",
+        "display_position": {
+          "x": 3669.716951249186,
+          "y": -1514.1090951373412
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "Perfect then, can you please provide your email"
+        }
+      },
+      {
+        "name": "Extract Variables",
+        "edges": [
+          {
+            "destination_node_id": "node-1751647511408",
+            "id": "edge-1751647415575",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "Tool result successful\n"
+            }
+          },
+          {
+            "destination_node_id": "node-1751647464906",
+            "id": "edge-1751647452978",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "Tool result unsuccessful\n"
+            }
+          }
+        ],
+        "variables": [
+          {
+            "name": "email",
+            "description": "The email of the user",
+            "type": "string",
+            "choices": []
+          }
+        ],
+        "id": "node-1751647415575",
+        "type": "extract_dynamic_variables",
+        "display_position": {
+          "x": 4059.1257299173776,
+          "y": -1304.3588743280816
+        }
+      },
+      {
+        "name": "Conversation",
+        "edges": [
+          {
+            "destination_node_id": "node-1751647415575",
+            "id": "edge-1751647464906",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User gives his email"
+            }
+          }
+        ],
+        "id": "node-1751647464906",
+        "type": "conversation",
+        "display_position": {
+          "x": 4028.817643166447,
+          "y": -1902.6728004180384
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "Please repeat the email, I wasn't able to catch it"
+        }
+      },
+      {
+        "name": "Conversation",
+        "edges": [
+          {
+            "destination_node_id": "node-1751650051226",
+            "id": "edge-1751647511408",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says the day he would like to have the appointment"
+            }
+          }
+        ],
+        "id": "node-1751647511408",
+        "type": "conversation",
+        "display_position": {
+          "x": 4461.906742235718,
+          "y": -1690.228985715694
+        },
+        "instruction": {
+          "type": "static_text",
+          "text": "That's great, can you tell me a day and time in which you will like to have the appointment? Remember our Real EState AGent works from 9 AM to 8 PM from Monday to Friday"
+        }
+      },
+      {
+        "tool_id": "tool-1751647946107",
+        "name": "Check Availability Cal",
+        "edges": [
+          {
+            "destination_node_id": "node-1751650786186",
+            "id": "edge-1751650060409",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "There is availability (tool result successful)"
+            }
+          },
+          {
+            "destination_node_id": "node-1751650829693",
+            "id": "edge-1751650816405",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "There is not availability"
+            }
+          }
+        ],
+        "id": "node-1751650051226",
+        "type": "function",
+        "tool_type": "local",
+        "speak_during_execution": false,
+        "display_position": {
+          "x": 4942.435312316492,
+          "y": -1637.8612108135253
+        },
+        "wait_for_result": true
+      },
+      {
+        "tool_id": "tool-1751648206021",
+        "name": "Book Appointment Cal",
+        "edges": [
+          {
+            "destination_node_id": "node-1751650873442",
+            "id": "edge-1751650800254",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "Appointment booked"
+            }
+          }
+        ],
+        "id": "node-1751650786186",
+        "type": "function",
+        "tool_type": "local",
+        "speak_during_execution": false,
+        "display_position": {
+          "x": 5307.267328677591,
+          "y": -1666.1881214761509
+        },
+        "wait_for_result": true
+      },
+      {
+        "name": "Conversation",
+        "edges": [
+          {
+            "destination_node_id": "node-1751650051226",
+            "id": "edge-1751650829693",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User gives another day and time"
+            }
+          }
+        ],
+        "id": "node-1751650829693",
+        "type": "conversation",
+        "display_position": {
+          "x": 5070.0215295315265,
+          "y": -1368.2895949281183
+        },
+        "instruction": {
+          "type": "static_text",
+          "text": "The time you have given me is not available, can you choose another one please"
+        }
+      },
+      {
+        "name": "Conversation",
+        "edges": [
+          {
+            "destination_node_id": "node-1751650943331",
+            "id": "edge-1751650873442",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User does not have any questions"
+            }
+          }
+        ],
+        "id": "node-1751650873442",
+        "type": "conversation",
+        "display_position": {
+          "x": 5993.17459587696,
+          "y": -1538.8034996733954
+        },
+        "instruction": {
+          "type": "static_text",
+          "text": "Thanks for it, we will get in contact shortly with you to provide you more details about the appointment. Do you have any remaining questions"
+        }
+      },
+      {
+        "instruction": {
+          "type": "static_text",
+          "text": "Thanks for your time, see you soon"
+        },
+        "name": "Conversation",
+        "edges": [
+          {
+            "id": "edge-1751650943331",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "Describe the transition condition"
+            }
+          }
+        ],
+        "id": "node-1751650943331",
+        "type": "conversation",
+        "display_position": {
+          "x": 6823.870653356897,
+          "y": -630
+        },
+        "skip_response_edge": {
+          "destination_node_id": "node-1751650960835",
+          "id": "edge-1751650958531",
+          "transition_condition": {
+            "type": "prompt",
+            "prompt": "Skip response"
+          }
+        }
+      },
+      {
+        "name": "End Call",
+        "id": "node-1751650960835",
+        "type": "end",
+        "display_position": {
+          "x": 7433.687041696573,
+          "y": -444.52713250861046
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "Politely end the call"
+        }
+      },
+      {
+        "instruction": {
+          "type": "static_text",
+          "text": "Ok, I completely understand, our Real Estate Agent will be in contact with you in case you want to move forward"
+        },
+        "name": "Conversation",
+        "edges": [
+          {
+            "id": "edge-1751651025004",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "Describe the transition condition"
+            }
+          }
+        ],
+        "id": "node-1751651025004",
+        "type": "conversation",
+        "display_position": {
+          "x": 3480.768546641231,
+          "y": -1051.368300133943
+        },
+        "skip_response_edge": {
+          "destination_node_id": "node-1751650943331",
+          "id": "edge-1751651112139",
+          "transition_condition": {
+            "type": "prompt",
+            "prompt": "Skip response"
+          }
+        }
+      },
+      {
+        "name": "Conversation",
+        "edges": [
+          {
+            "destination_node_id": "node-1751646969332",
+            "id": "edge-1751651145797-7no90eaod",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says he wants to buy (yes)"
+            }
+          },
+          {
+            "destination_node_id": "node-1751651190146",
+            "id": "edge-1751651145797-5qvg2qsfu",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says he wants sell"
+            }
+          }
+        ],
+        "id": "node-1751651145797",
+        "type": "conversation",
+        "display_position": {
+          "x": 1430.5029494676305,
+          "y": 280.073620442352
+        },
+        "instruction": {
+          "type": "static_text",
+          "text": "So you actually want to buy?"
+        }
+      },
+      {
+        "name": "Conversation",
+        "edges": [
+          {
+            "destination_node_id": "node-1751651281240",
+            "id": "edge-1751651190146",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says everything: address, the price and the time"
+            }
+          }
+        ],
+        "id": "node-1751651190146",
+        "type": "conversation",
+        "display_position": {
+          "x": 2310.3705019123845,
+          "y": -176.39270563751566
+        },
+        "instruction": {
+          "type": "static_text",
+          "text": "Thanks, I will need to collect some information. I will need the address of the property, the price you are looking for it and the time in which you would like to sell it?"
+        }
+      },
+      {
+        "name": "Extract Variables",
+        "edges": [
+          {
+            "destination_node_id": "node-1751651425316",
+            "id": "edge-1751651281240",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "Tool result successful"
+            }
+          },
+          {
+            "destination_node_id": "node-1751651383747",
+            "id": "edge-1751651362158",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "Tool result unsuccessful"
+            }
+          }
+        ],
+        "variables": [
+          {
+            "name": "price",
+            "description": "The price the user is looking for property",
+            "type": "number",
+            "choices": []
+          },
+          {
+            "name": "date_sell",
+            "description": "The date in which the user will like to sell his property",
+            "type": "string",
+            "choices": []
+          },
+          {
+            "name": "address",
+            "description": "The address of the property the user wants to sell",
+            "type": "string",
+            "choices": []
+          }
+        ],
+        "id": "node-1751651281240",
+        "type": "extract_dynamic_variables",
+        "display_position": {
+          "x": 2775,
+          "y": -210
+        }
+      },
+      {
+        "name": "Conversation",
+        "edges": [
+          {
+            "destination_node_id": "node-1751651281240",
+            "id": "edge-1751651383747",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User repeats all the info"
+            }
+          }
+        ],
+        "id": "node-1751651383747",
+        "type": "conversation",
+        "display_position": {
+          "x": 2719.9583082640243,
+          "y": 355.1392367132657
+        },
+        "instruction": {
+          "type": "static_text",
+          "text": "Can you please repeat it, I wasn't able to catch it"
+        }
+      },
+      {
+        "name": "Conversation",
+        "edges": [
+          {
+            "destination_node_id": "node-1751651522113",
+            "id": "edge-1751651425316",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says yes"
+            }
+          },
+          {
+            "destination_node_id": "node-1751651640839",
+            "id": "edge-1751651479606",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says no"
+            }
+          }
+        ],
+        "id": "node-1751651425316",
+        "type": "conversation",
+        "display_position": {
+          "x": 3365.6122033973206,
+          "y": -199.17218458469307
+        },
+        "instruction": {
+          "type": "static_text",
+          "text": "Sounds good, would you like now to book an appointment with the Real Estate Agent to discuss further details about the process?"
+        }
+      },
+      {
+        "name": "Conversation",
+        "edges": [
+          {
+            "destination_node_id": "node-1751651524127",
+            "id": "edge-1751651522113-9152d3kav",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says his email"
+            }
+          }
+        ],
+        "id": "node-1751651522113",
+        "type": "conversation",
+        "display_position": {
+          "x": 3756.5847421197595,
+          "y": -454.40337649474526
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "Perfect then, can you please provide your email"
+        }
+      },
+      {
+        "name": "Extract Variables",
+        "edges": [
+          {
+            "destination_node_id": "node-1751651566286",
+            "id": "edge-1751651524127-8mj77fe52",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "Tool result successful\n"
+            }
+          },
+          {
+            "destination_node_id": "node-1751651547033",
+            "id": "edge-1751651524127-mfqucd21s",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "Tool result unsuccessful\n"
+            }
+          }
+        ],
+        "variables": [
+          {
+            "name": "email",
+            "description": "The email of the user",
+            "type": "string",
+            "choices": []
+          }
+        ],
+        "id": "node-1751651524127",
+        "type": "extract_dynamic_variables",
+        "display_position": {
+          "x": 4195.924946583176,
+          "y": -245.48067357505303
+        }
+      },
+      {
+        "name": "Conversation",
+        "edges": [
+          {
+            "destination_node_id": "node-1751651524127",
+            "id": "edge-1751651547033-56iafacuo",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User gives his email"
+            }
+          }
+        ],
+        "id": "node-1751651547033",
+        "type": "conversation",
+        "display_position": {
+          "x": 4190.0158826139905,
+          "y": -711.5973558610432
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "Please repeat the email, I wasn't able to catch it"
+        }
+      },
+      {
+        "name": "Conversation",
+        "edges": [
+          {
+            "destination_node_id": "node-1751651577322",
+            "id": "edge-1751651566286-wz64xnewg",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says the day he would like to have the appointment"
+            }
+          }
+        ],
+        "id": "node-1751651566286",
+        "type": "conversation",
+        "display_position": {
+          "x": 4683.1289730296885,
+          "y": -482.9505577074804
+        },
+        "instruction": {
+          "type": "static_text",
+          "text": "That's great, can you tell me a day and time in which you will like to have the appointment? Remember our Real EState AGent works from 9 AM to 8 PM from Monday to Friday"
+        }
+      },
+      {
+        "tool_id": "tool-1751647946107",
+        "name": "Check Availability Cal",
+        "edges": [
+          {
+            "destination_node_id": "node-1751651588434",
+            "id": "edge-1751651577322-nehxuvb7p",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "There is availability"
+            }
+          },
+          {
+            "destination_node_id": "node-1751651596089",
+            "id": "edge-1751651577322-w54ls42z1",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "There is not availability"
+            }
+          }
+        ],
+        "id": "node-1751651577322",
+        "type": "function",
+        "tool_type": "local",
+        "speak_during_execution": false,
+        "display_position": {
+          "x": 5208.0233884360705,
+          "y": -458.4009769753036
+        },
+        "wait_for_result": true
+      },
+      {
+        "tool_id": "tool-1751648206021",
+        "name": "Book Appointment Cal",
+        "edges": [
+          {
+            "destination_node_id": "node-1751651612951",
+            "id": "edge-1751651588435-hmsabp73n",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "Appointment booked"
+            }
+          }
+        ],
+        "id": "node-1751651588434",
+        "type": "function",
+        "tool_type": "local",
+        "speak_during_execution": false,
+        "display_position": {
+          "x": 5761.200610016397,
+          "y": -578.2477408782579
+        },
+        "wait_for_result": true
+      },
+      {
+        "name": "Conversation",
+        "edges": [
+          {
+            "destination_node_id": "node-1751651577322",
+            "id": "edge-1751651596089-didhpeygi",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User gives another day and time"
+            }
+          }
+        ],
+        "id": "node-1751651596089",
+        "type": "conversation",
+        "display_position": {
+          "x": 5303.776613219687,
+          "y": -207.39860667489089
+        },
+        "instruction": {
+          "type": "static_text",
+          "text": "The time you have given me is not available, can you choose another one please"
+        }
+      },
+      {
+        "name": "Conversation",
+        "edges": [
+          {
+            "destination_node_id": "node-1751650943331",
+            "id": "edge-1751651612951-6s8spoj2e",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User does not have any questions"
+            }
+          }
+        ],
+        "id": "node-1751651612951",
+        "type": "conversation",
+        "display_position": {
+          "x": 6162.785223919727,
+          "y": -520.732535174802
+        },
+        "instruction": {
+          "type": "static_text",
+          "text": "Thanks for it, we will get in contact shortly with you to provide you more details about the appointment. Do you have any remaining questions"
+        }
+      },
+      {
+        "instruction": {
+          "type": "static_text",
+          "text": "Ok no problem, the Real Estate Agent will get in touch with you shortly to discuss details"
+        },
+        "name": "Conversation",
+        "edges": [
+          {
+            "id": "edge-1751651640839",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "Describe the transition condition"
+            }
+          }
+        ],
+        "id": "node-1751651640839",
+        "type": "conversation",
+        "display_position": {
+          "x": 3860.596411630447,
+          "y": 180.61880755862637
+        },
+        "skip_response_edge": {
+          "destination_node_id": "node-1751650943331",
+          "id": "edge-1751651677612",
+          "transition_condition": {
+            "type": "prompt",
+            "prompt": "Skip response"
+          }
+        }
+      },
+      {
+        "instruction": {
+          "type": "static_text",
+          "text": "Ok sorry, there has been a mistake"
+        },
+        "name": "Conversation",
+        "edges": [
+          {
+            "id": "edge-1751651703209",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "Describe the transition condition"
+            }
+          }
+        ],
+        "id": "node-1751651703209",
+        "type": "conversation",
+        "display_position": {
+          "x": 1110,
+          "y": 645
+        },
+        "skip_response_edge": {
+          "destination_node_id": "node-1751650943331",
+          "id": "edge-1751651726790",
+          "transition_condition": {
+            "type": "prompt",
+            "prompt": "Skip response"
+          }
+        }
+      },
+      {
+        "name": "Conversation",
+        "edges": [
+          {
+            "destination_node_id": "node-1751651801710",
+            "id": "edge-1751651758406",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says yes"
+            }
+          },
+          {
+            "destination_node_id": "node-1751651703209",
+            "id": "edge-1751651779368",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says no"
+            }
+          }
+        ],
+        "id": "node-1751651758406",
+        "type": "conversation",
+        "display_position": {
+          "x": 629.37225696615,
+          "y": 907.2803980672591
+        },
+        "instruction": {
+          "type": "static_text",
+          "text": "I see, but haven't you just filled up the form of Sainz Real Estate"
+        }
+      },
+      {
+        "instruction": {
+          "type": "static_text",
+          "text": "Ok, sorry for the mistake, let's continue with the call"
+        },
+        "name": "Conversation",
+        "edges": [
+          {
+            "id": "edge-1751651801710",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "Describe the transition condition"
+            }
+          }
+        ],
+        "id": "node-1751651801710",
+        "type": "conversation",
+        "display_position": {
+          "x": 1142.196637208018,
+          "y": 977.9498670605773
+        },
+        "skip_response_edge": {
+          "destination_node_id": "node-1751621920370",
+          "id": "edge-1751651822478",
+          "transition_condition": {
+            "type": "prompt",
+            "prompt": "Skip response"
+          }
+        }
+      }
+    ],
+    "start_node_id": "start-node-1751621850443",
+    "start_speaker": "agent",
+    "tools": [
+      {
+        "tool_id": "tool-1751647946107",
+        "event_type_id": 2469222,
+        "cal_api_key": "YOUR API KEY",
+        "timezone": "Europe/Madrid",
+        "name": "check_availability_cal",
+        "description": "When users ask for availability, check the calendar and provide available slots.",
+        "type": "check_availability_cal"
+      },
+      {
+        "tool_id": "tool-1751648206021",
+        "event_type_id": 2469222,
+        "cal_api_key": "YOUR API KEY",
+        "timezone": "Europe/Madrid",
+        "name": "book_appointment_cal",
+        "description": "When users ask to book an appointment, book it on the calendar.",
+        "type": "book_appointment_cal"
+      }
+    ],
+    "model_choice": {
+      "type": "cascading",
+      "model": "gpt-4.1-mini",
+      "high_priority": true
+    },
+    "knowledge_base_ids": [],
+    "begin_tag_display_position": {
+      "x": 122,
+      "y": 333
+    },
+    "is_published": false
+  },
+  "llmURL": null
+}

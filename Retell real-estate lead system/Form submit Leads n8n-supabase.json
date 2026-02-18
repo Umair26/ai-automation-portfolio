@@ -1,0 +1,2516 @@
+{
+  "name": "Dashboard system",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Dashboard AI Voice",
+        "formDescription": "Fill up for Sainz Real Estate",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "What is your name?",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "What are you looking to do?",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Buy"
+                  },
+                  {
+                    "option": "Sell"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Can you give your number? Please include the country code",
+              "fieldType": "number",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "34f641ff-eb46-4713-83ec-e930c0d2d610",
+      "name": "On form submission",
+      "webhookId": "54e0cad1-4cce-439b-aaf3-d6edce8a1f3f"
+    },
+    {
+      "parameters": {
+        "amount": 30
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        220,
+        0
+      ],
+      "id": "5665b6c3-445d-471a-b30a-6eb740adb3bc",
+      "name": "Wait",
+      "webhookId": "dd82d89a-35ee-4994-96d8-2e8240c11514"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.retellai.com/v2/create-phone-call",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer key_6efe598221187d7b3ca6764ea26f"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={\n  \"agent_id\": \"agent_440bfed6a8d6bca9aad833795f\",\n  \"retell_llm_dynamic_variables\":{\n    \"name\": \"{{ $json['What is your name?'] }}\",\n    \"type\": \"{{ $json['What are you looking to do?'] }}\"\n  },\n  \"from_number\": \"+12029334458\",\n  \"to_number\": \"+{{ $json['Can you give your number? Please include the country code'] }}\",\n  \"direction\": \"outbound\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        0
+      ],
+      "id": "fddd999a-90e2-48bf-9e18-12e804c444c0",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.retellai.com/v2/get-call/{{ $json.call_id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer key_6efe598221187d7b3ca6764ea26f"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        660,
+        0
+      ],
+      "id": "4f0a4540-706a-499c-81bc-27ead7827c8e",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "31c3008b-de9c-44d3-975d-d77a877d92e1",
+              "leftValue": "={{ $json.call_status }}",
+              "rightValue": "ended",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        880,
+        0
+      ],
+      "id": "2d5d5071-8b74-457a-91a5-1870b96b0365",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8845af53-b575-418e-9951-9e4f92e8081c",
+              "leftValue": "={{ $json.call_status }}",
+              "rightValue": "not_connected",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1080,
+        120
+      ],
+      "id": "762150f1-eb43-4c2d-a0ae-93134bcb8c58",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "289bc294-bb31-4d08-8e7d-2b194714b834",
+              "leftValue": "={{ $('If').item.json.call_status }}",
+              "rightValue": "error",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1160,
+        340
+      ],
+      "id": "6b46a1f7-02e0-4bb7-8589-de4f33a4a312",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        700,
+        360
+      ],
+      "id": "8ed570a7-5d70-4d9c-9b48-4fa0dc3d5c5c",
+      "name": "Wait1",
+      "webhookId": "6baa15c6-27a1-49cc-a8ca-d2c77c0b5016"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=The transcript of the call: {{ $json.transcript }}",
+        "options": {
+          "systemMessage": "=You are the fantastic assistant of Sainz Real Estate and you are in charge of analyzing the transcript and deciding which of the following adjusts best for how the call went\n\n-Output 1 if the user was able to book an appointment as he was interested\n-Output 2 if the user was interested but didn't book an appointment\n-Output 3 if there was a mistake or a misunderstanding and the call didn't go ahead\n-Output 4 if the lead didn't show interest at all\n\nExample output:\n3"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        1380,
+        -460
+      ],
+      "id": "069cd4bd-916d-4fc2-b65f-130343317de2",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1440,
+        -240
+      ],
+      "id": "ab646b53-d32e-4391-8af6-ffcdcc62ab89",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "pGL3XrNyU4KmZrgI",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.output }}",
+                    "rightValue": "1",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "b76e92e7-ec8d-495d-9bbc-5d2630269770"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "be8ef0a6-cd17-4c58-a5bb-63d53032176f",
+                    "leftValue": "={{ $json.output }}",
+                    "rightValue": "2",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "f29cf03f-afd9-44cc-bcd6-8c8d828c32a4",
+                    "leftValue": "={{ $json.output }}",
+                    "rightValue": "3",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "2ad5b29c-f732-4188-a750-eaee9fb267de",
+                    "leftValue": "={{ $json.output }}",
+                    "rightValue": "4",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1760,
+        -480
+      ],
+      "id": "14697bec-df25-4d9f-a859-b232afae1b97",
+      "name": "Switch",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=The transcript of the call: {{ $('If4').item.json.transcript }}",
+        "options": {
+          "systemMessage": "You are the fantastic assistant of Saiz Real Estate, I need you to confirm with the transcript of the call if the user wanted to buy or to sell\n\nOutput Buy if he wanted to buy\n\nOutput Sell if he wanted to sell\n\nExample output:\nBuy"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        1980,
+        -980
+      ],
+      "id": "57fc36ae-5ebd-4b79-9cb0-d88289fae38e",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2000,
+        -720
+      ],
+      "id": "e9b047a2-4bd3-47aa-968f-c2708374146a",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "pGL3XrNyU4KmZrgI",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "Sell",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Name",
+              "fieldValue": "={{ $('If4').item.json.retell_llm_dynamic_variables.name }}"
+            },
+            {
+              "fieldId": "Appointment",
+              "fieldValue": "Yes"
+            },
+            {
+              "fieldId": "Email",
+              "fieldValue": "={{ $('If4').item.json.collected_dynamic_variables.email }}"
+            },
+            {
+              "fieldId": "Date or time to sell",
+              "fieldValue": "={{ $('If4').item.json.collected_dynamic_variables.date_sell }}"
+            },
+            {
+              "fieldId": "Price",
+              "fieldValue": "={{ $('If4').item.json.collected_dynamic_variables.price }}"
+            },
+            {
+              "fieldId": "Address",
+              "fieldValue": "={{ $('If4').item.json.collected_dynamic_variables.address }}"
+            },
+            {
+              "fieldId": "Date of appointment",
+              "fieldValue": "={{ $json.output }}"
+            },
+            {
+              "fieldId": "transcript",
+              "fieldValue": "={{ $('If4').item.json.transcript }}"
+            },
+            {
+              "fieldId": "recording URL",
+              "fieldValue": "={{ $('If4').item.json.recording_url }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        3220,
+        -1240
+      ],
+      "id": "7f63fe55-0f5e-4680-b744-82d3a534c21b",
+      "name": "Create a row",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "rnqhIoonRIlEgkxZ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.output }}",
+                    "rightValue": "Sell",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "5236ce0b-a084-4043-82d5-3d998ead9689"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "dd8c0f3a-072f-41d1-821a-543a583f268a",
+                    "leftValue": "={{ $json.output }}",
+                    "rightValue": "Buy",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        2360,
+        -960
+      ],
+      "id": "5eb0d0ee-d418-41cd-b95d-daa7a4fae994",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "Centralized table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "keyValue": "1"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        3460,
+        -1220
+      ],
+      "id": "41c3e5f1-f7a4-4cab-a62d-33d69314123f",
+      "name": "Get a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "rnqhIoonRIlEgkxZ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "Centralized table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "1"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Calls sent",
+              "fieldValue": "={{ [$json['Calls sent'].abs(),1].sum() }}"
+            },
+            {
+              "fieldId": "Appointments",
+              "fieldValue": "={{ [$json.Appointments.abs(),1].sum() }}"
+            },
+            {
+              "fieldId": "Interested",
+              "fieldValue": "={{ [$json.Interested.abs(),1].sum() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        3720,
+        -1220
+      ],
+      "id": "3e82ea4e-ef55-4748-ae48-a6897fcc7d9e",
+      "name": "Update a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "rnqhIoonRIlEgkxZ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=the transcript of the call:  {{ $('If4').item.json.transcript }}",
+        "options": {
+          "systemMessage": "=From the transcript please get the day and hour of the appointment that has been booked\n\nOutput format: MM/DD/YYYY HH:mm\n\nJust output the date and time"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        2800,
+        -1240
+      ],
+      "id": "8d6ded98-b000-4d49-a9e1-8761ab42ae5c",
+      "name": "AI Agent2"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2720,
+        -980
+      ],
+      "id": "a9f5ee94-228f-4912-a434-e87f92ab031d",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "pGL3XrNyU4KmZrgI",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "realestateagent@gmail.com",
+        "subject": "New lead for selling with appointment booked",
+        "emailType": "text",
+        "message": "=Hey Real Estate Agent, a new lead just came inside the database, he wants to sell and his data is: Name: {{ $('Create a row').item.json.Name }}, Number: {{ $('Create a row').item.json.Number }}, email: {{ $('Create a row').item.json.Email }}, address: {{ $('Create a row').item.json.Address }}, date of appointment{{ $('Create a row').item.json['Date of appointment'] }}, date to sell: {{ $('Create a row').item.json['Date or time to sell'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        3940,
+        -1220
+      ],
+      "id": "1917d656-053a-4d8e-8fbf-9b7eff587b58",
+      "name": "Send a message",
+      "webhookId": "ba0157ab-f14a-4ca3-89fd-a7fd8e12812d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "V2LdHWrj9bDaqATc",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=the transcript of the call:  {{ $('If4').item.json.transcript }}",
+        "options": {
+          "systemMessage": "=From the transcript please get the day and hour of the appointment that has been booked\n\nOutput format: MM/DD/YYYY HH:mm\n\nJust output the date and time"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        2840,
+        -840
+      ],
+      "id": "5db8791e-87b4-4a3c-9221-a76739bb81ad",
+      "name": "AI Agent3"
+    },
+    {
+      "parameters": {
+        "tableId": "Buy",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Name",
+              "fieldValue": "={{ $('If4').item.json.retell_llm_dynamic_variables.name }}"
+            },
+            {
+              "fieldId": "Appointment",
+              "fieldValue": "Yes"
+            },
+            {
+              "fieldId": "Date of appointment",
+              "fieldValue": "={{ $json.output }}"
+            },
+            {
+              "fieldId": "Email",
+              "fieldValue": "={{ $('If4').item.json.collected_dynamic_variables.email }}"
+            },
+            {
+              "fieldId": "Budget",
+              "fieldValue": "={{ $('If4').item.json.collected_dynamic_variables.budget }}"
+            },
+            {
+              "fieldId": "transcript",
+              "fieldValue": "={{ $('If4').item.json.transcript }}"
+            },
+            {
+              "fieldId": "Date or time to buy",
+              "fieldValue": "={{ $('If4').item.json.collected_dynamic_variables.date_buy }}"
+            },
+            {
+              "fieldId": "recording URL",
+              "fieldValue": "={{ $('If4').item.json.recording_url }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        3200,
+        -840
+      ],
+      "id": "b36559b9-5a47-4137-9dfe-3497b5343f2e",
+      "name": "Create a row1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "rnqhIoonRIlEgkxZ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "Centralized table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "keyValue": "1"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        3420,
+        -840
+      ],
+      "id": "c2fffd3d-e0fb-42f5-a208-448b6e6ca101",
+      "name": "Get a row1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "rnqhIoonRIlEgkxZ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "Centralized table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "1"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Calls sent",
+              "fieldValue": "={{ [$json['Calls sent'].abs(),1].sum() }}"
+            },
+            {
+              "fieldId": "Appointments",
+              "fieldValue": "={{ [$json.Appointments.abs(),1].sum() }}"
+            },
+            {
+              "fieldId": "Interested",
+              "fieldValue": "={{ [$json.Interested.abs(),1].sum() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        3700,
+        -820
+      ],
+      "id": "4554fb55-acc0-4e31-84ca-ec5a0c1c4a3d",
+      "name": "Update a row1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "rnqhIoonRIlEgkxZ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "realestateagent@gmail.com",
+        "subject": "New lead for buying with appointment booked",
+        "emailType": "text",
+        "message": "=Hey Real Estate Agent, a new lead just came inside the database, he wants to buy and his data is: Name: {{ $('Create a row1').item.json.Name }}, Number: {{ $('Create a row1').item.json.Number }}, email: {{ $('Create a row1').item.json.Email }}, date of appointment: {{ $('AI Agent3').item.json.output }}, date to buy: {{ $('Create a row1').item.json['Date or time to buy'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        3960,
+        -820
+      ],
+      "id": "a6dbc87a-68fe-4732-8c45-3755636420ab",
+      "name": "Send a message1",
+      "webhookId": "ba0157ab-f14a-4ca3-89fd-a7fd8e12812d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "V2LdHWrj9bDaqATc",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=The transcript of the call: {{ $('If4').item.json.transcript }}",
+        "options": {
+          "systemMessage": "You are the fantastic assistant of Saiz Real Estate, I need you to confirm with the transcript of the call if the user wanted to buy or to sell\n\nOutput Buy if he wanted to buy\n\nOutput Sell if he wanted to sell\n\nExample output:\nBuy"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        2180,
+        -500
+      ],
+      "id": "fe31ac25-0c32-49d0-88c7-0b5228aaf53f",
+      "name": "AI Agent4",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "tableId": "Buy",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Name",
+              "fieldValue": "={{ $('If').item.json.retell_llm_dynamic_variables.name }}"
+            },
+            {
+              "fieldId": "Appointment",
+              "fieldValue": "False"
+            },
+            {
+              "fieldId": "Budget",
+              "fieldValue": "={{ $('If4').item.json.collected_dynamic_variables.budget }}"
+            },
+            {
+              "fieldId": "Date or time to buy",
+              "fieldValue": "={{ $('If4').item.json.collected_dynamic_variables.date_buy }}"
+            },
+            {
+              "fieldId": "transcript",
+              "fieldValue": "={{ $('If4').item.json.transcript }}"
+            },
+            {
+              "fieldId": "recording URL",
+              "fieldValue": "={{ $('If4').item.json.recording_url }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2940,
+        -620
+      ],
+      "id": "8ef5d554-ec3b-4060-bbc7-412bd62e2125",
+      "name": "Create a row2",
+      "credentials": {
+        "supabaseApi": {
+          "id": "rnqhIoonRIlEgkxZ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "Centralized table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "keyValue": "1"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        3180,
+        -620
+      ],
+      "id": "b47c44dd-3271-49d1-bc03-ea49dafe0b58",
+      "name": "Get a row2",
+      "credentials": {
+        "supabaseApi": {
+          "id": "rnqhIoonRIlEgkxZ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "Centralized table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "1"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Calls sent",
+              "fieldValue": "={{ [$json['Calls sent'].abs(),1].sum() }}"
+            },
+            {
+              "fieldId": "Appointments",
+              "fieldValue": "={{ $json.Appointments }}"
+            },
+            {
+              "fieldId": "Interested",
+              "fieldValue": "={{ [$json.Interested.abs(),1].sum() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        3420,
+        -620
+      ],
+      "id": "ac9239ed-c95b-4280-b283-318da5df1421",
+      "name": "Update a row2",
+      "credentials": {
+        "supabaseApi": {
+          "id": "rnqhIoonRIlEgkxZ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "realestateagent@gmail.com",
+        "subject": "New lead for buying without appointment booked",
+        "emailType": "text",
+        "message": "=Hey Real Estate Agent, a new lead just came inside the database, he wants to buy and his data is: Name: {{ $('Create a row2').item.json.Name }}, Number: {{ $('Create a row2').item.json.Number }}, date to buy: {{ $('Create a row2').item.json['Date or time to buy'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        3660,
+        -600
+      ],
+      "id": "ffbfa4bd-aa84-4e16-8cea-9ab143858cea",
+      "name": "Send a message2",
+      "webhookId": "ba0157ab-f14a-4ca3-89fd-a7fd8e12812d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "V2LdHWrj9bDaqATc",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.output }}",
+                    "rightValue": "B",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "01d5127f-b45e-4371-a4c7-fb171b1892e0"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "cd8258f6-aa41-464b-869f-624272785d5b",
+                    "leftValue": "={{ $json.output }}",
+                    "rightValue": "Sell",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        2540,
+        -500
+      ],
+      "id": "fd0065a2-aa8a-4ebe-887a-5d524397948d",
+      "name": "Switch2"
+    },
+    {
+      "parameters": {
+        "tableId": "Sell",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Name",
+              "fieldValue": "={{ $('If4').item.json.retell_llm_dynamic_variables.name }}"
+            },
+            {
+              "fieldId": "Appointment",
+              "fieldValue": "No"
+            },
+            {
+              "fieldId": "Date or time to sell",
+              "fieldValue": "={{ $('If4').item.json.collected_dynamic_variables.date_sell }}"
+            },
+            {
+              "fieldId": "Price",
+              "fieldValue": "={{ $('If4').item.json.collected_dynamic_variables.price }}"
+            },
+            {
+              "fieldId": "Address",
+              "fieldValue": "={{ $('If4').item.json.collected_dynamic_variables.address }}"
+            },
+            {
+              "fieldId": "transcript",
+              "fieldValue": "={{ $('If4').item.json.transcript }}"
+            },
+            {
+              "fieldId": "recording URL",
+              "fieldValue": "={{ $('If4').item.json.recording_url }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2900,
+        -320
+      ],
+      "id": "d5c899eb-01b9-4d9d-aeb0-8b88f89dd598",
+      "name": "Create a row3",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "rnqhIoonRIlEgkxZ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "Centralized table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "keyValue": "1"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        3160,
+        -300
+      ],
+      "id": "5be1f380-375b-4d98-ad8d-64cb564c336e",
+      "name": "Get a row3",
+      "credentials": {
+        "supabaseApi": {
+          "id": "rnqhIoonRIlEgkxZ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "Centralized table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "1"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Calls sent",
+              "fieldValue": "={{ [$json['Calls sent'].abs(),1].sum() }}"
+            },
+            {
+              "fieldId": "Appointments",
+              "fieldValue": "={{ $json.Appointments }}"
+            },
+            {
+              "fieldId": "Interested",
+              "fieldValue": "={{ [$json.Interested.abs(),1].sum() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        3440,
+        -300
+      ],
+      "id": "73fcb3de-eea0-4d5f-acba-ff928797f8c3",
+      "name": "Update a row3",
+      "credentials": {
+        "supabaseApi": {
+          "id": "rnqhIoonRIlEgkxZ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "realestateagent@gmail.com",
+        "subject": "New lead for selling without appointment booked",
+        "emailType": "text",
+        "message": "=Hey Real Estate Agent, a new lead just came inside the database, he wants to buy and his data is: Name: {{ $('Create a row3').item.json.Name }}, Number:{{ $('Create a row3').item.json.Number }}, date to sell: {{ $('Create a row3').item.json['Date or time to sell'] }}, address: {{ $('Create a row3').item.json.Address }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        3680,
+        -280
+      ],
+      "id": "37997935-5907-4037-a4fa-31b9dd53b5c3",
+      "name": "Send a message3",
+      "webhookId": "ba0157ab-f14a-4ca3-89fd-a7fd8e12812d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "V2LdHWrj9bDaqATc",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "Not interested",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Name",
+              "fieldValue": "={{ $('If4').item.json.retell_llm_dynamic_variables.name }}"
+            },
+            {
+              "fieldId": "transcript",
+              "fieldValue": "={{ $('If4').item.json.transcript }}"
+            },
+            {
+              "fieldId": "recording URL",
+              "fieldValue": "={{ $('If4').item.json.recording_url }}"
+            },
+            {
+              "fieldId": "Buy/Sell",
+              "fieldValue": "={{ $('On form submission').item.json['What are you looking to do?'] }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2480,
+        -60
+      ],
+      "id": "c6730fb9-36ff-4ba8-9427-8e2d959c66f2",
+      "name": "Create a row5",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "rnqhIoonRIlEgkxZ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "Centralized table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "keyValue": "1"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2720,
+        -60
+      ],
+      "id": "b01799cc-e011-4400-84a2-a53d4fd3e6c1",
+      "name": "Get a row4",
+      "credentials": {
+        "supabaseApi": {
+          "id": "rnqhIoonRIlEgkxZ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "Centralized table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "1"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Calls sent",
+              "fieldValue": "={{ [$json['Calls sent'].abs(),1].sum() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2940,
+        -60
+      ],
+      "id": "f7bbbd6f-2651-487c-8e96-ac7c4e03dc46",
+      "name": "Update a row4",
+      "credentials": {
+        "supabaseApi": {
+          "id": "rnqhIoonRIlEgkxZ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "Centralized table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "keyValue": "1"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2120,
+        300
+      ],
+      "id": "781a0529-ad8b-4316-a98e-384145408d38",
+      "name": "Get a row5",
+      "credentials": {
+        "supabaseApi": {
+          "id": "rnqhIoonRIlEgkxZ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "Centralized table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "1"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Calls sent",
+              "fieldValue": "={{ [$json['Calls sent'].abs(),1].sum() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2400,
+        320
+      ],
+      "id": "d57d7f32-3dda-4155-95c4-3c03da0da163",
+      "name": "Update a row5",
+      "credentials": {
+        "supabaseApi": {
+          "id": "rnqhIoonRIlEgkxZ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5a784236-0765-462c-930d-d54dec814869",
+              "leftValue": "={{ $json.call_analysis.in_voicemail }}",
+              "rightValue": "false",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1140,
+        -140
+      ],
+      "id": "3e863ff7-0d2c-49af-b1a1-f4ec3c4d55c1",
+      "name": "If4"
+    },
+    {
+      "parameters": {
+        "tableId": "Voicemail or Not connection",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Name",
+              "fieldValue": "={{ $json.retell_llm_dynamic_variables.name }}"
+            },
+            {
+              "fieldId": "Buy/Sell",
+              "fieldValue": "={{ $json.retell_llm_dynamic_variables.type }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1860,
+        300
+      ],
+      "id": "e66617c2-da31-46f6-9277-1988c54f5d8b",
+      "name": "Create a row4",
+      "credentials": {
+        "supabaseApi": {
+          "id": "rnqhIoonRIlEgkxZ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "to": "={{ $('Create a row2').item.json.Number }}",
+        "message": "=Hey, after the conversation we just had, I leave here the calendar link of Sainz Real Estate so that you can book an appointment: https://calendly.com/tribexagency/30min\n\nOtherwise, the Real Estate Agent will get in contact with you",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        4120,
+        -600
+      ],
+      "id": "40ee526f-70e0-4fb0-9732-b891b07ad36b",
+      "name": "Send an SMS/MMS/WhatsApp message",
+      "credentials": {
+        "twilioApi": {
+          "id": "uLW2qe1Cjqw22Hl4",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 3,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        3880,
+        -600
+      ],
+      "id": "490639ef-0a2e-4bf6-ad9a-d192c1d3e005",
+      "name": "Wait2",
+      "webhookId": "680afea2-5e09-4158-a9d9-af03221445d2"
+    },
+    {
+      "parameters": {
+        "amount": 3,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        3900,
+        -260
+      ],
+      "id": "9266e80c-519b-4f8e-a8c0-a4897deb6fb9",
+      "name": "Wait3",
+      "webhookId": "680afea2-5e09-4158-a9d9-af03221445d2"
+    },
+    {
+      "parameters": {
+        "to": "={{ $('Create a row3').item.json.Number }}",
+        "message": "=Hey, after the conversation we just had, I leave here the calendar link of Sainz Real Estate so that you can book an appointment: https://calendly.com/tribexagency/30min\n\nOtherwise, the Real Estate Agent will get in contact with you",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        4160,
+        -300
+      ],
+      "id": "774118b5-5028-4e8c-98ea-b14318c636b2",
+      "name": "Send an SMS/MMS/WhatsApp message1",
+      "credentials": {
+        "twilioApi": {
+          "id": "uLW2qe1Cjqw22Hl4",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "addToDate",
+        "magnitude": "={{ $('Create a row4').item.json.created_at }}",
+        "timeUnit": "hours",
+        "duration": 1,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        2620,
+        320
+      ],
+      "id": "9654580e-fe23-46a5-a3fc-98290b698369",
+      "name": "Date & Time"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "Voicemail or Not connection",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "created_at",
+              "condition": "eq",
+              "keyValue": "={{ $('Create a row4').item.json.created_at }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Date to follow up",
+              "fieldValue": "={{ $json.newDate }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2840,
+        320
+      ],
+      "id": "9bc2e201-b694-4944-9b7d-02511e2452a0",
+      "name": "Update a row6",
+      "credentials": {
+        "supabaseApi": {
+          "id": "rnqhIoonRIlEgkxZ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9
+            },
+            {
+              "triggerAtHour": 16
+            },
+            {
+              "triggerAtHour": 20
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -120,
+        -640
+      ],
+      "id": "cd62dd85-ae20-4221-a8c0-7cd62a8a75d1",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "Voicemail or Not connection"
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        120,
+        -640
+      ],
+      "id": "6b8a594e-2e5f-470a-98e9-1a8a83d69205",
+      "name": "Get many rows",
+      "executeOnce": false,
+      "credentials": {
+        "supabaseApi": {
+          "id": "rnqhIoonRIlEgkxZ",
+          "name": "Supabase account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e7d63523-ef82-4aa4-a4ee-3f01d9fb1f4d",
+              "leftValue": "={{ $json['Date to follow up'] }}",
+              "rightValue": "={{ $('Schedule Trigger').item.json.timestamp }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "before"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        340,
+        -740
+      ],
+      "id": "a28329c3-e824-462e-8b30-1b0f3b0504c7",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "Voicemail or Not connection",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "keyValue": "={{ $('Get many rows').item.json.id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        620,
+        -860
+      ],
+      "id": "0c3456c6-9a93-4a36-91bf-6d229c98005e",
+      "name": "Get a row6",
+      "executeOnce": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "rnqhIoonRIlEgkxZ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "tableId": "Voicemail or Not connection",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        780,
+        -840
+      ],
+      "id": "9155b4cf-c92d-484f-a71e-b504344a72b7",
+      "name": "Delete a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "rnqhIoonRIlEgkxZ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.retellai.com/v2/create-phone-call",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer API KEY"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={\n  \"agent_id\": \"agent_440bfed6a8d6bca9aad833795f\",\n  \"retell_llm_dynamic_variables\":{\n    \"name\": \"{{ $json.Name }}\",\n    \"type\": \"{{ $json['Buy or Sell'] }}\"\n  },\n  \"from_number\": \"YOUR PHONE NUMBER\",\n  \"to_number\": \"+{{ $json.Number }}\",\n  \"direction\": \"outbound\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1020,
+        -840
+      ],
+      "id": "2e65da14-50a5-4b4e-b6d1-0f7ccb5f5024",
+      "name": "HTTP Request2",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "Centralized table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "keyValue": "1"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1260,
+        -860
+      ],
+      "id": "c409e07a-4261-4c5a-99d6-62f2fd3654b7",
+      "name": "Get a row7",
+      "credentials": {
+        "supabaseApi": {
+          "id": "rnqhIoonRIlEgkxZ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "Centralized table",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Follow ups",
+              "fieldValue": "={{ [$json['Follow ups'].abs(),1].sum() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1500,
+        -840
+      ],
+      "id": "2161f577-5100-427b-852e-26c748469e05",
+      "name": "Update a row7",
+      "credentials": {
+        "supabaseApi": {
+          "id": "rnqhIoonRIlEgkxZ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "to": "={{ $('Create a row5').item.json.Number }}",
+        "message": "=Hey there, you filled up previously our form of Sainz Real Estate, in case you want to discuss any details of what you are interested, please book a call here with our Real Estate Agent: https://calendly.com/tribexagency/30min\n\nif not, the Real Estate Agent won't be able to get in touch with you",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        3420,
+        -60
+      ],
+      "id": "73b59a91-c6dc-418d-981e-91e074d567bc",
+      "name": "Send an SMS/MMS/WhatsApp message2",
+      "credentials": {
+        "twilioApi": {
+          "id": "uLW2qe1Cjqw22Hl4",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 3,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        3160,
+        -60
+      ],
+      "id": "3a5bc512-bb09-4ed7-856b-73805f140c9b",
+      "name": "Wait4",
+      "webhookId": "bfb258ec-5ce5-4c9f-9a82-4a37aaafbd5c"
+    }
+  ],
+  "pinData": {
+    "On form submission": [
+      {
+        "json": {
+          "What is your name?": "diego",
+          "What are you looking to do?": "Sell",
+          "Can you give your number? Please include the country code": 34619267734,
+          "submittedAt": "2025-07-05T20:21:27.885+02:00",
+          "formMode": "test"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "If4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Create a row4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [],
+        [
+          {
+            "node": "Create a row5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent4",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a row": {
+      "main": [
+        [
+          {
+            "node": "Get a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a row": {
+      "main": [
+        [
+          {
+            "node": "Update a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent3",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent2": {
+      "main": [
+        [
+          {
+            "node": "Create a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent3": {
+      "main": [
+        [
+          {
+            "node": "Create a row1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a row1": {
+      "main": [
+        [
+          {
+            "node": "Get a row1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a row1": {
+      "main": [
+        [
+          {
+            "node": "Update a row1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row1": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent4": {
+      "main": [
+        [
+          {
+            "node": "Switch2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a row2": {
+      "main": [
+        [
+          {
+            "node": "Get a row2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a row2": {
+      "main": [
+        [
+          {
+            "node": "Update a row2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row2": {
+      "main": [
+        [
+          {
+            "node": "Send a message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch2": {
+      "main": [
+        [
+          {
+            "node": "Create a row2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create a row3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a row3": {
+      "main": [
+        [
+          {
+            "node": "Get a row3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a row3": {
+      "main": [
+        [
+          {
+            "node": "Update a row3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row3": {
+      "main": [
+        [
+          {
+            "node": "Send a message3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a row5": {
+      "main": [
+        [
+          {
+            "node": "Get a row4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a row4": {
+      "main": [
+        [
+          {
+            "node": "Update a row4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a row5": {
+      "main": [
+        [
+          {
+            "node": "Update a row5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If4": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create a row4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a row4": {
+      "main": [
+        [
+          {
+            "node": "Get a row5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message2": {
+      "main": [
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait2": {
+      "main": [
+        [
+          {
+            "node": "Send an SMS/MMS/WhatsApp message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message3": {
+      "main": [
+        [
+          {
+            "node": "Wait3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait3": {
+      "main": [
+        [
+          {
+            "node": "Send an SMS/MMS/WhatsApp message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row5": {
+      "main": [
+        [
+          {
+            "node": "Date & Time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time": {
+      "main": [
+        [
+          {
+            "node": "Update a row6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get many rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many rows": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "Get a row6",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Get a row6": {
+      "main": [
+        [
+          {
+            "node": "Delete a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete a row": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Get a row7",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a row7": {
+      "main": [
+        [
+          {
+            "node": "Update a row7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row4": {
+      "main": [
+        [
+          {
+            "node": "Wait4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait4": {
+      "main": [
+        [
+          {
+            "node": "Send an SMS/MMS/WhatsApp message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2a47c498-a67e-4856-8594-1b73baf766f7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "01dceba1b5be9525f97fc3b73e04912f166459611082cec07e031a6098faed79"
+  },
+  "id": "czpZRpPyxOdXWoRp",
+  "tags": []
+}
