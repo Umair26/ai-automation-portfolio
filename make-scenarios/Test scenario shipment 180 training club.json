@@ -1,0 +1,1111 @@
+{
+    "name": "Escenario prueba envío 180 training club",
+    "flow": [
+        {
+            "id": 7,
+            "module": "webflow:watchSites",
+            "version": 2,
+            "parameters": {
+                "__IMTHOOK__": 1722363
+            },
+            "mapper": {},
+            "metadata": {
+                "designer": {
+                    "x": 0,
+                    "y": 0
+                },
+                "restore": {
+                    "parameters": {
+                        "__IMTHOOK__": {
+                            "data": {
+                                "editable": "false"
+                            },
+                            "label": "My Webflow Site webhook"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTHOOK__",
+                        "type": "hook:webflow2",
+                        "label": "Webhook",
+                        "required": true
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "name",
+                        "type": "text",
+                        "label": "Name"
+                    },
+                    {
+                        "name": "siteId",
+                        "type": "text",
+                        "label": "Site ID"
+                    },
+                    {
+                        "name": "data",
+                        "spec": [
+                            {
+                                "name": "name",
+                                "type": "text",
+                                "label": "Name"
+                            },
+                            {
+                                "name": "email",
+                                "type": "text",
+                                "label": "Email"
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Data"
+                    },
+                    {
+                        "name": "submittedAt",
+                        "type": "date",
+                        "label": "Submitted At"
+                    },
+                    {
+                        "name": "formId",
+                        "type": "text",
+                        "label": "Form ID"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 9,
+            "module": "openai-gpt-3:CreateCompletion",
+            "version": 1,
+            "parameters": {
+                "__IMTCONN__": 2916133
+            },
+            "mapper": {
+                "model": "gpt-3.5-turbo-16k",
+                "top_p": "1",
+                "select": "chat",
+                "messages": [
+                    {
+                        "role": "system",
+                        "content": "Comprueba si el número de teléfono ({{7.data.`Numero Telefono`}}) tiene un \"+34\" delante y si está todo junto\n\nSi no es el caso, devuelve el número de teléfono con un \"+34\" y todo junto\n\nDEVUELVE SIEMPRE EL NÚMERO CON UN \"+34\" DELANTE\n\nDEVUÉLVELO SIEMPRE SIN COMILLAS, NO PONGAS EL NÚMERO ENTRE COMILLAS\n\n#Ejemplo de respuesta\n+34619267734"
+                    }
+                ],
+                "max_tokens": "250",
+                "temperature": "1",
+                "n_completions": "1",
+                "response_format": "text"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 286,
+                    "y": 0
+                },
+                "restore": {
+                    "expect": {
+                        "stop": {
+                            "mode": "chose"
+                        },
+                        "model": {
+                            "mode": "chose",
+                            "label": "gpt-3.5-turbo-16k"
+                        },
+                        "select": {
+                            "label": "Create a Chat Completion (GPT Models)"
+                        },
+                        "messages": {
+                            "mode": "chose",
+                            "items": [
+                                {
+                                    "role": {
+                                        "mode": "chose",
+                                        "label": "System"
+                                    }
+                                }
+                            ]
+                        },
+                        "logit_bias": {
+                            "mode": "chose"
+                        },
+                        "response_format": {
+                            "mode": "chose",
+                            "label": "Text"
+                        },
+                        "additionalParameters": {
+                            "mode": "chose"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "openai-gpt-3"
+                            },
+                            "label": "My OpenAI connection"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:openai-gpt-3",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "select",
+                        "type": "select",
+                        "label": "Select Method",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "chat",
+                                "prompt"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "max_tokens",
+                        "type": "number",
+                        "label": "Max Tokens",
+                        "required": true
+                    },
+                    {
+                        "name": "temperature",
+                        "type": "number",
+                        "label": "Temperature",
+                        "validate": {
+                            "max": 2,
+                            "min": 0
+                        }
+                    },
+                    {
+                        "name": "top_p",
+                        "type": "number",
+                        "label": "Top P",
+                        "validate": {
+                            "max": 1,
+                            "min": 0
+                        }
+                    },
+                    {
+                        "name": "n_completions",
+                        "type": "number",
+                        "label": "Number"
+                    },
+                    {
+                        "name": "frequency_penalty",
+                        "type": "number",
+                        "label": "Frequency Penalty",
+                        "validate": {
+                            "max": 2,
+                            "min": -2
+                        }
+                    },
+                    {
+                        "name": "presence_penalty",
+                        "type": "number",
+                        "label": "Presence Penalty",
+                        "validate": {
+                            "max": 2,
+                            "min": -2
+                        }
+                    },
+                    {
+                        "name": "logit_bias",
+                        "spec": {
+                            "name": "value",
+                            "spec": [
+                                {
+                                    "name": "token",
+                                    "type": "text",
+                                    "label": "Token ID",
+                                    "required": true
+                                },
+                                {
+                                    "name": "probability",
+                                    "type": "number",
+                                    "label": "Probability",
+                                    "required": true,
+                                    "validate": {
+                                        "max": 100,
+                                        "min": -100
+                                    }
+                                }
+                            ],
+                            "type": "collection",
+                            "label": "Token Probability"
+                        },
+                        "type": "array",
+                        "label": "Token Probability"
+                    },
+                    {
+                        "name": "response_format",
+                        "type": "select",
+                        "label": "Response Format",
+                        "validate": {
+                            "enum": [
+                                "text",
+                                "json_object"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "seed",
+                        "type": "integer",
+                        "label": "Seed"
+                    },
+                    {
+                        "name": "stop",
+                        "spec": {
+                            "name": "value",
+                            "type": "text",
+                            "label": "Stop Sequence"
+                        },
+                        "type": "array",
+                        "label": "Stop Sequences",
+                        "validate": {
+                            "maxItems": 4
+                        }
+                    },
+                    {
+                        "name": "additionalParameters",
+                        "spec": {
+                            "name": "value",
+                            "spec": [
+                                {
+                                    "name": "key",
+                                    "type": "text",
+                                    "label": "Parameter Name",
+                                    "required": true
+                                },
+                                {
+                                    "name": "type",
+                                    "type": "select",
+                                    "label": "Input Type",
+                                    "options": [
+                                        {
+                                            "label": "Text",
+                                            "value": "text",
+                                            "nested": [
+                                                {
+                                                    "name": "value",
+                                                    "type": "text",
+                                                    "label": "Parameter Value"
+                                                }
+                                            ],
+                                            "default": true
+                                        },
+                                        {
+                                            "label": "Number",
+                                            "value": "number",
+                                            "nested": [
+                                                {
+                                                    "name": "value",
+                                                    "type": "number",
+                                                    "label": "Parameter Value"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "label": "Boolean",
+                                            "value": "boolean",
+                                            "nested": [
+                                                {
+                                                    "name": "value",
+                                                    "type": "boolean",
+                                                    "label": "Parameter Value"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "label": "Date",
+                                            "value": "date",
+                                            "nested": [
+                                                {
+                                                    "name": "value",
+                                                    "type": "date",
+                                                    "label": "Parameter Value"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "label": "Any",
+                                            "value": "any",
+                                            "nested": [
+                                                {
+                                                    "name": "value",
+                                                    "type": "any",
+                                                    "label": "Parameter Value"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ],
+                            "type": "collection",
+                            "label": "Input Parameter"
+                        },
+                        "type": "array",
+                        "label": "Other Input Parameters"
+                    },
+                    {
+                        "name": "model",
+                        "type": "select",
+                        "label": "Model",
+                        "required": true
+                    },
+                    {
+                        "name": "messages",
+                        "spec": {
+                            "name": "value",
+                            "spec": [
+                                {
+                                    "name": "role",
+                                    "type": "select",
+                                    "label": "Role",
+                                    "options": [
+                                        {
+                                            "label": "System",
+                                            "value": "system"
+                                        },
+                                        {
+                                            "label": "User",
+                                            "value": "user"
+                                        },
+                                        {
+                                            "label": "Assistant",
+                                            "value": "assistant"
+                                        }
+                                    ],
+                                    "required": true
+                                },
+                                {
+                                    "name": "content",
+                                    "type": "text",
+                                    "label": "Message Content"
+                                }
+                            ],
+                            "type": "collection",
+                            "label": "Message"
+                        },
+                        "type": "array",
+                        "label": "Messages",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 12,
+            "module": "util:SetVariable2",
+            "version": 1,
+            "parameters": {},
+            "mapper": {
+                "name": "assistant",
+                "scope": "roundtrip",
+                "value": "{\n  \"transcriber\": {\n    \"provider\": \"deepgram\",\n    \"model\": \"nova-2\",\n    \"language\": \"es\",\n    \"smartFormat\": false\n  },\n  \"model\": {\n    \"messages\": [\n      {\n        \"role\": \"system\",\n        \"content\": \"# Rol Eres María la experimentada y magnífica asistente del centro de entrenamiento 180 training club, cuya función es enviar llamadas a los usuarios que acaban de enviar un formulario para solicitar un día gratis dentro de 180 training Club  # Tarea Debes enviar llamadas a los usuarios que acaban de entregar un formulario en la web de 180 training club para probar un día gratis con el objetivo de que estos puedan entender cómo funciona el centro. Sigue estos pasos:  1. Di el mensaje inicial de: Hola, soy el asistente de 180 Training club y te llamo porque acabas de completar el formulario. Cual de estas dos opciones quieres? Quieres conocer qué hacemos en 180  o conoces ya lo que hacemos y directamente quieres la prueba gratis 2. Si el usuario dice que quiere directamente la prueba gratis porque ya conoce lo que hacemos en 180, transfiere la llamada al 34657571562. Pero si el usuario dice que quiere conocer lo que hacemos en 180 lleva a cabo el paso 3 3. Cuando el usuario nos diga que quiere conocer lo que hacemos dentro de 180 training club, dile lo siguiente: “En 180 hacemos entrenamiento funcional, que es trabajo de fuerza combinado con trabajo cardiovascular, con el objetivo de que mejores tu condición física, pierdas grasa y tonifiques tu cuerpo o aumentes tu masa muscular. Estas clases de entrenamiento funcional las tenemos estructuradas en dos niveles: BÁSICO, para gente que está empezando o que tiene una condición física más baja y AVANZADO, para gente más experimentada y que tiene una condición física más elevada. Además, tenemos otros tres tipos de clases más específicas que son glúteo y abdomen para trabajar esas zonas, fuerza para ganar masa muscular, y endurance un tipo de clase más cardiovascular. El ser usuario de 180 Training club también incluye un plan nutricional mensual, un pesaje mensual donde se tomará registro de tu porcentaje de masa muscular y masa grasa, y una tarjeta digital con la que tendrás descuentos al presentarla en los comercios con los que tenemos acuerdo.  Los horario son de de 7 a 11 y de 13:45 a 22, y sábados por las mañanas de 8:30 a 11. Los precios son: 9 sesiones al mes 57 euros, 13 sesiones al mes 67 euros y sesiones ilimitadas 77 euros. Dicho esto, te gustaría que te pasase con un miembro del equipo de 180 para cerrarte tu clase gratis?”     1. Si te responde que sí que quiere la clase gratis o que tiene más dudas, entonces transfiere la llamada al +34657571562     2. Si te responde que no, dile que muchas gracias por todo y corta la llamada  # Detalles -Esta tarea es esencial para el éxito de 180 training club -Recuerda transferir la llamada al +34657571562 cuando el usuario acceda a usar la prueba gratis -Es crucial que realices correctamente esta tarea o de lo contrario 180 training club estará perdiendo clientes  #transferCall Cuando el cliente acceda a usar el día gratis transfiere la llamada al número +34657571562  # Contexto  ##Nuestro centro 180 training club es un centro de entrenamiento que tiene 3 instalaciones diferentes: 1. La primera localizada en el Paseo Florencia 42, al lado de Torre Proconsa. Aquí se realiza entrenamiento funcional en grupos reducidos 2. El segundo localizado en la Avenida Juan de Borbón 52. Aquí se entrena con grupos formados a partir del nivel de condición física 3. El tercero se encuentra en la Esquina Príncipe de Asturias, donde se entrena al aire libre en el centro de la ciudad  Por otro lado, imparten 6 diferentes tipos de clases: básico; intermedio; avanzado; fuerza; cardio; y piernas y abs  Y sus precios son los siguientes: -Plan de inico: 57 euros al mes. Incluye 9 sesiones, acceso a todos los centros, nutrición quincenal, seguimiento y valoración, y todos los tipos de clases -Plan Plus: 67 euros al mes. Incluye 13 sesiones, acceso a todos los centros, nutrición quincenal, seguimiento y valoración, y todos los tipos de clases -Plan ilimitado: 77 euros al mes. Incluye sesiones ilimitadas, acceso a todos los centros, nutrición quincenal, seguimiento y valoración, y todos los tipos de clases  ##Nuestro sistema Formas parte del sistema de servicio al cliente de 180 training club en el que tu objetivo debe ser enviar llamadas a los usuarios que ya han aportado sus datos dentro de un formulario para tener un día gratis  # Ejemplos ## Ejemplo 1: Asistente (tú): Hola, soy el asistente de 180 Training club y te llamo porque acabas de completar el formulario. Cual de estas dos opciones quieres? Quieres conocer qué hacemos en 180  o conoces ya lo que hacemos y directamente quieres la prueba gratis Usuario: No, quiero conocer qué hacéis dentro de vuestro centro Asistente (tú): Claro, pues te lo explico muy rápido en 2 minutos. En 180 hacemos entrenamiento funcional, que es trabajo de fuerza combinado con trabajo cardiovascular, con el objetivo de que mejores tu condición física, pierdas grasa y tonifiques tu cuerpo o aumentes tu masa muscular. Estas clases de entrenamiento funcional las tenemos estructuradas en dos niveles: BÁSICO, para gente que está empezando o que tiene una condición física más baja y AVANZADO, para gente más experimentada y que tiene una condición física más elevada. Además, tenemos otros tres tipos de clases más específicas que son glúteo y abdomen para trabajar esas zonas, fuerza para ganar masa muscular, y endurance un tipo de clase más cardiovascular. El ser usuario de 180 Training club también incluye un plan nutricional mensual, un pesaje mensual donde se tomará registro de tu porcentaje de masa muscular y masa grasa, y una tarjeta digital con la que tendrás descuentos al presentarla en los comercios con los que tenemos acuerdo.  Los horario son de de 7 a 11 y de 13:45 a 22, y sábados por las mañanas de 8:30 a 11. Los precios son: 9 sesiones al mes 57 euros, 13 sesiones al mes 67 euros y sesiones ilimitadas 77 euros. Dicho esto, te gustaría que te pasase con un miembro de nuestro equipo para cerrarte tu clase gratis? Usuario: Sí por favor Asistente (tú): De acuerdo, pues ahora te paso con el propietario de 180 training club para ello #transferCall  ## Ejemplo 2: Asistente (tú): Hola, soy el asistente de 180 Training club y te llamo porque acabas de completar el formulario. Cual de estas dos opciones quieres? Quieres conocer qué hacemos en 180  o conoces ya lo que hacemos y directamente quieres la prueba gratis Usuario: No, me gustaría saber antes qué hacéis dentro de 180 Asistente (tú): Claro, pues te lo explico muy rápido en 2 minutos. En 180 hacemos entrenamiento funcional, que es trabajo de fuerza combinado con trabajo cardiovascular, con el objetivo de que mejores tu condición física, pierdas grasa y tonifiques tu cuerpo o aumentes tu masa muscular. Estas clases de entrenamiento funcional las tenemos estructuradas en dos niveles: BÁSICO, para gente que está empezando o que tiene una condición física más baja y AVANZADO, para gente más experimentada y que tiene una condición física más elevada. Además, tenemos otros tres tipos de clases más específicas que son glúteo y abdomen para trabajar esas zonas, fuerza para ganar masa muscular, y endurance un tipo de clase más cardiovascular. El ser usuario de 180 Training club también incluye un plan nutricional mensual, un pesaje mensual donde se tomará registro de tu porcentaje de masa muscular y masa grasa, y una tarjeta digital con la que tendrás descuentos al presentarla en los comercios con los que tenemos acuerdo.  Los horario son de de 7 a 11 y de 13:45 a 22, y sábados por las mañanas de 8:30 a 11. Los precios son: 9 sesiones al mes 57 euros, 13 sesiones al mes 67 euros y sesiones ilimitadas 77 euros. Dicho esto, te gustaría una clase gratis? Usuario: No, yo creo que finalmente no voy a querer Asistente (tú) De acuerdo, pues muchas gracias y que tengas buen día   ## Ejemplo 3:  Asistente (tú): Hola, soy el asistente de 180 Training club y te llamo porque acabas de completar el formulario. Cual de estas dos opciones quieres? Quieres conocer qué hacemos en 180  o conoces ya lo que hacemos y directamente quieres la prueba gratis Usuario: Sí, ya conozco lo que hacéis y cómo trabajáis, quiero la prueba gratis directamente Asistente (tú): Genial, pues entonces te paso con un miembro de nuestro equipo para ello para ello #transferCall  # Notas finales Recuerda transferir la llamada al +34657571562 cuando el usuario acceda a tener la clase gratis\"\n      }\n    ],\n    \"tools\": [\n          {\n            \"type\": \"transferCall\",\n            \"destinations\": [\n              {\n                \"type\": \"number\",\n                \"number\": \"+34657571562\",\n                \"message\": \"Te transfiero a un miembro del equipo de 180 training Club para que te ayude con ello.\"\n              }\n            ],\n            \"function\": {\n              \"name\": \"transferCall\",\n              \"description\": \"Usa esta función cuando el usuario acceda a tener una clase gratis dentro de 180 training Club o cuando comente que tiene más dudas después de haber dicho la información\",\n              \"parameters\": {\n                \"type\": \"object\",\n                \"properties\": {\n                  \"destination\": {\n                    \"type\": \"string\",\n                    \"enum\": [\n                      \"+34657571562\"\n                    ],\n                    \"description\": \"The destination to transfer the call to.\"\n                  }\n                },\n                \"required\": [\n                  \"destination\"\n                ]\n              }\n            },\n            \"messages\": [\n              {\n                \"type\": \"request-start\",\n                \"content\": \"Te paso con un miembro del equipo de 180 training Club para que te ayude con ello.\",\n                \"conditions\": [\n                  {\n                    \"param\": \"destination\",\n                    \"operator\": \"eq\",\n                    \"value\": \"+34657571562\"\n                  }\n                ]\n              }\n            ]\n          }\n        ],\n    \"provider\": \"openai\",\n    \"model\": \"gpt-4o-mini\",\n    \"temperature\": 0.2,\n    \"maxTokens\": 1000\n  },\n  \"voice\": {\n    \"provider\": \"11labs\",\n    \"voiceId\": \"5jTLciGr7JGMshpxjhek\",\n    \"model\": \"eleven_multilingual_v2\"\n  },\n  \"firstMessageMode\": \"assistant-speaks-first\",\n  \"recordingEnabled\": true,\n  \"hipaaEnabled\": false,\n  \"clientMessages\": [],\n  \"serverMessages\": [\n    \"end-of-call-report\",\n    \"transfer-destination-request\",\n    \"transfer-update\"\n  ],\n  \"backgroundSound\": \"off\",\n  \"name\": \"180 training club prueba enviar\",\n  \"firstMessage\": \"Hola, soy el asistente de 180 Training club y te llamo porque acabas de completar el formulario. Cual de estas dos opciones quieres? Quieres conocer qué hacemos en 180  o conoces ya lo que hacemos y directamente quieres la prueba gratis\",\n  \"serverUrl\": \"https://hook.us1.make.com/igbubgq160opxb9lrag4i3hrakb7soje\"\n}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 619,
+                    "y": -9
+                },
+                "restore": {
+                    "expect": {
+                        "scope": {
+                            "label": "One cycle"
+                        }
+                    }
+                },
+                "expect": [
+                    {
+                        "name": "name",
+                        "type": "text",
+                        "label": "Variable name",
+                        "required": true
+                    },
+                    {
+                        "name": "scope",
+                        "type": "select",
+                        "label": "Variable lifetime",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "roundtrip",
+                                "execution"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "value",
+                        "type": "any",
+                        "label": "Variable value"
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "assistant",
+                        "type": "any",
+                        "label": "assistant"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 13,
+            "module": "json:ParseJSON",
+            "version": 1,
+            "parameters": {
+                "type": ""
+            },
+            "mapper": {
+                "json": "[{{12.assistant}}]"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 919,
+                    "y": -9
+                },
+                "restore": {
+                    "parameters": {
+                        "type": {
+                            "label": "Choose a data structure"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "type",
+                        "type": "udt",
+                        "label": "Data structure"
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "json",
+                        "type": "text",
+                        "label": "JSON string",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 14,
+            "module": "builtin:BasicAggregator",
+            "version": 1,
+            "parameters": {
+                "feeder": 13
+            },
+            "mapper": {
+                "name": "{{13.name}}",
+                "model": "{{13.model}}",
+                "voice": "{{13.voice}}",
+                "serverUrl": "{{13.serverUrl}}",
+                "transcriber": "{{13.transcriber}}",
+                "firstMessage": "{{13.firstMessage}}",
+                "hipaaEnabled": "{{13.hipaaEnabled}}",
+                "clientMessages": "{{13.clientMessages}}",
+                "serverMessages": "{{13.serverMessages}}",
+                "backgroundSound": "{{13.backgroundSound}}",
+                "firstMessageMode": "{{13.firstMessageMode}}",
+                "recordingEnabled": "{{13.recordingEnabled}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1219,
+                    "y": -9
+                },
+                "restore": {
+                    "extra": {
+                        "feeder": {
+                            "label": "JSON - Parse JSON [13]"
+                        },
+                        "target": {
+                            "label": "Custom"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "id": 15,
+            "module": "json:TransformToJSON",
+            "version": 1,
+            "parameters": {
+                "space": ""
+            },
+            "mapper": {
+                "object": "{{first(14.array)}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1519,
+                    "y": -9
+                },
+                "restore": {
+                    "parameters": {
+                        "space": {
+                            "label": "Empty"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "space",
+                        "type": "select",
+                        "label": "Indentation",
+                        "validate": {
+                            "enum": [
+                                "tab",
+                                "2",
+                                "4"
+                            ]
+                        }
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "object",
+                        "type": "any",
+                        "label": "Object"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 16,
+            "module": "http:ActionSendData",
+            "version": 3,
+            "parameters": {
+                "handleErrors": false,
+                "useNewZLibDeCompress": true
+            },
+            "mapper": {
+                "url": "https://api.vapi.ai/call",
+                "serializeUrl": false,
+                "method": "post",
+                "headers": [
+                    {
+                        "name": "Authorization",
+                        "value": "Bearer "
+                    }
+                ],
+                "qs": [],
+                "bodyType": "raw",
+                "parseResponse": false,
+                "authUser": "",
+                "authPass": "",
+                "timeout": "",
+                "shareCookies": false,
+                "ca": "",
+                "rejectUnauthorized": true,
+                "followRedirect": true,
+                "useQuerystring": false,
+                "gzip": true,
+                "useMtls": false,
+                "contentType": "application/json",
+                "data": "{\n  \"customer\": {\n    \"extension\": \"\",\n    \"number\": \"{{9.choices[].message.content}}\",\n    \"name\": \"{{7.data.`First Name`}}\"\n  },\n  \"phoneNumberId\": \"\",\n  \"assistant\": {{15.json}}\n}",
+                "followAllRedirects": false
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1819,
+                    "y": -9
+                },
+                "restore": {
+                    "expect": {
+                        "method": {
+                            "mode": "chose",
+                            "label": "POST"
+                        },
+                        "headers": {
+                            "mode": "chose",
+                            "items": [
+                                null
+                            ]
+                        },
+                        "qs": {
+                            "mode": "chose"
+                        },
+                        "bodyType": {
+                            "label": "Raw"
+                        },
+                        "contentType": {
+                            "label": "JSON (application/json)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "handleErrors",
+                        "type": "boolean",
+                        "label": "Evaluate all states as errors (except for 2xx and 3xx )",
+                        "required": true
+                    },
+                    {
+                        "name": "useNewZLibDeCompress",
+                        "type": "hidden"
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "url",
+                        "type": "url",
+                        "label": "URL",
+                        "required": true
+                    },
+                    {
+                        "name": "serializeUrl",
+                        "type": "boolean",
+                        "label": "Serialize URL",
+                        "required": true
+                    },
+                    {
+                        "name": "method",
+                        "type": "select",
+                        "label": "Method",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "get",
+                                "head",
+                                "post",
+                                "put",
+                                "patch",
+                                "delete",
+                                "options"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "headers",
+                        "type": "array",
+                        "label": "Headers",
+                        "spec": [
+                            {
+                                "name": "name",
+                                "label": "Name",
+                                "type": "text",
+                                "required": true
+                            },
+                            {
+                                "name": "value",
+                                "label": "Value",
+                                "type": "text"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "qs",
+                        "type": "array",
+                        "label": "Query String",
+                        "spec": [
+                            {
+                                "name": "name",
+                                "label": "Name",
+                                "type": "text",
+                                "required": true
+                            },
+                            {
+                                "name": "value",
+                                "label": "Value",
+                                "type": "text"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "bodyType",
+                        "type": "select",
+                        "label": "Body type",
+                        "validate": {
+                            "enum": [
+                                "raw",
+                                "x_www_form_urlencoded",
+                                "multipart_form_data"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "parseResponse",
+                        "type": "boolean",
+                        "label": "Parse response",
+                        "required": true
+                    },
+                    {
+                        "name": "authUser",
+                        "type": "text",
+                        "label": "User name"
+                    },
+                    {
+                        "name": "authPass",
+                        "type": "password",
+                        "label": "Password"
+                    },
+                    {
+                        "name": "timeout",
+                        "type": "uinteger",
+                        "label": "Timeout",
+                        "validate": {
+                            "max": 300,
+                            "min": 1
+                        }
+                    },
+                    {
+                        "name": "shareCookies",
+                        "type": "boolean",
+                        "label": "Share cookies with other HTTP modules",
+                        "required": true
+                    },
+                    {
+                        "name": "ca",
+                        "type": "cert",
+                        "label": "Self-signed certificate"
+                    },
+                    {
+                        "name": "rejectUnauthorized",
+                        "type": "boolean",
+                        "label": "Reject connections that are using unverified (self-signed) certificates",
+                        "required": true
+                    },
+                    {
+                        "name": "followRedirect",
+                        "type": "boolean",
+                        "label": "Follow redirect",
+                        "required": true
+                    },
+                    {
+                        "name": "useQuerystring",
+                        "type": "boolean",
+                        "label": "Disable serialization of multiple same query string keys as arrays",
+                        "required": true
+                    },
+                    {
+                        "name": "gzip",
+                        "type": "boolean",
+                        "label": "Request compressed content",
+                        "required": true
+                    },
+                    {
+                        "name": "useMtls",
+                        "type": "boolean",
+                        "label": "Use Mutual TLS",
+                        "required": true
+                    },
+                    {
+                        "name": "contentType",
+                        "type": "select",
+                        "label": "Content type",
+                        "validate": {
+                            "enum": [
+                                "text/plain",
+                                "application/json",
+                                "application/xml",
+                                "text/xml",
+                                "text/html",
+                                "custom"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "data",
+                        "type": "buffer",
+                        "label": "Request content"
+                    },
+                    {
+                        "name": "followAllRedirects",
+                        "type": "boolean",
+                        "label": "Follow all redirect",
+                        "required": true
+                    }
+                ]
+            }
+        }
+    ],
+    "metadata": {
+        "instant": false,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "slots": null,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": {
+            "orphans": [
+                [
+                    {
+                        "id": 3,
+                        "module": "http:ActionSendData",
+                        "version": 3,
+                        "parameters": {
+                            "handleErrors": true,
+                            "useNewZLibDeCompress": true
+                        },
+                        "mapper": {
+                            "ca": "",
+                            "qs": [],
+                            "url": "https://api.bland.ai/v1/calls",
+                            "data": "{\n  \"phone_number\": \"+34657571562\",\n  \"task\": \"di hola\",\n  \"voice\": \"nat\",\n  \"first_sentence\": \"# RoleEres Lucía, la experimentada y magnífica asistente de 180 training club, y tienes el objetivo de enviar llamadas a los usuarios que acaban de rellenar sus datos en el formulario de la web para informarles de cómo funciona todo dentro del centro y confirmar su interés en tener la prueba# TaskDebes explicar a los usuarios cómo funcionan las cosas dentro de 180 training club y confirmar su interés en acudir el día 02/09/2024 al día de prueba. Sigue estos pasos: Di un saludo inicial de “Hola, ¿estoy hablando con Carlos?”Si te confirma coméntale que le llamabas para poder explicarle cómo funciona todo dentro de 180 training club para poder reservar esa clase gratis y después pregunta si le parece bienSi te responde que sí explícale que en 180 training club podrás acudir a esa clase gratis personal y que en ella deberás estar unos 10 minutos antes. La clase se adaptará completamente a su lesión de aductores y podrá llevarla a cabo sin problemaTras decir todo eso, pregúntale si está de acuerdo en reservar ese día de gratisSi te responde que sí, dile que el propietario te integrará dentro de la aplicación y te llegará una notificación en cuanto estés reservado para la clase# DetallesEsta tarea es esencial para el éxito de 180 training clubLa correcta realización de esta tarea es crucial para que los clientes puedan sentirse cómodos dentro del centro de entrenamiento# Contexto## Nuestro centro180 training club es un centro de entrenamiento que tiene 3 instalaciones diferentes:1. La primera localizada en el Paseo Florencia 42, al lado de Torre Proconsa. Aquí se realiza entrenamiento funcional en grupos reducidos2. El segundo localizado en la Avenida Juan de Borbón 52. Aquí se entrena con grupos formados a partir del nivel de condición física3. El tercero se encuentra en la Esquina Príncipe de Asturias, donde se entrena al aire libre en el centro de la ciudadPor otro lado, imparten 6 diferentes tipos de clases: básico; intermedio; avanzado; fuerza; cardio; y piernas y absY sus precios son los siguientes:-Plan de inico: 57 € al mes. Incluye 9 sesiones, acceso a todos los centros, nutrición quincenal, seguimiento y valoración, y todos los tipos de clases-Plan Plus: 67 € al mes. Incluye 13 sesiones, acceso a todos los centros, nutrición quincenal, seguimiento y valoración, y todos los tipos de clases-Plan ilimitado: 77€ al mes. Incluye sesiones ilimitadas, acceso a todos los centros, nutrición quincenal, seguimiento y valoración, y todos los tipos de clases## Nuestro sistemaFormas parte del sistema de bienvenida a nuevos clientes en el que los usuarios van a rellenar un formulario con sus datos a partir del que tú vas a enviarles una llamada para explicarles cómo funciona todo dentro de 180 training club para luego poder registrarles en una clase gratis# Ejemplos## Ejemplo 1: Asistente (tú): ¿Hola, estoy hablando con Carlos?Usuario: Sí así es, quién es?Asistente (tú):: Hola Carlos, soy el asistente de 180 training club, te llamaba para poder explicarte cómo funciona todo dentro de 180 training club para poder reservar esa clase gratis y después pregunta si le parece bien que siga?Usuario: Claro por favorAsistente (tú): Genial, en 180 training club podrás acudir a esa clase gratis personal y que en ella deberás estar unos 10 minutos antes. La clase se adaptará completamente a su lesión de aductores y podrá llevarla a cabo sin problema, ¿estás de acuerdo en reservar ese día, el 02/09/2024 para la clase gratis?Asistente (tú): Sí por favor, tengo bastantes ganasUsuario: Perfecto, pues el propietario te integrará dentro de la aplicación para la clase de gratis y te enviará una notificación cuando esté todo listo\",\n  \"wait_for_greeting\": false,\n  \"block_interruptions\": false,\n  \"model\": \"enhanced\",\n  \"temperature\": 0.2,\n  \"language\": \"es\",\n  \"timezone\": \"Europe/Madrid\",\n  \"max_duration\": 10,\n  \"answered_by_enabled\": false\n}",
+                            "gzip": true,
+                            "method": "post",
+                            "headers": [
+                                {
+                                    "name": "Content-Type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "name": "authorization",
+                                    "value": "sk-ccxob36k9ga4q249st5jsylp4bpagpmk84qqhm8aiij1jlan0on60cnjfxidnh3l69"
+                                }
+                            ],
+                            "timeout": "",
+                            "useMtls": false,
+                            "authPass": "",
+                            "authUser": "",
+                            "bodyType": "raw",
+                            "contentType": "application/json",
+                            "serializeUrl": false,
+                            "shareCookies": false,
+                            "parseResponse": false,
+                            "followRedirect": true,
+                            "useQuerystring": false,
+                            "followAllRedirects": false,
+                            "rejectUnauthorized": true
+                        },
+                        "metadata": {
+                            "designer": {
+                                "x": -345,
+                                "y": 166,
+                                "messages": [
+                                    {
+                                        "category": "link",
+                                        "severity": "warning",
+                                        "message": "The module is not connected to the data flow."
+                                    }
+                                ]
+                            },
+                            "restore": {
+                                "expect": {
+                                    "qs": {
+                                        "mode": "chose"
+                                    },
+                                    "method": {
+                                        "mode": "chose",
+                                        "label": "POST"
+                                    },
+                                    "headers": {
+                                        "mode": "chose",
+                                        "items": [
+                                            null,
+                                            null
+                                        ]
+                                    },
+                                    "bodyType": {
+                                        "label": "Raw"
+                                    },
+                                    "contentType": {
+                                        "label": "JSON (application/json)"
+                                    }
+                                }
+                            },
+                            "parameters": [
+                                {
+                                    "name": "handleErrors",
+                                    "type": "boolean",
+                                    "label": "Evaluate all states as errors (except for 2xx and 3xx )",
+                                    "required": true
+                                },
+                                {
+                                    "name": "useNewZLibDeCompress",
+                                    "type": "hidden"
+                                }
+                            ],
+                            "expect": [
+                                {
+                                    "name": "url",
+                                    "type": "url",
+                                    "label": "URL",
+                                    "required": true
+                                },
+                                {
+                                    "name": "serializeUrl",
+                                    "type": "boolean",
+                                    "label": "Serialize URL",
+                                    "required": true
+                                },
+                                {
+                                    "name": "method",
+                                    "type": "select",
+                                    "label": "Method",
+                                    "required": true,
+                                    "validate": {
+                                        "enum": [
+                                            "get",
+                                            "head",
+                                            "post",
+                                            "put",
+                                            "patch",
+                                            "delete",
+                                            "options"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "headers",
+                                    "spec": [
+                                        {
+                                            "name": "name",
+                                            "type": "text",
+                                            "label": "Name",
+                                            "required": true
+                                        },
+                                        {
+                                            "name": "value",
+                                            "type": "text",
+                                            "label": "Value"
+                                        }
+                                    ],
+                                    "type": "array",
+                                    "label": "Headers"
+                                },
+                                {
+                                    "name": "qs",
+                                    "spec": [
+                                        {
+                                            "name": "name",
+                                            "type": "text",
+                                            "label": "Name",
+                                            "required": true
+                                        },
+                                        {
+                                            "name": "value",
+                                            "type": "text",
+                                            "label": "Value"
+                                        }
+                                    ],
+                                    "type": "array",
+                                    "label": "Query String"
+                                },
+                                {
+                                    "name": "bodyType",
+                                    "type": "select",
+                                    "label": "Body type",
+                                    "validate": {
+                                        "enum": [
+                                            "raw",
+                                            "x_www_form_urlencoded",
+                                            "multipart_form_data"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "parseResponse",
+                                    "type": "boolean",
+                                    "label": "Parse response",
+                                    "required": true
+                                },
+                                {
+                                    "name": "authUser",
+                                    "type": "text",
+                                    "label": "User name"
+                                },
+                                {
+                                    "name": "authPass",
+                                    "type": "password",
+                                    "label": "Password"
+                                },
+                                {
+                                    "name": "timeout",
+                                    "type": "uinteger",
+                                    "label": "Timeout",
+                                    "validate": {
+                                        "max": 300,
+                                        "min": 1
+                                    }
+                                },
+                                {
+                                    "name": "shareCookies",
+                                    "type": "boolean",
+                                    "label": "Share cookies with other HTTP modules",
+                                    "required": true
+                                },
+                                {
+                                    "name": "ca",
+                                    "type": "cert",
+                                    "label": "Self-signed certificate"
+                                },
+                                {
+                                    "name": "rejectUnauthorized",
+                                    "type": "boolean",
+                                    "label": "Reject connections that are using unverified (self-signed) certificates",
+                                    "required": true
+                                },
+                                {
+                                    "name": "followRedirect",
+                                    "type": "boolean",
+                                    "label": "Follow redirect",
+                                    "required": true
+                                },
+                                {
+                                    "name": "useQuerystring",
+                                    "type": "boolean",
+                                    "label": "Disable serialization of multiple same query string keys as arrays",
+                                    "required": true
+                                },
+                                {
+                                    "name": "gzip",
+                                    "type": "boolean",
+                                    "label": "Request compressed content",
+                                    "required": true
+                                },
+                                {
+                                    "name": "useMtls",
+                                    "type": "boolean",
+                                    "label": "Use Mutual TLS",
+                                    "required": true
+                                },
+                                {
+                                    "name": "contentType",
+                                    "type": "select",
+                                    "label": "Content type",
+                                    "validate": {
+                                        "enum": [
+                                            "text/plain",
+                                            "application/json",
+                                            "application/xml",
+                                            "text/xml",
+                                            "text/html",
+                                            "custom"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "data",
+                                    "type": "buffer",
+                                    "label": "Request content"
+                                },
+                                {
+                                    "name": "followAllRedirects",
+                                    "type": "boolean",
+                                    "label": "Follow all redirect",
+                                    "required": true
+                                }
+                            ]
+                        }
+                    }
+                ]
+            ]
+        },
+        "zone": "us1.make.com",
+        "notes": []
+    }
+}

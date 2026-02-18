@@ -1,0 +1,1011 @@
+{
+    "name": "Send Products to Manychat - Bao",
+    "flow": [
+        {
+            "id": 1,
+            "module": "gateway:CustomWebHook",
+            "version": 1,
+            "parameters": {
+                "hook": 221503,
+                "maxResults": 1
+            },
+            "mapper": {},
+            "metadata": {
+                "designer": {
+                    "x": -41,
+                    "y": -3
+                },
+                "restore": {
+                    "parameters": {
+                        "hook": {
+                            "data": {
+                                "editable": "true"
+                            },
+                            "label": "test"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "hook",
+                        "type": "hook:gateway-webhook",
+                        "label": "Webhook",
+                        "required": true
+                    },
+                    {
+                        "name": "maxResults",
+                        "type": "number",
+                        "label": "Maximum number of results"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 6,
+            "module": "manychat:SetSubscriberCustomField",
+            "version": 1,
+            "parameters": {
+                "__IMTCONN__": 619873
+            },
+            "mapper": {
+                "cFieldId": 10176692,
+                "cFieldValue": "{{1.`Product Name`}}",
+                "subscriberId": "{{1.manychatkey}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 300,
+                    "y": 0,
+                    "name": "Product Name"
+                },
+                "restore": {
+                    "expect": {
+                        "cFieldId": {
+                            "mode": "chose",
+                            "label": "ProductName"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "manychat"
+                            },
+                            "label": "My ManyChat connection"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:manychat",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "subscriberId",
+                        "type": "text",
+                        "label": "Subscriber ID",
+                        "required": true,
+                        "validate": {
+                            "pattern": "^[0-9]+$"
+                        }
+                    },
+                    {
+                        "name": "cFieldId",
+                        "type": "select",
+                        "label": "Field ID",
+                        "required": true
+                    },
+                    {
+                        "name": "cFieldValue",
+                        "type": "any",
+                        "label": "Field value",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 7,
+            "module": "manychat:SetSubscriberCustomField",
+            "version": 1,
+            "parameters": {
+                "__IMTCONN__": 619873
+            },
+            "mapper": {
+                "cFieldId": 10176696,
+                "cFieldValue": "{{1.`Product Price`}}",
+                "subscriberId": "{{1.manychatkey}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 600,
+                    "y": 0,
+                    "name": "Product Price"
+                },
+                "restore": {
+                    "expect": {
+                        "cFieldId": {
+                            "mode": "chose",
+                            "label": "ProductPrice"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "manychat"
+                            },
+                            "label": "My ManyChat connection"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:manychat",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "subscriberId",
+                        "type": "text",
+                        "label": "Subscriber ID",
+                        "required": true,
+                        "validate": {
+                            "pattern": "^[0-9]+$"
+                        }
+                    },
+                    {
+                        "name": "cFieldId",
+                        "type": "select",
+                        "label": "Field ID",
+                        "required": true
+                    },
+                    {
+                        "name": "cFieldValue",
+                        "type": "any",
+                        "label": "Field value",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 8,
+            "module": "manychat:SetSubscriberCustomField",
+            "version": 1,
+            "parameters": {
+                "__IMTCONN__": 619873
+            },
+            "mapper": {
+                "cFieldId": 10176700,
+                "cFieldValue": "{{1.`Product Image`}}",
+                "subscriberId": "{{1.manychatkey}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 900,
+                    "y": 0,
+                    "name": "Product Image"
+                },
+                "restore": {
+                    "expect": {
+                        "cFieldId": {
+                            "mode": "chose",
+                            "label": "ProductImage"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "manychat"
+                            },
+                            "label": "My ManyChat connection"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:manychat",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "subscriberId",
+                        "type": "text",
+                        "label": "Subscriber ID",
+                        "required": true,
+                        "validate": {
+                            "pattern": "^[0-9]+$"
+                        }
+                    },
+                    {
+                        "name": "cFieldId",
+                        "type": "select",
+                        "label": "Field ID",
+                        "required": true
+                    },
+                    {
+                        "name": "cFieldValue",
+                        "type": "any",
+                        "label": "Field value",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 9,
+            "module": "manychat:SetSubscriberCustomField",
+            "version": 1,
+            "parameters": {
+                "__IMTCONN__": 619873
+            },
+            "mapper": {
+                "cFieldId": 10176693,
+                "cFieldValue": "{{1.`Product Count`}}",
+                "subscriberId": "{{1.manychatkey}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1200,
+                    "y": 0,
+                    "name": "Product Count"
+                },
+                "restore": {
+                    "expect": {
+                        "cFieldId": {
+                            "mode": "chose",
+                            "label": "ProductCount"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "manychat"
+                            },
+                            "label": "My ManyChat connection"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:manychat",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "subscriberId",
+                        "type": "text",
+                        "label": "Subscriber ID",
+                        "required": true,
+                        "validate": {
+                            "pattern": "^[0-9]+$"
+                        }
+                    },
+                    {
+                        "name": "cFieldId",
+                        "type": "select",
+                        "label": "Field ID",
+                        "required": true
+                    },
+                    {
+                        "name": "cFieldValue",
+                        "type": "any",
+                        "label": "Field value",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 10,
+            "module": "manychat:SetSubscriberCustomField",
+            "version": 1,
+            "parameters": {
+                "__IMTCONN__": 619873
+            },
+            "filter": {
+                "name": "Check if there is more than 1 product",
+                "conditions": [
+                    [
+                        {
+                            "a": "{{1.`Product Count`}}",
+                            "b": "1",
+                            "o": "number:greater"
+                        }
+                    ]
+                ]
+            },
+            "mapper": {
+                "cFieldId": 10176687,
+                "cFieldValue": "{{1.`Product 1 Name`}}",
+                "subscriberId": "{{1.manychatkey}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1657,
+                    "y": -2,
+                    "name": "Product 1 Name"
+                },
+                "restore": {
+                    "expect": {
+                        "cFieldId": {
+                            "mode": "chose",
+                            "label": "ProductName1"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "manychat"
+                            },
+                            "label": "My ManyChat connection"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:manychat",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "subscriberId",
+                        "type": "text",
+                        "label": "Subscriber ID",
+                        "required": true,
+                        "validate": {
+                            "pattern": "^[0-9]+$"
+                        }
+                    },
+                    {
+                        "name": "cFieldId",
+                        "type": "select",
+                        "label": "Field ID",
+                        "required": true
+                    },
+                    {
+                        "name": "cFieldValue",
+                        "type": "any",
+                        "label": "Field value",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 11,
+            "module": "manychat:SetSubscriberCustomField",
+            "version": 1,
+            "parameters": {
+                "__IMTCONN__": 619873
+            },
+            "mapper": {
+                "cFieldId": 10176697,
+                "cFieldValue": "{{1.`Product 1 Price`}}",
+                "subscriberId": "{{1.manychatkey}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 2048,
+                    "y": -3,
+                    "name": "Product 1 Price"
+                },
+                "restore": {
+                    "expect": {
+                        "cFieldId": {
+                            "mode": "chose",
+                            "label": "ProductPrice1"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "manychat"
+                            },
+                            "label": "My ManyChat connection"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:manychat",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "subscriberId",
+                        "type": "text",
+                        "label": "Subscriber ID",
+                        "required": true,
+                        "validate": {
+                            "pattern": "^[0-9]+$"
+                        }
+                    },
+                    {
+                        "name": "cFieldId",
+                        "type": "select",
+                        "label": "Field ID",
+                        "required": true
+                    },
+                    {
+                        "name": "cFieldValue",
+                        "type": "any",
+                        "label": "Field value",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 12,
+            "module": "manychat:SetSubscriberCustomField",
+            "version": 1,
+            "parameters": {
+                "__IMTCONN__": 619873
+            },
+            "mapper": {
+                "cFieldId": 10176701,
+                "cFieldValue": "{{1.`Product 1 Image`}}",
+                "subscriberId": "{{1.manychatkey}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 2438,
+                    "y": -2,
+                    "name": "Product 1 Image"
+                },
+                "restore": {
+                    "expect": {
+                        "cFieldId": {
+                            "mode": "chose",
+                            "label": "ProductImage1"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "manychat"
+                            },
+                            "label": "My ManyChat connection"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:manychat",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "subscriberId",
+                        "type": "text",
+                        "label": "Subscriber ID",
+                        "required": true,
+                        "validate": {
+                            "pattern": "^[0-9]+$"
+                        }
+                    },
+                    {
+                        "name": "cFieldId",
+                        "type": "select",
+                        "label": "Field ID",
+                        "required": true
+                    },
+                    {
+                        "name": "cFieldValue",
+                        "type": "any",
+                        "label": "Field value",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 13,
+            "module": "manychat:SetSubscriberCustomField",
+            "version": 1,
+            "parameters": {
+                "__IMTCONN__": 619873
+            },
+            "filter": {
+                "name": "Check if there is more than 2 products",
+                "conditions": [
+                    [
+                        {
+                            "a": "{{1.`Product Count`}}",
+                            "b": "2",
+                            "o": "number:greater"
+                        }
+                    ]
+                ]
+            },
+            "mapper": {
+                "cFieldId": 10176688,
+                "cFieldValue": "{{1.`Product 2 Name`}}",
+                "subscriberId": "{{1.manychatkey}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 2931,
+                    "y": 2,
+                    "name": "Product 2 Name"
+                },
+                "restore": {
+                    "expect": {
+                        "cFieldId": {
+                            "mode": "chose",
+                            "label": "ProductName2"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "manychat"
+                            },
+                            "label": "My ManyChat connection"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:manychat",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "subscriberId",
+                        "type": "text",
+                        "label": "Subscriber ID",
+                        "required": true,
+                        "validate": {
+                            "pattern": "^[0-9]+$"
+                        }
+                    },
+                    {
+                        "name": "cFieldId",
+                        "type": "select",
+                        "label": "Field ID",
+                        "required": true
+                    },
+                    {
+                        "name": "cFieldValue",
+                        "type": "any",
+                        "label": "Field value",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 14,
+            "module": "manychat:SetSubscriberCustomField",
+            "version": 1,
+            "parameters": {
+                "__IMTCONN__": 619873
+            },
+            "mapper": {
+                "cFieldId": 10176698,
+                "cFieldValue": "{{1.`Product 2 Price`}}",
+                "subscriberId": "{{1.manychatkey}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 3330,
+                    "y": 4,
+                    "name": "Product 2 Price"
+                },
+                "restore": {
+                    "expect": {
+                        "cFieldId": {
+                            "mode": "chose",
+                            "label": "ProductPrice2"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "manychat"
+                            },
+                            "label": "My ManyChat connection"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:manychat",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "subscriberId",
+                        "type": "text",
+                        "label": "Subscriber ID",
+                        "required": true,
+                        "validate": {
+                            "pattern": "^[0-9]+$"
+                        }
+                    },
+                    {
+                        "name": "cFieldId",
+                        "type": "select",
+                        "label": "Field ID",
+                        "required": true
+                    },
+                    {
+                        "name": "cFieldValue",
+                        "type": "any",
+                        "label": "Field value",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 15,
+            "module": "manychat:SetSubscriberCustomField",
+            "version": 1,
+            "parameters": {
+                "__IMTCONN__": 619873
+            },
+            "mapper": {
+                "cFieldId": 10176702,
+                "cFieldValue": "{{1.`Product 2 Image`}}",
+                "subscriberId": "{{1.manychatkey}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 3723,
+                    "y": 3,
+                    "name": "Product 2 Image"
+                },
+                "restore": {
+                    "expect": {
+                        "cFieldId": {
+                            "mode": "chose",
+                            "label": "ProductImage2"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "manychat"
+                            },
+                            "label": "My ManyChat connection"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:manychat",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "subscriberId",
+                        "type": "text",
+                        "label": "Subscriber ID",
+                        "required": true,
+                        "validate": {
+                            "pattern": "^[0-9]+$"
+                        }
+                    },
+                    {
+                        "name": "cFieldId",
+                        "type": "select",
+                        "label": "Field ID",
+                        "required": true
+                    },
+                    {
+                        "name": "cFieldValue",
+                        "type": "any",
+                        "label": "Field value",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 20,
+            "module": "util:FunctionSleep",
+            "version": 1,
+            "parameters": {},
+            "mapper": {
+                "duration": "5"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 4017,
+                    "y": 2
+                },
+                "restore": {},
+                "expect": [
+                    {
+                        "name": "duration",
+                        "type": "uinteger",
+                        "label": "Delay",
+                        "required": true,
+                        "validate": {
+                            "max": 300,
+                            "min": 1
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 16,
+            "module": "manychat:SetSubscriberCustomField",
+            "version": 1,
+            "parameters": {
+                "__IMTCONN__": 619873
+            },
+            "filter": {
+                "name": "Check if there is more than 3 products",
+                "conditions": [
+                    [
+                        {
+                            "a": "{{1.`Product Count`}}",
+                            "b": "3",
+                            "o": "number:greater"
+                        }
+                    ]
+                ]
+            },
+            "mapper": {
+                "cFieldId": 10176691,
+                "cFieldValue": "{{1.`Product 3 Name`}}",
+                "subscriberId": "{{1.manychatkey}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 4572,
+                    "y": 5,
+                    "name": "Product 3 Name"
+                },
+                "restore": {
+                    "expect": {
+                        "cFieldId": {
+                            "mode": "chose",
+                            "label": "ProductName3"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "manychat"
+                            },
+                            "label": "My ManyChat connection"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:manychat",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "subscriberId",
+                        "type": "text",
+                        "label": "Subscriber ID",
+                        "required": true,
+                        "validate": {
+                            "pattern": "^[0-9]+$"
+                        }
+                    },
+                    {
+                        "name": "cFieldId",
+                        "type": "select",
+                        "label": "Field ID",
+                        "required": true
+                    },
+                    {
+                        "name": "cFieldValue",
+                        "type": "any",
+                        "label": "Field value",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 17,
+            "module": "manychat:SetSubscriberCustomField",
+            "version": 1,
+            "parameters": {
+                "__IMTCONN__": 619873
+            },
+            "mapper": {
+                "cFieldId": 10176699,
+                "cFieldValue": "{{1.`Product 3 Price`}}",
+                "subscriberId": "{{1.manychatkey}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 4830,
+                    "y": 3,
+                    "name": "Product 3 Price"
+                },
+                "restore": {
+                    "expect": {
+                        "cFieldId": {
+                            "mode": "chose",
+                            "label": "ProductPrice3"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "manychat"
+                            },
+                            "label": "My ManyChat connection"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:manychat",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "subscriberId",
+                        "type": "text",
+                        "label": "Subscriber ID",
+                        "required": true,
+                        "validate": {
+                            "pattern": "^[0-9]+$"
+                        }
+                    },
+                    {
+                        "name": "cFieldId",
+                        "type": "select",
+                        "label": "Field ID",
+                        "required": true
+                    },
+                    {
+                        "name": "cFieldValue",
+                        "type": "any",
+                        "label": "Field value",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 18,
+            "module": "manychat:SetSubscriberCustomField",
+            "version": 1,
+            "parameters": {
+                "__IMTCONN__": 619873
+            },
+            "mapper": {
+                "cFieldId": 10176703,
+                "cFieldValue": "{{1.`Product 3 Image`}}",
+                "subscriberId": "{{1.manychatkey}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 5139,
+                    "y": 1,
+                    "name": "Product 3 Image"
+                },
+                "restore": {
+                    "expect": {
+                        "cFieldId": {
+                            "mode": "chose",
+                            "label": "ProductImage3"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "manychat"
+                            },
+                            "label": "My ManyChat connection"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:manychat",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "subscriberId",
+                        "type": "text",
+                        "label": "Subscriber ID",
+                        "required": true,
+                        "validate": {
+                            "pattern": "^[0-9]+$"
+                        }
+                    },
+                    {
+                        "name": "cFieldId",
+                        "type": "select",
+                        "label": "Field ID",
+                        "required": true
+                    },
+                    {
+                        "name": "cFieldValue",
+                        "type": "any",
+                        "label": "Field value",
+                        "required": true
+                    }
+                ]
+            }
+        }
+    ],
+    "metadata": {
+        "instant": true,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 10,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": {
+            "orphans": []
+        },
+        "zone": "eu2.make.com"
+    }
+}
